@@ -90,7 +90,9 @@ public class ShooterWrist extends SubsystemBase {
     wristMotor.set(0); 
   }
 
-
+  public double getEncoderPos(){
+    return wristMotor.getPosition().getValueAsDouble();
+  }
 
   @Override
   public void periodic() {
