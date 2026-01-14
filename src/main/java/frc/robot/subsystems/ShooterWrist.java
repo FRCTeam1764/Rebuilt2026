@@ -6,9 +6,12 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,8 +27,8 @@ public class ShooterWrist extends SubsystemBase {
   private double calculation;
   private VoltageOut voltageOut;
   private StateManager stateManager;
-  private PIDController controller = new PIDController(,,);
-// PID values, do them
+  private PIDController controller = new PIDController(0,0,0);
+// PID values, they are NOT right, like VERY WRONG 
 
   private final SysIdRoutine m_sysIdRoutine = 
     new SysIdRoutine(
@@ -46,8 +49,15 @@ public class ShooterWrist extends SubsystemBase {
     public ShooterWrist(StateManager stateManager) {
 
       this.stateManager = stateManager;
-      
+      TalonFXConfiguration flexConfig = new TalonFXConfiguration();
+      flexConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      flexConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      flexConfig.MotorOutput.PeakForwardDutyCycle = 0.5;
+      flexConfig.MotorOutput.PeakReverseDutyCycle = -0.5;
+      flexConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+      flexConfig.CurrentLimits.StatorCurrentLimit = 60;
 
+      wristMotor.getConfigurator().apply(flexConfig);
 
     }
 
