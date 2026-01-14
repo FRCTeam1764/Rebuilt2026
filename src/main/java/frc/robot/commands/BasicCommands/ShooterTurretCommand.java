@@ -9,11 +9,11 @@ import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.Turret;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class TurretCommand extends Command {
+public class ShooterTurretCommand extends Command {
   /** Creates a new TurretCommand. */
   Turret turret;
   int desired;
-  public TurretCommand(Turret turret, int desired) {
+  public ShooterTurretCommand(Turret turret, int desired) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.turret = turret;
     this.desired = desired;
