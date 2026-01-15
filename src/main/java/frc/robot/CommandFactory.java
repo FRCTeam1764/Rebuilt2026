@@ -56,6 +56,17 @@ public class CommandFactory {
                     new DriveForward(swerve));
     }
 
+    public Command ClimbL1Command(){
+        return new ParallelDeadlineGroup(null, null)
+    }
+// we need climb command :/
+
+    public Command HubShootCommand(){
+        return new ParallelDeadlineGroup(
+            new 
+        )
+    }
+
     public Command interupted(boolean wasInteruppted) {
         if (wasInteruppted) {
             return new InstantCommand();

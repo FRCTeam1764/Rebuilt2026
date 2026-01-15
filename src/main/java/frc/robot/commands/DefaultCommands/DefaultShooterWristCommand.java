@@ -31,8 +31,8 @@ public class DefaultShooterWristCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(stateManager.getDesiredData(CommandConstants.INTAKE_KEY) != null) {
-      wrist.flex((double) stateManager.getDesiredData(CommandConstants.INTAKE_KEY));
+    if(stateManager.getDesiredData(CommandConstants.WRIST_KEY) != null) {
+      wrist.flex((double) stateManager.getDesiredData(CommandConstants.WRIST_KEY));
     }
   }
   
