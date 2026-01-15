@@ -30,7 +30,7 @@ public class ShooterRollers extends SubsystemBase {
   BooleanLogEntry limitSwitchLog;
 
   public ShooterRollers() {
-    m_shooterMotor = new TalonFX(Constants.SHOOTER_MOTOR.id, Constants.SHOOTER_MOTOR.busName);
+    m_shooterMotor = new TalonFX(Constants.SHOOTER_ROLLER_MOTOR.id, Constants.SHOOTER_ROLLER_MOTOR.busName);
 
 
     TalonFXConfiguration shooterConfig = new TalonFXConfiguration();

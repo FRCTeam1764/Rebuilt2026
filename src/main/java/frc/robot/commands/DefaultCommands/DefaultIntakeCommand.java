@@ -11,11 +11,11 @@ import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.StateManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class DefaultExampleCommand extends Command {
+public class DefaultIntakeCommand extends Command {
   /** Creates a new DefaultIntakeCommand. */
   IntakeRollers intake;
   StateManager stateManager;
-  public DefaultExampleCommand(IntakeRollers intake, StateManager stateManager) {
+  public DefaultIntakeCommand(IntakeRollers intake, StateManager stateManager) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.stateManager = stateManager;

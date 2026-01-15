@@ -11,11 +11,11 @@ import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.StateManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class DefaultExampleCommand extends Command {
+public class DefaultIndexCommand extends Command {
   /** Creates a new DefaultIndexCommand. */
   IndexRollers index;
   StateManager stateManager;
-  public DefaultExampleCommand(IndexRollers index, StateManager stateManager) {
+  public DefaultIndexCommand(IndexRollers index, StateManager stateManager) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.index = index;
     this.stateManager = stateManager;
