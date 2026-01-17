@@ -32,7 +32,7 @@ public class DefaultIndexCommand extends Command {
   @Override
   public void execute() {
     if(stateManager.getDesiredData(CommandConstants.INDEX_KEY) != null) {
-      index.flexOn((double) stateManager.getDesiredData(CommandConstants.INDEX_KEY));
+      index.wheelsIndex((double) stateManager.getDesiredData(CommandConstants.INDEX_KEY));
     }
   }
   

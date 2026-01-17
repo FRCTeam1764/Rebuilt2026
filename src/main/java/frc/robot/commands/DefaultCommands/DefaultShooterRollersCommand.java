@@ -31,8 +31,8 @@ public class DefaultShooterRollersCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(stateManager.getDesiredData(CommandConstants.SHOOTER_ROLLER_KEY) != null) {
-      shooter.flexOn((double) stateManager.getDesiredData(CommandConstants.SHOOTER_ROLLER_KEY));
+    if(stateManager.getDesiredData(CommandConstants.SHOOTER_KEY) != null) {
+      shooter.wheelsShooter((double) stateManager.getDesiredData(CommandConstants.SHOOTER_KEY));
     }
   }
   
