@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.state.BasicState;
 import frc.robot.state.IDLE;
+import frc.robot.state.INTAKE;
 
 public class StateManager extends SubsystemBase {
 
@@ -27,11 +28,13 @@ public class StateManager extends SubsystemBase {
   boolean willScore = true;
 
   public enum States {
-    IDLE
+    IDLE,
+    INTAKE
   }
 
   public List<BasicState> StateHandlers = List.of(
-      new IDLE()
+      new IDLE(),
+      new INTAKE()
   );
 
   public States state;

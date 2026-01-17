@@ -32,7 +32,7 @@ public class DefaultExampleCommand extends Command {
   @Override
   public void execute() {
     if(stateManager.getDesiredData(CommandConstants.INTAKE_KEY) != null) {
-      intake.flexOn((double) stateManager.getDesiredData(CommandConstants.INTAKE_KEY));
+      intake.wheelsIntake((double) stateManager.getDesiredData(CommandConstants.INTAKE_KEY));
     }
   }
   

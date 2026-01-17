@@ -32,7 +32,7 @@ public class DefaultShooterRollersCommand extends Command {
   @Override
   public void execute() {
     if(stateManager.getDesiredData(CommandConstants.SHOOTER_KEY) != null) {
-      shooter.flexOn((double) stateManager.getDesiredData(CommandConstants.SHOOTER_KEY));
+      shooter.wheelsShooter((double) stateManager.getDesiredData(CommandConstants.SHOOTER_KEY));
     }
   }
   
