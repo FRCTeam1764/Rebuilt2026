@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.state.BasicState;
 import frc.robot.state.IDLE;
 import frc.robot.state.INTAKE;
+import frc.robot.state.INTAKE_OUT;
+import frc.robot.state.INTAKE_WHILE_SHOOT;
 
 public class StateManager extends SubsystemBase {
 
@@ -29,12 +31,16 @@ public class StateManager extends SubsystemBase {
 
   public enum States {
     IDLE,
-    INTAKE
+    INTAKE,
+    INTAKE_OUT,
+    INTAKE_WHILE_SHOOT
   }
 
   public List<BasicState> StateHandlers = List.of(
       new IDLE(),
-      new INTAKE()
+      new INTAKE(),
+      new INTAKE_OUT(),
+      new INTAKE_WHILE_SHOOT()
   );
 
   public States state;

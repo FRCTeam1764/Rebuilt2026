@@ -7,7 +7,7 @@ import frc.robot.subsystems.StateManager.States;
 public class IDLE implements BasicState {
 public boolean matches(States state){
 
-    return state.equals(States.INTAKE);
+    return state.equals(States.INTAKE_OUT);
 }
 
 public void execute(StateManager stateManager){
