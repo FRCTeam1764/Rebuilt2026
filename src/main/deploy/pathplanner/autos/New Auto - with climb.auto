@@ -1,0 +1,67 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LTrenchToMid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveForward"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LNuteralToRt"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LTToNeutral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveForward"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NeutralRToLB"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LBToClimb"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

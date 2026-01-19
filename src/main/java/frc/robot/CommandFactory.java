@@ -61,10 +61,14 @@ public class CommandFactory {
     }
 // we need climb command :/
 
+
     public Command HubShootCommand(){
-        return new ParallelDeadlineGroup(
-            new 
-        )
+        return new ParallelCommandGroup(
+            new AimTurretCommand(),
+            new AimWristCommand(), 
+            new ShooterRollersCommand()
+            // maybe? add waits? remove roller command? add a shoot command? add states?
+        );
     }
 
     public Command interupted(boolean wasInteruppted) {

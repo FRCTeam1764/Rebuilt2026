@@ -3,38 +3,43 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 5.6
+        "x": 0.35,
+        "y": 0.68
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9013882430170628,
-        "y": 4.645109510824714
+        "x": 1.3499999999999979,
+        "y": 0.68
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.335,
-        "y": 3.75
+        "x": 7.7,
+        "y": 1.38
       },
       "prevControl": {
-        "x": 2.8828230360863922,
-        "y": 3.5603355568899238
+        "x": 6.855260307747133,
+        "y": 0.6603995960158456
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6684649766549555,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 3.8,
+    "maxAcceleration": 3.8,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,10 +47,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -178.79438696729036
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "bottom",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
