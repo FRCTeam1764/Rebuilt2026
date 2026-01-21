@@ -20,7 +20,10 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.waitUntilPosition;
 import frc.robot.commands.waitUntilPositionIndex;
+import frc.robot.commands.BasicCommands.IndexCommand;
+import frc.robot.commands.BasicCommands.IntakeCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
+import frc.robot.commands.BasicCommands.ShooterRollersCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveForward;
 import frc.robot.commands.DriveCommands.DriveToTarget;
@@ -30,8 +33,13 @@ import frc.robot.commands.DriveCommands.LockOnAprilTag;
 import frc.robot.commands.DriveCommands.TurnToAngle;
 import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IndexRollers;
+import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterRollers;
+import frc.robot.subsystems.ShooterWrist;
 import frc.robot.subsystems.StateManager;
+import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.StateManager.States;
 
 //This class will handle all command handling for drivers
@@ -43,11 +51,27 @@ public class CommandFactory {
     private CommandSwerveDrivetrain swerve;
     private StateManager stateManager;
     private CommandXboxController pilot;
+    private ShooterRollers shootRollers;
+    private IndexRollers indexRollers;
+    private IntakeRollers intakeRollers;
+    private LimelightSubsystem limelight1;
+    private LimelightSubsystem limelight2;
+    private ShooterWrist wrist;
+    private Turret turret;
 
-    public CommandFactory(CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
+    public CommandFactory(Turret turret, ShooterWrist wrist, LimelightSubsystem limelight2,LimelightSubsystem limelight1, IntakeRollers intakeRollers, IndexRollers indexRollers, ShooterRollers shootRollers, CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
         this.pilot = pilot;
         this.swerve = swerve;
         this.stateManager = stateManager;
+        this.shootRollers = shootRollers;
+        this.indexRollers = indexRollers;
+        this.intakeRollers = intakeRollers;
+        this.limelight1 = limelight1;
+        this.limelight2 = limelight2;
+        this.wrist = wrist;
+        this.turret = turret;
+
+
     }
 
     public Command driveForward() {
@@ -59,17 +83,25 @@ public class CommandFactory {
     public Command ClimbL1Command(){
         return new ParallelDeadlineGroup(null, null)
     }
-// we need climb command :/
+// we need climb command 
 
 
     public Command HubShootCommand(){
         return new ParallelCommandGroup(
             new AimTurretCommand(),
             new AimWristCommand(), 
-            new ShooterRollersCommand()
-            // maybe? add waits? remove roller command? add a shoot command? add states?
+            new ShooterRollersCommand(shootRollers, 0.2)
+            // add hubshoot values
         );
     }
+
+    public Command GroundIntakeCommand(){
+        return new ParallelCommandGroup(
+            new IntakeCommand(null, 0, false),
+            new IndexCommand(null, 0, false)
+        );
+    }
+    // add ground intake values
 
     public Command interupted(boolean wasInteruppted) {
         if (wasInteruppted) {

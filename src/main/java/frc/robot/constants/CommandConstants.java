@@ -19,6 +19,7 @@ public final class CommandConstants {
     //speed
     public static final double TURRET_SPEED = 0.25;
     public static final double TURRET_BACK_SPEED = 0.5;
+    public static final double WRIST_SPEED = 0.2;
 
     //keys
     public static final String TURRET_KEY = "TurretEncoderPosition";

@@ -6,6 +6,7 @@ package frc.robot.commands.BasicCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.ShooterWrist;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -28,7 +29,7 @@ public class ShooterWristCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterWrist.flex(desired);
+    shooterWrist.flex(CommandConstants.WRIST_SPEED);
   }
 
   // Called once the command ends or is interrupted.
