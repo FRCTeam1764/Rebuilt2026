@@ -15,12 +15,10 @@ public class ShooterRollersCommand extends Command {
   /** Creates a new ShooterRollersCommand. */
   ShooterRollers shooter;
   double speed;
-  boolean stopAtLimit;
-  public ShooterRollersCommand(ShooterRollers shooter, double speed, boolean stopAtLimit) {
+  public ShooterRollersCommand(ShooterRollers shooter, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.speed = speed;
-    this.stopAtLimit = stopAtLimit;
     addRequirements(shooter);
   }
 
