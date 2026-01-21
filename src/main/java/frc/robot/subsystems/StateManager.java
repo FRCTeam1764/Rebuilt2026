@@ -33,14 +33,16 @@ public class StateManager extends SubsystemBase {
     IDLE,
     INTAKE,
     INTAKE_OUT,
-    INTAKE_WHILE_SHOOT
+    INTAKE_WHILE_SHOOT,
+    CLIMB_L1,
   }
 
   public List<BasicState> StateHandlers = List.of(
       new IDLE(),
       new INTAKE(),
       new INTAKE_OUT(),
-      new INTAKE_WHILE_SHOOT()
+      new INTAKE_WHILE_SHOOT(),
+      new CLIMB_L1(),
   );
 
   public States state;

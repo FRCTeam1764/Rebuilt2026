@@ -19,6 +19,7 @@ public final class CommandConstants {
     public static final String SHOOTER_ROLLER_KEY = "ShooterRollerSpeed";
     public static final String INTAKE_KEY = "IntakeRollerSpeed";
     public static final String INDEX_KEY = "IndexRollerSpeed";
+    public static final String CLIMBER_KEY = "ClimberEncoderPosition";
 
     //swerve speed
     public static final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed

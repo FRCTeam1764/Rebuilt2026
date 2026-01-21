@@ -4,10 +4,10 @@ import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
 
-public class INTAKE_WHILE_SHOOT implements BasicState {
+public class ICLIMB_L1 implements BasicState {
 public boolean matches(States state){
 
-    return state.equals(States.INTAKE_WHILE_SHOOT);
+    return state.equals(States.CLIMB_L1);
 }
 
 public void execute(StateManager stateManager){
@@ -15,10 +15,10 @@ public void execute(StateManager stateManager){
 
     stateManager.addDesiredData(CommandConstants.TURRET_KEY, 0.0);
     stateManager.addDesiredData(CommandConstants.WRIST_KEY, 0.0);
-    stateManager.addDesiredData(CommandConstants.SHOOTER_ROLLER_KEY, 0.5);
-    stateManager.addDesiredData(CommandConstants.INTAKE_ROLLER_KEY, 0.5);
-    stateManager.addDesiredData(CommandConstants.INDEX_ROLLER_KEY, 0.5);
-    stateManager.addDesiredData(CommandConstants.CLIMBER_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.SHOOTER_ROLLER_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INTAKE_ROLLER_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INDEX_ROLLER_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.CLIMBER_KEY, 30.0);
 }
    
 }
