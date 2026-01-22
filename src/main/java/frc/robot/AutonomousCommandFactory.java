@@ -23,7 +23,7 @@ import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveBackward;
 import frc.robot.commands.DriveCommands.DriveForward;
 import frc.robot.commands.DriveCommands.DriveToTargetOffset;
-import frc.robot.commands.DriveCommands.LockOnAprilTagAuto;
+import frc.robot.commands.LimelightCommands.LockOnAprilTagAuto;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
