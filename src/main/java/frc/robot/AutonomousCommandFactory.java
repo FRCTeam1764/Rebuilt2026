@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.waitUntilPosition;
+import frc.robot.commands.BasicCommands.IndexCommand;
+import frc.robot.commands.BasicCommands.IntakeCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveBackward;
@@ -23,25 +25,48 @@ import frc.robot.commands.DriveCommands.DriveForward;
 import frc.robot.commands.DriveCommands.DriveToTargetOffset;
 import frc.robot.commands.DriveCommands.LockOnAprilTagAuto;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IndexRollers;
+import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterRollers;
+import frc.robot.subsystems.ShooterWrist;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
+import frc.robot.subsystems.Turret;
 
 /** Add your docs here. */
 public class AutonomousCommandFactory extends CommandFactory{
     private CommandXboxController pilot;
     private CommandSwerveDrivetrain swerve;
     private StateManager stateManager;
+    private ShooterRollers shootRollers;
+    private IndexRollers indexRollers;
+    private IntakeRollers intakeRollers;
+    private LimelightSubsystem limelight1;
+    private LimelightSubsystem limelight2;
+    private ShooterWrist wrist;
+    private Turret turret;
 
-    public AutonomousCommandFactory(CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
-        super(pilot, swerve, stateManager);
+    public AutonomousCommandFactory(Turret turret, ShooterWrist wrist, LimelightSubsystem limelight2, 
+                LimelightSubsystem limelight1, IntakeRollers intakeRollers, IndexRollers indexRollers, 
+                ShooterRollers shootRollers, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
+                StateManager stateManager) {
+        super(turret, wrist, limelight2, limelight1, intakeRollers, indexRollers, shootRollers, pilot, swerve, stateManager);
         configAutonomousCommands();
     }
-
-    
+        
+    public Command GroundIntakeCommand(){
+        return new ParallelDeadlineGroup(
+            new WaitCommand(2),
+            new IntakeCommand(intakeRollers, 0.4),
+            new IndexCommand(indexRollers, 0),
+            new DriveForward(swerve)
+        );
+    }
 
 
     public void configAutonomousCommands() {
+        NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
         NamedCommands.registerCommand("idle", new RequestStateChange(States.IDLE, stateManager));
     }
 

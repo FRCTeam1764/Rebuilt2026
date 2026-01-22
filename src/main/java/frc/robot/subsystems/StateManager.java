@@ -17,10 +17,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.state.BasicState;
+import frc.robot.state.CLIMB_L1;
 import frc.robot.state.IDLE;
 import frc.robot.state.INTAKE;
 import frc.robot.state.INTAKE_OUT;
 import frc.robot.state.INTAKE_WHILE_SHOOT;
+import frc.robot.state.SHOOT;
 
 public class StateManager extends SubsystemBase {
 
@@ -34,7 +36,8 @@ public class StateManager extends SubsystemBase {
     INTAKE,
     INTAKE_OUT,
     INTAKE_WHILE_SHOOT,
-    CLIMB_L1,
+    SHOOT,
+    CLIMB_L1
   }
 
   public List<BasicState> StateHandlers = List.of(
@@ -42,7 +45,8 @@ public class StateManager extends SubsystemBase {
       new INTAKE(),
       new INTAKE_OUT(),
       new INTAKE_WHILE_SHOOT(),
-      new CLIMB_L1(),
+      new SHOOT(),
+      new CLIMB_L1()
   );
 
   public States state;
@@ -87,7 +91,7 @@ public class StateManager extends SubsystemBase {
   }
 
   
-
+//NOT NEEDED
   public void returnToIdle(States state) {
     if (false) {
       if (state == States.IDLE) { //if state is in pickup algae state
@@ -101,15 +105,7 @@ public class StateManager extends SubsystemBase {
   }
 
   public void returnToIdle() {
-    if ((boolean) currentData.get("IntakeLimitSwitch")) {
-      if (state == States.IDLE) { //if state is in pickup algae state
-        requestNewState(States.IDLE); //then go to algae idle state
-      } else {
-        requestNewState(States.IDLE); //preferably always idle
-      }
-    } else {
-      requestNewState(States.IDLE);
-    }
+    requestNewState(States.IDLE);
   }
 
   public void clearDesiredData(){
@@ -167,8 +163,6 @@ public class StateManager extends SubsystemBase {
       }else if (value instanceof Integer ){
         SmartDashboard.putNumber(key, (Integer) value);
       }
-  }
-
-    // This method will be called once per scheduler run
+    }
   }
 }

@@ -28,14 +28,13 @@ public class DriveForward extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
- drivetrain.setControl(driveForward.withVelocityX(CommandConstants.MaxSpeed * .25 ).withVelocityY(0));
+    drivetrain.setControl(driveForward.withVelocityX(CommandConstants.MaxSpeed * .25 ).withVelocityY(0));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     drivetrain.setControl(driveForward.withVelocityX(0).withVelocityY(0));
-
   }
 
   // Returns true when the command should end.

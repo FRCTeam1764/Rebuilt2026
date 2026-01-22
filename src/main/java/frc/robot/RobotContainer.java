@@ -21,9 +21,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
+import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterRollers;
+import frc.robot.subsystems.ShooterWrist;
 import frc.robot.commands.BasicCommands.RequestStateChange;
-
+import frc.robot.commands.DefaultCommands.DefaultIndexCommand;
+import frc.robot.commands.DefaultCommands.DefaultIntakeCommand;
+import frc.robot.commands.DefaultCommands.DefaultShooterRollersCommand;
+import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
+import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
 import frc.robot.commands.DriveCommands.DriveRobotCentric;
 import frc.robot.commands.DriveCommands.DriveToLimeLightVisionOffset;
 import frc.robot.commands.DriveCommands.DriveToTargetOffset;
@@ -35,6 +42,8 @@ import frc.robot.constants.CommandConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.state.IDLE;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IndexRollers;
+import frc.robot.subsystems.IntakeRollers;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -59,13 +68,19 @@ public class RobotContainer {
     private final StateManager stateManager = new StateManager();
     
     //subsystems
+    private final ShooterRollers shootRollers = new ShooterRollers();
+    private final IndexRollers indexRollers = new IndexRollers();
+    private final IntakeRollers intakeRollers = new IntakeRollers();
+    private final ShooterWrist wrist = new ShooterWrist(stateManager);
+    private final Turret turret = new Turret();
     
     //limelights
-    private final LimelightSubsystem limelight = new LimelightSubsystem("limelight");
+    private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight");
+    private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight3");
     
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(pilot, drivetrain, stateManager);
+    private final CommandFactory commandFactory = new CommandFactory(turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, pilot, drivetrain, stateManager);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, pilot, drivetrain, stateManager);
 
     private final SendableChooser<Command> chooser ;
 
@@ -89,7 +104,11 @@ public class RobotContainer {
         );
 
         // Default Commands
-        //elevator.setDefaultCommand(new DefaultElevatorCommand(elevator, stateManager));
+        shootRollers.setDefaultCommand(new DefaultShooterRollersCommand(shootRollers, stateManager));
+        indexRollers.setDefaultCommand(new DefaultIndexCommand(indexRollers, stateManager));
+        intakeRollers.setDefaultCommand(new DefaultIntakeCommand(intakeRollers, stateManager));
+        wrist.setDefaultCommand(new DefaultShooterWristCommand(wrist, stateManager));
+        turret.setDefaultCommand(new DefaultTurretCommand(turret, stateManager));
 
         configureMainBindings();
 
@@ -110,7 +129,7 @@ public class RobotContainer {
     }
 
     public void changePipeline() {
-        limelight.setPipeline(1);
+        localLimelight.setPipeline(1);
     }
 
     public Command getAutonomousCommand() {

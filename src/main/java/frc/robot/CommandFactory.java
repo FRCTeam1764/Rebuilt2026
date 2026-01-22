@@ -54,24 +54,27 @@ public class CommandFactory {
     private ShooterRollers shootRollers;
     private IndexRollers indexRollers;
     private IntakeRollers intakeRollers;
-    private LimelightSubsystem limelight1;
-    private LimelightSubsystem limelight2;
+    private LimelightSubsystem localLimelight;
+    private LimelightSubsystem turretLimelight;
     private ShooterWrist wrist;
     private Turret turret;
 
-    public CommandFactory(Turret turret, ShooterWrist wrist, LimelightSubsystem limelight2,LimelightSubsystem limelight1, IntakeRollers intakeRollers, IndexRollers indexRollers, ShooterRollers shootRollers, CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
+    private double intakeSpeed = CommandConstants.GROUND_INTAKE_ROLLERS_SPEED;
+
+    public CommandFactory(Turret turret, ShooterWrist wrist, LimelightSubsystem turretLimelight, 
+                LimelightSubsystem localLimelight, IntakeRollers intakeRollers, IndexRollers indexRollers, 
+                ShooterRollers shootRollers, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
+                StateManager stateManager) {
         this.pilot = pilot;
         this.swerve = swerve;
         this.stateManager = stateManager;
         this.shootRollers = shootRollers;
         this.indexRollers = indexRollers;
         this.intakeRollers = intakeRollers;
-        this.limelight1 = limelight1;
-        this.limelight2 = limelight2;
+        this.localLimelight = localLimelight;
+        this.turretLimelight = turretLimelight;
         this.wrist = wrist;
         this.turret = turret;
-
-
     }
 
     public Command driveForward() {
@@ -79,12 +82,6 @@ public class CommandFactory {
                     new WaitCommand(0.15), 
                     new DriveForward(swerve));
     }
-
-    public Command ClimbL1Command(){
-        return new ParallelDeadlineGroup(null, null)
-    }
-// we need climb command 
-
 
     public Command HubShootCommand(){
         return new ParallelCommandGroup(
@@ -95,10 +92,10 @@ public class CommandFactory {
         );
     }
 
-    public Command GroundIntakeCommand(){
+    public Command GroundIntakeCommand(){ 
         return new ParallelCommandGroup(
-            new IntakeCommand(null, 0, false),
-            new IndexCommand(null, 0, false)
+            new IntakeCommand(intakeRollers, intakeSpeed),
+            new IndexCommand(indexRollers, intakeSpeed)
         );
     }
     // add ground intake values
