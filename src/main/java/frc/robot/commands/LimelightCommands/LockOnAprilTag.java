@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.DriveCommands;
+package frc.robot.commands.LimelightCommands;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
@@ -21,7 +21,7 @@ import frc.robot.subsystems.LimelightSubsystem;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-public class LockOnAprilTagAuto extends Command {
+public class LockOnAprilTag extends Command {
   private LimelightSubsystem m_Limelight;
   private frc.robot.subsystems.CommandSwerveDrivetrain m_Drivetrain;
   private int m_pipeline;
@@ -32,18 +32,20 @@ public class LockOnAprilTagAuto extends Command {
   private double offsetOfDesired = 0;
   
   //(swerve, Limelight2, 0, driver, false
-  public LockOnAprilTagAuto(CommandSwerveDrivetrain drivetrain, LimelightSubsystem Limelight, int pipeline , boolean robotcentric) {
+  public LockOnAprilTag(CommandSwerveDrivetrain drivetrain, LimelightSubsystem Limelight, int pipeline, CommandXboxController controller, boolean robotcentric) {
     addRequirements(drivetrain);
     m_Drivetrain = drivetrain;
     m_Limelight = Limelight;
     m_pipeline = pipeline;
-    //m_skew = skewDegrees;
+    this.controller = controller;
+   // m_skew = skewDegrees;
   }
-  public LockOnAprilTagAuto(CommandSwerveDrivetrain drivetrain, LimelightSubsystem Limelight, int pipeline, boolean robotcentric, double offsetOfDesired) {
+  public LockOnAprilTag(CommandSwerveDrivetrain drivetrain, LimelightSubsystem Limelight, int pipeline, CommandXboxController controller, boolean robotcentric, double offsetOfDesired) {
     addRequirements(drivetrain);
     m_Drivetrain = drivetrain;
     m_Limelight = Limelight;
     m_pipeline = pipeline;
+    this.controller = controller;
     this.offsetOfDesired = offsetOfDesired;
     //m_skew = skewDegrees;
   }
@@ -68,8 +70,8 @@ public class LockOnAprilTagAuto extends Command {
   public void execute() {
     SmartDashboard.putBoolean("AllignOnLLTarget running", true);
     double thetaOutput = 0;
-    double xOutput = 0;
-    double yOutput = 0;
+    double xOutput = controller.getLeftY();
+    double yOutput = controller.getLeftX();
 		if (m_Limelight.hasTarget()){
 			double vertical_angle = m_Limelight.getHorizontalAngleOfErrorDegrees();
 			double horizontal_angle = m_Limelight.getHorizontalAngleOfErrorDegrees() ;
@@ -81,9 +83,10 @@ public class LockOnAprilTagAuto extends Command {
 				thetaOutput = thetaController.calculate(horizontal_angle, setpoint);
 			}
       SmartDashboard.putNumber("targeting error", horizontal_angle);
+      SmartDashboard.putBoolean("TARGET", true);
 		} 
     else {
-			System.out.println("NO TARGET");
+      SmartDashboard.putBoolean("TARGET", false);
 		}
     m_Drivetrain.setControl(drive.withVelocityX(-xOutput*MaxSpeed).withVelocityY(-yOutput*MaxSpeed).withRotationalRate(thetaOutput*MaxAngularRate));
   }

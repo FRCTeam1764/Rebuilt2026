@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.DriveCommands;
+package frc.robot.commands.LimelightCommands;
 
 
 import java.util.function.Supplier;
@@ -19,32 +19,18 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LimelightSubsystem;
 
 
-public class DriveToTargetOffsetLL3 extends Command {
+public class DriveToTarget extends Command {
   private LimelightSubsystem m_Limelight;
   private CommandSwerveDrivetrain m_Drivetrain;
   private Integer m_pipeline;
-  private PIDController xController = new PIDController(0.0075, 0.00001, 0.0008);//.0045);
-  private PIDController yController = new PIDController(0.035, 0.00001, 0.00002);
-  private double targetx;
-  private double targety;
-
+  private PIDController thetaController = new PIDController(CommandConstants.kP, CommandConstants.kI, CommandConstants.kD);
   private boolean targeting = false;
-  private double offset;
-  public DriveToTargetOffsetLL3(CommandSwerveDrivetrain drivetrain, LimelightSubsystem Limelight, double offset, int pipeline, double targetx, double targety) {
+  public DriveToTarget(CommandSwerveDrivetrain drivetrain, LimelightSubsystem Limelight, int pipeline) {
     addRequirements(drivetrain);
     m_Drivetrain = drivetrain;
     m_Limelight = Limelight;
     m_pipeline = pipeline;
-    this.targetx = targetx;
-    this.targety=targety;
-    xController.setSetpoint(targetx);
-    yController.setSetpoint(targety);
-    this.offset = offset;
-    SmartDashboard.putBoolean("TARGET", false);
-    SmartDashboard.putBoolean("Aligned", false);
   }
-
-
 
   private final SwerveRequest.RobotCentric drive = new SwerveRequest.RobotCentric()
     .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
@@ -57,53 +43,42 @@ public class DriveToTargetOffsetLL3 extends Command {
 
     m_Limelight.setPipeline(m_pipeline);
     targeting = false;
-    xController.reset();
-    xController.setTolerance(1);
-    yController.reset();
-    yController.setTolerance(1);
+    thetaController.reset();
+    thetaController.setTolerance(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = 0;
-    double ySpeed = 0;
+    SmartDashboard.putBoolean("DriveToLLTarget running", true);
+    double thetaOutput = 0;
+    double xOutput = 0;
 		if (m_Limelight.hasTarget()){
-			double z_distance = m_Limelight.getTa(); //THIS IS IN TERMS OF CAMERA WATCHOUT
-			double x_distance = m_Limelight.getTx();
-			 xSpeed = xController.calculate(x_distance, targetx);
-       ySpeed = yController.calculate(z_distance, targety);
-       SmartDashboard.putNumber("Alimelight", ySpeed);
-       SmartDashboard.putNumber("Xlimelight", xSpeed);
-
-
+			double vertical_angle = m_Limelight.getVerticalAngleOfErrorDegrees();
+			double horizontal_angle = -m_Limelight.getHorizontalAngleOfErrorDegrees() ;
+			double setpoint = Math.toRadians(horizontal_angle)+ m_Drivetrain.getPose().getRotation().getRadians();
+      thetaController.setSetpoint(setpoint);
+      targeting = true;
+		
+			thetaOutput = thetaController.calculate(m_Drivetrain.getPose().getRotation().getRadians(), setpoint);
       //xOutput = -m_throttle.get()*DrivetrainConstants.maxSpeedMetersPerSecond;
-		SmartDashboard.putBoolean("TARGET", true);
-		}else{
-      SmartDashboard.putBoolean("TARGET", false);
-
-    }
-
-    if (Math.abs(m_Limelight.getTa()-targety) <= 0.4 && Math.abs(m_Limelight.getTx()-targetx)<=0.25) {
-      SmartDashboard.putBoolean("Aligned", true);
-    } else {
-      SmartDashboard.putBoolean("Aligned", false);
-    }
+		
+      SmartDashboard.putNumber("targeting error", horizontal_angle);
+		} 
     
-    m_Drivetrain.setControl(drive.withVelocityX(ySpeed*(CommandConstants.MaxSpeed/2)).withVelocityY(xSpeed*(CommandConstants.MaxSpeed/2)).withRotationalRate(0));
+    m_Drivetrain.setControl(drive.withVelocityX(0).withRotationalRate(thetaOutput));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    SmartDashboard.putBoolean("DriveToLLTarget running", true);
     m_Drivetrain.setControl(drive.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   
-    return false; //TODO: FINISH CHECKINHG
-    //return Math.abs(m_Limelight.getTa()-targety) <= 0.4 && Math.abs(m_Limelight.getTx()-targetx)<=0.25;
+    return false;
   }
 }
