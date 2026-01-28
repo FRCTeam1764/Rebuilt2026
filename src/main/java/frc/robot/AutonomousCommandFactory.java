@@ -61,12 +61,11 @@ public class AutonomousCommandFactory extends CommandFactory{
       
     
     public Command HubShootCommand(){
-        return new ParallelDeadlineGroup(
-            new WaitCommand(3),
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT, stateManager),
+        new ParallelCommandGroup(
             new AimTurretCommand(),
             new AimWristCommand(), 
-            new ShooterRollersCommand(shootRollers, 0.2)
-            // add hubshoot values
+        )
         );
     }
 

@@ -89,14 +89,17 @@ public class CommandFactory {
     }
 
     public Command HubShootCommand(){
-        return new ParallelCommandGroup(
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT, stateManager),
+        new ParallelCommandGroup(
             new AimTurretCommand(),
             new AimWristCommand(), 
-            new ShooterRollersCommand(shootRollers, 0.2)
-            // add hubshoot values
+        )
         );
     }
 
+    public Command ClimbUpCommand(){
+        return new RequestStateChange(States.CLIMB_L1, stateManager);
+    }
 
     public Command GroundIntakeCommand(){ 
         return new RequestStateChange(States.INTAKE, stateManager);
