@@ -18,7 +18,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.waitUntilPosition;
 import frc.robot.commands.BasicCommands.IndexCommand;
 import frc.robot.commands.BasicCommands.IntakeCommand;
+import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
+import frc.robot.commands.BasicCommands.ShooterRollersCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveBackward;
 import frc.robot.commands.DriveCommands.DriveForward;
@@ -27,6 +29,7 @@ import frc.robot.commands.DriveCommands.LockOnAprilTagAuto;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
+import frc.robot.subsystems.IntakeWrist;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterRollers;
 import frc.robot.subsystems.ShooterWrist;
@@ -46,26 +49,41 @@ public class AutonomousCommandFactory extends CommandFactory{
     private LimelightSubsystem limelight2;
     private ShooterWrist wrist;
     private Turret turret;
+    private IntakeWrist intakeWrist;
 
-    public AutonomousCommandFactory(Turret turret, ShooterWrist wrist, LimelightSubsystem limelight2, 
+    public AutonomousCommandFactory(IntakeWrist intakeWrist, Turret turret, ShooterWrist wrist, LimelightSubsystem limelight2, 
                 LimelightSubsystem limelight1, IntakeRollers intakeRollers, IndexRollers indexRollers, 
                 ShooterRollers shootRollers, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
                 StateManager stateManager) {
-        super(turret, wrist, limelight2, limelight1, intakeRollers, indexRollers, shootRollers, pilot, swerve, stateManager);
+        super(intakeWrist, turret, wrist, limelight2, limelight1, intakeRollers, indexRollers, shootRollers, pilot, swerve, stateManager);
         configAutonomousCommands();
     }
-        
-    public Command GroundIntakeCommand(){
+      
+    
+    public Command HubShootCommand(){
         return new ParallelDeadlineGroup(
-            new WaitCommand(2),
-            new IntakeCommand(intakeRollers, 0.4),
-            new IndexCommand(indexRollers, 0),
-            new DriveForward(swerve)
+            new WaitCommand(3),
+            new AimTurretCommand(),
+            new AimWristCommand(), 
+            new ShooterRollersCommand(shootRollers, 0.2)
+            // add hubshoot values
         );
     }
 
+    public Command GroundIntakeCommand(){
+        return 
+        new SequentialCommandGroup(
+        new RequestStateChange(States.INTAKE, stateManager),
+        new ParallelDeadlineGroup(
+            new WaitCommand(2),
+            new DriveForward(swerve)),
+        new RequestStateChange(States.IDLE, stateManager)
+            );
+    }
+    
 
     public void configAutonomousCommands() {
+        NamedCommands.registerCommand("HubShootCommand", HubShootCommand());
         NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
         NamedCommands.registerCommand("idle", new RequestStateChange(States.IDLE, stateManager));
     }

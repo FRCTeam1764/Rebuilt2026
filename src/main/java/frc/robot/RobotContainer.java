@@ -44,6 +44,7 @@ import frc.robot.state.IDLE;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
+import frc.robot.subsystems.IntakeWrist;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -73,14 +74,15 @@ public class RobotContainer {
     private final IntakeRollers intakeRollers = new IntakeRollers();
     private final ShooterWrist wrist = new ShooterWrist(stateManager);
     private final Turret turret = new Turret();
+    private final IntakeWrist intakeWrist = new IntakeWrist(stateManager);
     
     //limelights
     private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight");
     private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight3");
     
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, pilot, drivetrain, stateManager);
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, pilot, drivetrain, stateManager);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, pilot, drivetrain, stateManager);
 
     private final SendableChooser<Command> chooser ;
 

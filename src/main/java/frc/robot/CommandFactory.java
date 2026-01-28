@@ -22,6 +22,7 @@ import frc.robot.commands.waitUntilPosition;
 import frc.robot.commands.waitUntilPositionIndex;
 import frc.robot.commands.BasicCommands.IndexCommand;
 import frc.robot.commands.BasicCommands.IntakeCommand;
+import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.BasicCommands.ShooterRollersCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
@@ -35,6 +36,7 @@ import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
+import frc.robot.subsystems.IntakeWrist;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterRollers;
 import frc.robot.subsystems.ShooterWrist;
@@ -58,10 +60,12 @@ public class CommandFactory {
     private LimelightSubsystem turretLimelight;
     private ShooterWrist wrist;
     private Turret turret;
+    private IntakeWrist intakeWrist;
 
     private double intakeSpeed = CommandConstants.GROUND_INTAKE_ROLLERS_SPEED;
+    private double intakeWristSpeed = CommandConstants.INTAKE_WRIST_SPEED;
 
-    public CommandFactory(Turret turret, ShooterWrist wrist, LimelightSubsystem turretLimelight, 
+    public CommandFactory(IntakeWrist intakeWrist, Turret turret, ShooterWrist wrist, LimelightSubsystem turretLimelight, 
                 LimelightSubsystem localLimelight, IntakeRollers intakeRollers, IndexRollers indexRollers, 
                 ShooterRollers shootRollers, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
                 StateManager stateManager) {
@@ -75,6 +79,7 @@ public class CommandFactory {
         this.turretLimelight = turretLimelight;
         this.wrist = wrist;
         this.turret = turret;
+        this.intakeWrist = intakeWrist;
     }
 
     public Command driveForward() {
@@ -92,11 +97,9 @@ public class CommandFactory {
         );
     }
 
+
     public Command GroundIntakeCommand(){ 
-        return new ParallelCommandGroup(
-            new IntakeCommand(intakeRollers, intakeSpeed),
-            new IndexCommand(indexRollers, intakeSpeed)
-        );
+        return new RequestStateChange(States.INTAKE, stateManager);
     }
     // add ground intake values
 
