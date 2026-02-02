@@ -7,61 +7,61 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LTrenchToMid"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DriveForward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "NuteralToRb"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DriveForward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "RBToNeutral"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "NeutralRToLB"
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveForward"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "LBToTower"
+            "pathName": "NeutralToRB"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RBToDepot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveForward"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DepotToTower"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Climb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Left Trench",
+  "folder": "Right Bump",
   "choreoAuto": false
 }

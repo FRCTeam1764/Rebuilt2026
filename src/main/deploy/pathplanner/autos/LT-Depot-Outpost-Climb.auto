@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LTrenchToMid"
+            "pathName": "LTToDepot"
           }
         },
         {
@@ -25,37 +25,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NuteralToRb"
+            "pathName": "DepotToOutpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OutpostToTower"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DriveForward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RBToNeutral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "NeutralRToLB"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LBToTower"
+            "name": "Climb"
           }
         }
       ]

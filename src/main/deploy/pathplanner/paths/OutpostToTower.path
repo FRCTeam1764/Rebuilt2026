@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.4,
-        "y": 5.96
+        "x": 0.36,
+        "y": 0.68
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.214934521099996,
-        "y": 8.105253524439366
+        "x": 1.3420617116660587,
+        "y": 0.687274928400465
       },
       "isLocked": false,
-      "linkedName": "DepotExit"
+      "linkedName": "Outpost"
     },
     {
       "anchor": {
-        "x": 7.678840138247619,
-        "y": 6.71
+        "x": 1.43,
+        "y": 3.47
       },
       "prevControl": {
-        "x": 6.825798183176093,
-        "y": 7.212308973363927
+        "x": 1.5789103571659922,
+        "y": 3.0397143584558117
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LNuetralHigh"
+      "linkedName": "TowerR"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5643539278229783,
-      "rotationDegrees": -90.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -46,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -90.0
+    "velocity": 0.0,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Depot",
+  "folder": "Outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

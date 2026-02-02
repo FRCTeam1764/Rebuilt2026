@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LTrenchToMid"
+            "pathName": "LBumpToDepot"
           }
         },
         {
@@ -25,7 +25,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NuteralToRb"
+            "pathName": "DepotToOutpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OutpostToNeutral"
           }
         },
         {
@@ -43,25 +55,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RBToNeutral"
+            "pathName": "NeutralToRB"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "NeutralRToLB"
+            "pathName": "RBToTower"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "LBToTower"
+            "name": "Climb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Left Trench",
+  "folder": "Left Bump",
   "choreoAuto": false
 }

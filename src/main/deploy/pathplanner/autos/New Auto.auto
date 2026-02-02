@@ -25,13 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LNuteralToRt"
+            "pathName": "NuteralToRb"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "LTToNeutral"
+            "pathName": "RBToNeutral"
           }
         },
         {
@@ -56,6 +56,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Left Trench",
   "choreoAuto": false
 }

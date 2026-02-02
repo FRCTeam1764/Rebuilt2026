@@ -5,9 +5,27 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "LTrenchToMid"
+            "pathName": "RBToOutpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OutpostToDepot"
           }
         },
         {
@@ -23,45 +41,33 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "NuteralToRb"
+            "pathName": "DepotToTower"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intake"
+            "name": "Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "DriveForward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RBToNeutral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "NeutralRToLB"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LBToTower"
+            "name": "Climb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Left Trench",
+  "folder": "Right Bump",
   "choreoAuto": false
 }

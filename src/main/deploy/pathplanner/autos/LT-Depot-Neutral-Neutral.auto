@@ -7,7 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LTrenchToMid"
+            "pathName": "LTToDepot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveForward"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DepotToNeutral"
           }
         },
         {
@@ -29,15 +47,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DriveForward"
+            "waitTime": 2.0
           }
         },
         {
@@ -47,15 +59,15 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "NeutralRToLB"
+            "name": "intake"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "LBToTower"
+            "name": "DriveForward"
           }
         }
       ]

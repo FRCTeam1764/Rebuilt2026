@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LStartToDepot"
+            "pathName": "RTToOutpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OutpostToDepot"
           }
         },
         {
@@ -25,31 +37,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "DepotToNeutral"
+            "pathName": "DepotToTower"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DriveForward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LNuteralToRt"
+            "name": "Climb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Right Trench",
   "choreoAuto": false
 }
