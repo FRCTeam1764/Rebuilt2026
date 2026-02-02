@@ -7,19 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RBToOutpost"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DepotToOutpost"
+            "pathName": "LBumpToDepot"
           }
         },
         {
@@ -35,15 +23,45 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "DepotToOutpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OutpostToNeutral"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Climb"
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DriveForward"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NeutralToRB"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Left Bump",
   "choreoAuto": false
 }

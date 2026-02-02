@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LTrenchToMid"
+            "pathName": "RTToOutpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "OutpostToDepot"
           }
         },
         {
@@ -25,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NuteralToRb"
+            "pathName": "DepotToNeutral"
           }
         },
         {
@@ -38,30 +50,12 @@
           "type": "named",
           "data": {
             "name": "DriveForward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RBToNeutral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "NeutralRToLB"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LBToTower"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Left Trench",
+  "folder": "Right Trench",
   "choreoAuto": false
 }

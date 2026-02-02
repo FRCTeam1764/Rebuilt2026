@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.56,
+        "x": 3.67,
         "y": 2.54
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.56,
+        "x": 2.67,
         "y": 2.54
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RBMid"
     },
     {
       "anchor": {
-        "x": 0.5,
-        "y": 0.65
+        "x": 0.36,
+        "y": 0.68
       },
       "prevControl": {
-        "x": 0.25,
-        "y": 0.65
+        "x": 0.10999999999999999,
+        "y": 0.68
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Outpost"
     }
   ],
   "rotationTargets": [],

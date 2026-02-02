@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.4,
-        "y": 5.96
+        "x": 7.753853164200372,
+        "y": 3.5368516025690786
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.214934521099996,
-        "y": 8.105253524439366
+        "x": 5.549012993467006,
+        "y": 2.8210066306799018
       },
       "isLocked": false,
-      "linkedName": "DepotExit"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.678840138247619,
-        "y": 6.71
+        "x": 3.6605949623520315,
+        "y": 2.842921617868784
       },
       "prevControl": {
-        "x": 6.825798183176093,
-        "y": 7.212308973363927
+        "x": 5.525364107509581,
+        "y": 2.843853201915889
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LNuetralHigh"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5643539278229783,
-      "rotationDegrees": -90.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Depot",
+  "folder": "neutral",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 180.0
+    "velocity": 1.0,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

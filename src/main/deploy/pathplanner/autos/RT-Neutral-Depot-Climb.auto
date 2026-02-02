@@ -5,9 +5,15 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "LTrenchToMid"
+            "pathName": "RTToNeutral"
           }
         },
         {
@@ -25,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NuteralToRb"
+            "pathName": "NeutralRToDepot"
           }
         },
         {
@@ -43,25 +49,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RBToNeutral"
+            "pathName": "DepotToTower"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "NeutralRToLB"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LBToTower"
+            "name": "Climb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Left Trench",
+  "folder": "Right Trench",
   "choreoAuto": false
 }

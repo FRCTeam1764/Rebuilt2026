@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LStartToDepot"
+            "pathName": "LTToDepot"
           }
         },
         {
@@ -41,21 +41,27 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "NeutralRToLB"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Climb"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NuteralToRb"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RTToNeutral"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Left Trench",
   "choreoAuto": false
 }
