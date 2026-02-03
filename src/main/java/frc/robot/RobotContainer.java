@@ -32,8 +32,6 @@ import frc.robot.commands.DefaultCommands.DefaultShooterRollersCommand;
 import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
 import frc.robot.commands.DriveCommands.DriveRobotCentric;
-import frc.robot.commands.DriveCommands.DriveToTargetOffset;
-import frc.robot.commands.DriveCommands.DriveToTargetOffsetLL3;
 import frc.robot.commands.LimelightCommands.DriveToLimeLightVisionOffset;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
 import frc.robot.commands.LimelightCommands.TrackObject;
@@ -41,6 +39,7 @@ import frc.robot.commands.LimelightCommands.TurnToAngle;
 import frc.robot.constants.CommandConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.state.IDLE;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
@@ -75,14 +74,15 @@ public class RobotContainer {
     private final ShooterWrist wrist = new ShooterWrist(stateManager);
     private final Turret turret = new Turret();
     private final IntakeWrist intakeWrist = new IntakeWrist(stateManager);
+    private final ClimberSubsystem climber = new ClimberSubsystem(stateManager);
     
     //limelights
-    private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight");
-    private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight3");
+    private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight-fourtwo");
+    private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight-four");
     
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, pilot, drivetrain, stateManager);
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, pilot, drivetrain, stateManager);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, pilot, drivetrain, stateManager);
 
     private final SendableChooser<Command> chooser ;
 

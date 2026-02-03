@@ -24,8 +24,8 @@ import frc.robot.commands.BasicCommands.ShooterRollersCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveBackward;
 import frc.robot.commands.DriveCommands.DriveForward;
-import frc.robot.commands.DriveCommands.DriveToTargetOffset;
 import frc.robot.commands.LimelightCommands.LockOnAprilTagAuto;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
@@ -50,12 +50,13 @@ public class AutonomousCommandFactory extends CommandFactory{
     private ShooterWrist wrist;
     private Turret turret;
     private IntakeWrist intakeWrist;
+    private ClimberSubsystem climber;
 
     public AutonomousCommandFactory(IntakeWrist intakeWrist, Turret turret, ShooterWrist wrist, LimelightSubsystem limelight2, 
                 LimelightSubsystem limelight1, IntakeRollers intakeRollers, IndexRollers indexRollers, 
-                ShooterRollers shootRollers, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
+                ShooterRollers shootRollers, ClimberSubsystem climber, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
                 StateManager stateManager) {
-        super(intakeWrist, turret, wrist, limelight2, limelight1, intakeRollers, indexRollers, shootRollers, pilot, swerve, stateManager);
+        super(intakeWrist, turret, wrist, limelight2, limelight1, intakeRollers, indexRollers, shootRollers, climber, pilot, swerve, stateManager);
         configAutonomousCommands();
     }
       
@@ -64,26 +65,18 @@ public class AutonomousCommandFactory extends CommandFactory{
         return new SequentialCommandGroup( new RequestStateChange(States.SHOOT, stateManager),
         new ParallelCommandGroup(
             new AimTurretCommand(),
-            new AimWristCommand(), 
+            new AimWristCommand()
         )
         );
-    }
-
-    public Command GroundIntakeCommand(){
-        return 
-        new SequentialCommandGroup(
-        new RequestStateChange(States.INTAKE, stateManager),
-        new ParallelDeadlineGroup(
-            new WaitCommand(2),
-            new DriveForward(swerve)),
-        new RequestStateChange(States.IDLE, stateManager)
-            );
     }
     
 
     public void configAutonomousCommands() {
         NamedCommands.registerCommand("HubShootCommand", HubShootCommand());
+        NamedCommands.registerCommand("HubShootCommand", HubShootCommand());
         NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
+        NamedCommands.registerCommand("ClimbCommand", ClimbUpCommand());
+        NamedCommands.registerCommand("DriveForward", new DriveForward(swerve));
         NamedCommands.registerCommand("idle", new RequestStateChange(States.IDLE, stateManager));
     }
 

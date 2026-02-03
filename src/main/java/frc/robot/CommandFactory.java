@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.waitUntilPosition;
 import frc.robot.commands.waitUntilPositionIndex;
+import frc.robot.commands.BasicCommands.ClimberCommand;
 import frc.robot.commands.BasicCommands.IndexCommand;
 import frc.robot.commands.BasicCommands.IntakeCommand;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
@@ -33,6 +34,7 @@ import frc.robot.commands.LimelightCommands.DriveToTargetOffsetLL3;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
 import frc.robot.commands.LimelightCommands.TurnToAngle;
 import frc.robot.constants.CommandConstants;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
@@ -61,13 +63,14 @@ public class CommandFactory {
     private ShooterWrist wrist;
     private Turret turret;
     private IntakeWrist intakeWrist;
+    private ClimberSubsystem climber;
 
     private double intakeSpeed = CommandConstants.GROUND_INTAKE_ROLLERS_SPEED;
     private double intakeWristSpeed = CommandConstants.INTAKE_WRIST_SPEED;
 
     public CommandFactory(IntakeWrist intakeWrist, Turret turret, ShooterWrist wrist, LimelightSubsystem turretLimelight, 
                 LimelightSubsystem localLimelight, IntakeRollers intakeRollers, IndexRollers indexRollers, 
-                ShooterRollers shootRollers, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
+                ShooterRollers shootRollers, ClimberSubsystem climber, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
                 StateManager stateManager) {
         this.pilot = pilot;
         this.swerve = swerve;
@@ -80,6 +83,7 @@ public class CommandFactory {
         this.wrist = wrist;
         this.turret = turret;
         this.intakeWrist = intakeWrist;
+        this.climber = climber;
     }
 
     public Command driveForward() {
@@ -98,7 +102,10 @@ public class CommandFactory {
     }
 
     public Command ClimbUpCommand(){
-        return new RequestStateChange(States.CLIMB_L1, stateManager);
+        return new SequentialCommandGroup(
+            new ClimberCommand(0, climber), 
+            new RequestStateChange(States.CLIMB_L1, stateManager)
+        );
     }
 
     public Command GroundIntakeCommand(){ 
