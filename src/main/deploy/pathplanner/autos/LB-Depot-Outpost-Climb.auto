@@ -11,15 +11,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DriveForward"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveForward"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GroundIntakeCommand"
+                }
+              }
+            ]
           }
         },
         {
