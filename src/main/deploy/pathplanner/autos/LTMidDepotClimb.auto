@@ -13,13 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "DriveForward"
+            "name": "driveForward"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intake"
+            "name": "GroundIntakeCommand"
           }
         },
         {
@@ -31,13 +31,13 @@
         {
           "type": "named",
           "data": {
-            "name": "intake"
+            "name": "GroundIntakeCommand"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "DriveForward"
+            "name": "driveForward"
           }
         },
         {
