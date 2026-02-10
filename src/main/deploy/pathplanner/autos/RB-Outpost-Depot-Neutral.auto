@@ -5,9 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "RBToOutpost"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RBToOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
           }
         },
         {
@@ -17,39 +36,71 @@
           }
         },
         {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "OutpostToDepot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DepotIntake"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DepotToLShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "OutpostToDepot"
+            "pathName": "LShootToNeutral"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DepotToNeutral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
+            "name": "NeutralIntake"
           }
         }
       ]

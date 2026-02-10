@@ -12,16 +12,16 @@
         "y": 7.269269874675853
       },
       "isLocked": false,
-      "linkedName": "LT"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.678840138247619,
-        "y": 6.71
+        "x": 7.676,
+        "y": 6.7
       },
       "prevControl": {
-        "x": 5.669472233584534,
-        "y": 7.245776526992386
+        "x": 5.666632095336915,
+        "y": 7.235776526992386
       },
       "nextControl": null,
       "isLocked": false,

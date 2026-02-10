@@ -25,13 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
+            "name": "NeutralIntake"
           }
         },
         {
@@ -55,13 +49,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
+            "name": "NeutralIntake"
           }
         },
         {
@@ -91,13 +79,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
+            "name": "NeutralIntake"
           }
         },
         {
@@ -115,13 +97,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
+            "name": "NeutralIntake"
           }
         }
       ]

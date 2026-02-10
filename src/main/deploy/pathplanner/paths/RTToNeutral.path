@@ -17,15 +17,15 @@
     {
       "anchor": {
         "x": 7.7,
-        "y": 1.38
+        "y": 1.34
       },
       "prevControl": {
         "x": 7.397100525753817,
-        "y": 1.2487413636625933
+        "y": 1.2087413636625934
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RNuetralLow"
     }
   ],
   "rotationTargets": [],

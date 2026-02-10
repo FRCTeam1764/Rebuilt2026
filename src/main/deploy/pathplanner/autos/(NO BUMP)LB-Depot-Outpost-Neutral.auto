@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LBumpToDepot"
+                  "pathName": "LBToDepot"
                 }
               },
               {
@@ -106,7 +106,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NeutralToRB"
+            "pathName": "NeutralToRT"
           }
         },
         {
@@ -114,9 +114,9 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "wait",
                 "data": {
-                  "pathName": "RBToTower"
+                  "waitTime": 2.5
                 }
               },
               {
@@ -132,12 +132,6 @@
           "type": "named",
           "data": {
             "name": "idle"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Climb"
           }
         }
       ]

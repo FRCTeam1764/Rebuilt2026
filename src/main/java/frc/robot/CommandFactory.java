@@ -86,11 +86,6 @@ public class CommandFactory {
         this.climber = climber;
     }
 
-    public Command driveForward() {
-        return new ParallelDeadlineGroup(
-                    new WaitCommand(0.15), 
-                    new DriveForward(swerve));
-    }
 
     public Command HubShootCommand(){
         return new SequentialCommandGroup( new RequestStateChange(States.SHOOT, stateManager),

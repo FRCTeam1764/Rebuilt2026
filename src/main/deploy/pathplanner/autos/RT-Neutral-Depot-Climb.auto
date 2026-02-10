@@ -5,9 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "deadline",
           "data": {
-            "waitTime": 0.5
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
           }
         },
         {
@@ -19,37 +38,69 @@
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
+            "name": "NeutralIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "NeutralRToDepot"
+            "pathName": "NeutralRToRB"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RBToDepot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
+            "name": "idle"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveForward"
+            "name": "DepotIntake"
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "DepotToTower"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DepotToTower"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
           }
         },
         {

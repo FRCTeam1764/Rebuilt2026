@@ -9,9 +9,9 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "wait",
                 "data": {
-                  "pathName": "LBumpToDepot"
+                  "waitTime": 1.0
                 }
               },
               {
@@ -24,9 +24,77 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "RTToNeutral"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BottomThroughNeutral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "NeutralIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootBottom"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "idle"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TopThroughNeutral"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "NeutralIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootTop"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TopNeutralToDepot"
           }
         },
         {
@@ -40,89 +108,22 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "deadline",
                 "data": {
-                  "pathName": "DepotToOutpost"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HubShootCommand"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "idle"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "OutpostToRShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HubShootCommand"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "idle"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": " ShootRToNeutral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "NeutralIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "NeutralToRB"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "RBToTower"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HubShootCommand"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "DepotToTower"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "HubShootCommand"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -144,6 +145,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Left Bump",
+  "folder": "Right Trench",
   "choreoAuto": false
 }

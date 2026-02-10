@@ -1,20 +1,20 @@
 {
-  "robotWidth": 0.673,
-  "robotLength": 0.673,
+  "robotWidth": 0.7112,
+  "robotLength": 0.7112,
   "holonomicMode": true,
   "pathFolders": [
     "Depot",
     "Left",
-    "New ideas-testing ",
     "Outpost",
     "Right",
+    "ShootTo_____",
     "bump",
     "neutral"
   ],
   "autoFolders": [
     "Left Bump",
-    "Right Bump",
     "Left Trench",
+    "Right Bump",
     "Right Trench"
   ],
   "defaultMaxVel": 3.8,

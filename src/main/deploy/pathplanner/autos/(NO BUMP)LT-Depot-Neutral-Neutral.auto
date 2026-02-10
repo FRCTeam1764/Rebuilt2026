@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LBumpToDepot"
+                  "pathName": "LTToDepot"
                 }
               },
               {
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DepotToOutpost"
+                  "pathName": "DepotToLShoot"
                 }
               },
               {
@@ -58,43 +58,6 @@
           "type": "named",
           "data": {
             "name": "idle"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "OutpostToRShoot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HubShootCommand"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "idle"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": " ShootRToNeutral"
           }
         },
         {
@@ -106,7 +69,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NeutralToRB"
+            "pathName": "LShootToNeutral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NeutralToLT"
           }
         },
         {
@@ -116,7 +85,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RBToTower"
+                  "pathName": "LTToRT"
                 }
               },
               {
@@ -129,21 +98,21 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "idle"
+            "pathName": "RTToNeutral"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Climb"
+            "name": "NeutralIntake"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Left Bump",
+  "folder": "Left Trench",
   "choreoAuto": false
 }

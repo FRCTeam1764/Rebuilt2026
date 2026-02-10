@@ -5,39 +5,71 @@
     "data": {
       "commands": [
         {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LTToDepot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DepotIntake"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DepotToLShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "NeutralIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "LTToDepot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DepotToNeutral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
+            "pathName": "LShootToNeutral"
           }
         },
         {
@@ -47,9 +79,22 @@
           }
         },
         {
-          "type": "wait",
+          "type": "deadline",
           "data": {
-            "waitTime": 2.0
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
           }
         },
         {
@@ -61,13 +106,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveForward"
+            "name": "NeutralIntake"
           }
         }
       ]

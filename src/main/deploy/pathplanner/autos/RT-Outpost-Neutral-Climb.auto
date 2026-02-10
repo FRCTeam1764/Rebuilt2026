@@ -5,9 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "RTToOutpost"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RTToOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
           }
         },
         {
@@ -17,33 +36,71 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "OutpostToNeutral"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "OutpostToRShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
+            "name": "idle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " ShootRToNeutral"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveForward"
+            "name": "NeutralIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "NeutralRHighToRB"
+            "pathName": "NeutralToRB"
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "RBToTower"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RBToTower"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
           }
         },
         {

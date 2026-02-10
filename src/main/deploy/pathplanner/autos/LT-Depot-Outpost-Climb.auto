@@ -5,27 +5,53 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "LTToDepot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LTToDepot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
+            "name": "idle"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveForward"
+            "name": "DepotIntake"
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "DepotToOutpost"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DepotToOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
           }
         },
         {
@@ -35,9 +61,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "OutpostToTower"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "OutpostToTower"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
           }
         },
         {

@@ -106,7 +106,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NeutralToRB"
+            "pathName": "NeutralToRT"
           }
         },
         {
@@ -116,7 +116,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RBToTower"
+                  "pathName": "RTToTower"
                 }
               },
               {

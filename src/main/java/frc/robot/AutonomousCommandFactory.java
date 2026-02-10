@@ -37,6 +37,7 @@ import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
 import frc.robot.subsystems.Turret;
 
+
 /** Add your docs here. */
 public class AutonomousCommandFactory extends CommandFactory{
     private CommandXboxController pilot;
@@ -69,7 +70,32 @@ public class AutonomousCommandFactory extends CommandFactory{
         )
         );
     }
+
+    //we need to add ShootTop and ShootBottom for cycling fuel to our zone in autos (just a set angle each)
     
+    public Command DepotIntake(){
+        return new SequentialCommandGroup(
+        new ParallelDeadlineGroup(
+            new WaitCommand(0.2),
+            new DriveForward(swerve),
+            GroundIntakeCommand()
+        ),
+        new RequestStateChange(States.IDLE, stateManager)
+        );
+    }
+
+// find out how many seconds each one should be (depot should be easy, neutral will be based on capacity)
+
+    public Command NeutralIntake(){
+        return new SequentialCommandGroup( 
+        new ParallelDeadlineGroup(
+            new WaitCommand(0.4),
+            new DriveForward(swerve),
+            GroundIntakeCommand()
+        ),
+        new RequestStateChange(States.IDLE, stateManager)
+        );
+    }
 
     public void configAutonomousCommands() {
         NamedCommands.registerCommand("HubShootCommand", HubShootCommand());

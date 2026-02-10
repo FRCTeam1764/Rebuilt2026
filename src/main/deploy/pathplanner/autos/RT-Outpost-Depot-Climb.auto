@@ -5,9 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "RTToOutpost"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RTToOutpost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
           }
         },
         {
@@ -17,27 +36,59 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "OutpostToDepot"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "OutpostToDepot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GroundIntakeCommand"
+            "name": "idle"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveForward"
+            "name": "DepotIntake"
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "DepotToTower"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DepotToTower"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
           }
         },
         {
