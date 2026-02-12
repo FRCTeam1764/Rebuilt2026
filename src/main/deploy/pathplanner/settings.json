@@ -12,10 +12,11 @@
     "neutral"
   ],
   "autoFolders": [
-    "Left Bump",
-    "Left Trench",
+    "Right Trench",
     "Right Bump",
-    "Right Trench"
+    "Left Trench",
+    "Left Bump",
+    ".Nathaniel's happy corner"
   ],
   "defaultMaxVel": 3.8,
   "defaultMaxAccel": 3.8,

@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LTToNeutral"
+            "pathName": "LBToNeutral (NO BUMP)"
           }
         },
         {
@@ -113,6 +113,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Left Trench",
+  "folder": "Left Bump",
   "choreoAuto": false
 }

@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.4577425089016773,
-        "y": 3.9588922516728795
+        "x": 1.43,
+        "y": 4.02
       },
       "prevControl": {
-        "x": 2.0398209792136193,
-        "y": 8.184759407841645
+        "x": 2.012078470311942,
+        "y": 8.245867156168764
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "TowerL"
     }
   ],
   "rotationTargets": [],

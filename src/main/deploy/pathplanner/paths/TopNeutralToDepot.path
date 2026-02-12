@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.09,
-        "y": 5.95
+        "x": 1.05,
+        "y": 5.97
       },
       "prevControl": {
-        "x": 3.5795509312677476,
-        "y": 7.761023561629679
+        "x": 3.5395509312677476,
+        "y": 7.781023561629679
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "DepotEnter"
     }
   ],
   "rotationTargets": [],

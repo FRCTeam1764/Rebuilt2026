@@ -12,20 +12,20 @@
         "y": 0.6799999999999997
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RShoot"
     },
     {
       "anchor": {
-        "x": 7.691286375715926,
-        "y": 1.3587765770989484
+        "x": 7.7,
+        "y": 1.34
       },
       "prevControl": {
-        "x": 6.810551001059043,
-        "y": 0.573843363169076
+        "x": 6.819264625343117,
+        "y": 0.5550667860701277
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RNuetralLow"
     }
   ],
   "rotationTargets": [],
