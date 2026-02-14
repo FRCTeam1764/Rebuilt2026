@@ -96,10 +96,24 @@ public class CommandFactory {
         );
     }
 
+    
     public Command ClimbUpCommand(){
         return new SequentialCommandGroup(
-            new ClimberCommand(0, climber), 
+            new ParallelRaceGroup(
+             new ClimberCommand(60, climber),  
+             new WaitCommand(2)
+            ),
             new RequestStateChange(States.CLIMB_L1, stateManager)
+        );
+    }
+
+    public Command ClimbDownCommand(){
+        return new SequentialCommandGroup(
+            new ParallelRaceGroup(
+             new ClimberCommand(0, climber),  
+             new WaitCommand(2)
+            ), 
+            new RequestStateChange(States.IDLE, stateManager)
         );
     }
 
