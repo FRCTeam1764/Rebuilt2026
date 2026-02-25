@@ -5,21 +5,20 @@
 package frc.robot.commands.BasicCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.IntakeWrist;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeWristCommand extends Command {
   /** Creates a new IntakeWristCommand. */
-  int desired;
+  double desired;
   IntakeWrist intakeWrist;
 
-  public IntakeWristCommand(IntakeWrist intakeWrist2, double intakeWristSpeed) {
+  public IntakeWristCommand(IntakeWrist intakeWrist2, double desired) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.desired = intakeWrist2;
-    this.intakeWrist = intakeWristSpeed;
-    addRequirements(intakeWristSpeed);
+    this.intakeWrist = intakeWrist2;
+    this.desired = desired;
+    addRequirements(intakeWrist2);
   }
 
   // Called when the command is initially scheduled.

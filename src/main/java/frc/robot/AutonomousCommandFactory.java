@@ -24,6 +24,7 @@ import frc.robot.commands.BasicCommands.ShooterRollersCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveBackward;
 import frc.robot.commands.DriveCommands.DriveForward;
+import frc.robot.commands.LimelightCommands.AimTurretAtHub;
 import frc.robot.commands.LimelightCommands.LockOnAprilTagAuto;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -31,6 +32,7 @@ import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.IntakeWrist;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterRollers;
 import frc.robot.subsystems.ShooterWrist;
 import frc.robot.subsystems.StateManager;
@@ -52,21 +54,23 @@ public class AutonomousCommandFactory extends CommandFactory{
     private Turret turret;
     private IntakeWrist intakeWrist;
     private ClimberSubsystem climber;
+    private LocalizationSubsystem localization;
 
     public AutonomousCommandFactory(IntakeWrist intakeWrist, Turret turret, ShooterWrist wrist, LimelightSubsystem limelight2, 
                 LimelightSubsystem limelight1, IntakeRollers intakeRollers, IndexRollers indexRollers, 
-                ShooterRollers shootRollers, ClimberSubsystem climber, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
-                StateManager stateManager) {
-        super(intakeWrist, turret, wrist, limelight2, limelight1, intakeRollers, indexRollers, shootRollers, climber, pilot, swerve, stateManager);
+                ShooterRollers shootRollers, ClimberSubsystem climber, LocalizationSubsystem localization, 
+                CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
+        super(intakeWrist, turret, wrist, limelight2, limelight1, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, swerve, stateManager);
         configAutonomousCommands();
+        this.localization = localization;
     }
       
     
     public Command HubShootCommand(){
         return new SequentialCommandGroup( new RequestStateChange(States.SHOOT, stateManager),
         new ParallelCommandGroup(
-            new AimTurretCommand(),
-            new AimWristCommand()
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
         )
         );
     }

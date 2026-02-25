@@ -28,11 +28,9 @@ import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.BasicCommands.ShooterRollersCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveForward;
+import frc.robot.commands.LimelightCommands.AimTurretAtHub;
 import frc.robot.commands.LimelightCommands.DriveToTarget;
-import frc.robot.commands.LimelightCommands.DriveToTargetOffset;
-import frc.robot.commands.LimelightCommands.DriveToTargetOffsetLL3;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
-import frc.robot.commands.LimelightCommands.TurnToAngle;
 import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -40,6 +38,7 @@ import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.IntakeWrist;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterRollers;
 import frc.robot.subsystems.ShooterWrist;
 import frc.robot.subsystems.StateManager;
@@ -64,14 +63,15 @@ public class CommandFactory {
     private Turret turret;
     private IntakeWrist intakeWrist;
     private ClimberSubsystem climber;
+    private LocalizationSubsystem localization;
 
     private double intakeSpeed = CommandConstants.GROUND_INTAKE_ROLLERS_SPEED;
     private double intakeWristSpeed = CommandConstants.INTAKE_WRIST_SPEED;
 
     public CommandFactory(IntakeWrist intakeWrist, Turret turret, ShooterWrist wrist, LimelightSubsystem turretLimelight, 
                 LimelightSubsystem localLimelight, IntakeRollers intakeRollers, IndexRollers indexRollers, 
-                ShooterRollers shootRollers, ClimberSubsystem climber, CommandXboxController pilot, CommandSwerveDrivetrain swerve, 
-                StateManager stateManager) {
+                ShooterRollers shootRollers, ClimberSubsystem climber, LocalizationSubsystem localization, 
+                CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
         this.pilot = pilot;
         this.swerve = swerve;
         this.stateManager = stateManager;
@@ -86,13 +86,25 @@ public class CommandFactory {
         this.climber = climber;
     }
 
+    public Command driveForward() {
+        return new ParallelDeadlineGroup(
+                    new WaitCommand(0.15), 
+                    new DriveForward(swerve));
+    }
 
     public Command HubShootCommand(){
         return new SequentialCommandGroup( new RequestStateChange(States.SHOOT, stateManager),
         new ParallelCommandGroup(
-            new AimTurretCommand(),
-            new AimWristCommand(), 
+            new AimTurretAtHub(swerve, pilot, null)
+            //new AimWristCommand()
         )
+        );
+    }
+
+     public Command ShootCommand(){
+        return new SequentialCommandGroup( 
+        //new AimWristCommand(),
+        new RequestStateChange(States.SHOOT, stateManager)
         );
     }
 

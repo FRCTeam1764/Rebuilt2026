@@ -277,6 +277,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
 
+    public double getRobotAngle() {
+        return getState().Pose.getRotation().getDegrees();
+    }
+
 
     public Pose2d getPose(){
         return getState().Pose;

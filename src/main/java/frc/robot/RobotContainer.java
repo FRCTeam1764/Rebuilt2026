@@ -12,6 +12,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,19 +24,20 @@ import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
 import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterRollers;
 import frc.robot.subsystems.ShooterWrist;
 import frc.robot.commands.BasicCommands.RequestStateChange;
+import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DefaultCommands.DefaultIndexCommand;
 import frc.robot.commands.DefaultCommands.DefaultIntakeCommand;
 import frc.robot.commands.DefaultCommands.DefaultShooterRollersCommand;
 import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
 import frc.robot.commands.DriveCommands.DriveRobotCentric;
-import frc.robot.commands.LimelightCommands.DriveToLimeLightVisionOffset;
+import frc.robot.commands.LimelightCommands.AimTurretAtHub;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
 import frc.robot.commands.LimelightCommands.TrackObject;
-import frc.robot.commands.LimelightCommands.TurnToAngle;
 import frc.robot.constants.CommandConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.state.IDLE;
@@ -66,6 +68,8 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final StateManager stateManager = new StateManager();
+
+    private final Field2d field = new Field2d();
     
     //subsystems
     private final ShooterRollers shootRollers = new ShooterRollers();
@@ -79,11 +83,13 @@ public class RobotContainer {
     //limelights
     private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight-fourtwo");
     private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight-four");
+
+    
+    private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
     
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, pilot, drivetrain, stateManager);
-
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
     private final SendableChooser<Command> chooser ;
 
     public RobotContainer() {
@@ -125,7 +131,10 @@ public class RobotContainer {
         pilot.b().whileTrue(new DriveRobotCentric(drivetrain, pilot));
 
         // Subsystem Controls
-        
+        copilot.rightTrigger(.7).whileTrue(commandFactory.HubShootCommand());
+        copilot.y().toggleOnTrue(new AimTurretAtHub(drivetrain, pilot, localization));
+        copilot.y().toggleOnFalse(new returnToIdle(stateManager));
+
         // Limelight Controls
         
     }

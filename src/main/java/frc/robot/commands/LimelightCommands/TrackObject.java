@@ -25,12 +25,12 @@ public class TrackObject extends Command {
   private LimelightSubsystem m_Limelight;
   private CommandSwerveDrivetrain m_Drivetrain;
   private Integer m_pipeline;
-  private PIDController xController = new PIDController(0.02, 0.0001, 0.0085);//.0045);
-  private PIDController yController = new PIDController(0.04, 0.0001, 0.02);
-  private PIDController thetaController = new PIDController(6, CommandConstants.kI, CommandConstants.kD);
-    private double targetx = 0;
+  private PIDController xController = new PIDController(0.1,0,0);
+  private PIDController yController = new PIDController(0.15,0,0);
+  private PIDController thetaController = new PIDController(0.035, 0.001, 0);
+  private double targetx = 0;
   private double targety = 20;
-  private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+  private double MaxAngularRate = CommandConstants.MaxAngularRate;
   
 
   private boolean targeting = false;
@@ -87,13 +87,9 @@ public class TrackObject extends Command {
         SmartDashboard.putNumber("setpoint", setpoint);
 				thetaOutput = thetaController.calculate(horizontal_angle, setpoint);
 			}
-
-
-      //xOutput = -m_throttle.get()*DrivetrainConstants.maxSpeedMetersPerSecond;
-		
 		} 
     
-    m_Drivetrain.setControl(drive.withVelocityX(ySpeed*(CommandConstants.MaxSpeed/3)).withVelocityY(xSpeed*(CommandConstants.MaxSpeed/3)).withRotationalRate(thetaOutput*MaxAngularRate));
+    m_Drivetrain.setControl(drive.withVelocityX(-ySpeed*(CommandConstants.MaxSpeed/3)).withVelocityY(xSpeed*(CommandConstants.MaxSpeed/3)).withRotationalRate(thetaOutput*MaxAngularRate));
   }
 
   // Called once the command ends or is interrupted.
@@ -106,7 +102,6 @@ public class TrackObject extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; //TODO: FINISH CHECKINHG
-    //return Math.abs(m_Limelight.getTa()-targety) <= 0.4 && Math.abs(m_Limelight.getTx()-targetx)<=0.25;
+    return false;
   }
 }
