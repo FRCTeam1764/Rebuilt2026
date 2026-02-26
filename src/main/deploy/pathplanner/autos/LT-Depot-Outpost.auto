@@ -11,38 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RBToOutpost"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HubShootCommand"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "idle"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "OutpostToDepot"
+                  "pathName": "LTToDepot"
                 }
               },
               {
@@ -73,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DepotToLT"
+                  "pathName": "DepotToOutpost"
                 }
               },
               {
@@ -86,27 +55,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "idle"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LShootToNeutral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "NeutralIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "NeutralToLT"
+            "waitTime": 2.0
           }
         },
         {
@@ -114,9 +65,9 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "wait",
                 "data": {
-                  "pathName": "LTToTower"
+                  "waitTime": 3.0
                 }
               },
               {
@@ -138,6 +89,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Right Bump",
+  "folder": "Left Trench",
   "choreoAuto": false
 }

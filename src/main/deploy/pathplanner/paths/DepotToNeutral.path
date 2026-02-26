@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.68,
-        "y": 7.42
+        "x": 0.4,
+        "y": 5.96
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.68,
-        "y": 7.42
+        "x": 3.2577953137520406,
+        "y": 8.205874204889675
       },
       "isLocked": false,
-      "linkedName": "DepotToLShoot"
+      "linkedName": "DepotExit"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 6.667134844290243
       },
       "prevControl": {
-        "x": 6.715980525863587,
-        "y": 6.902605825378058
+        "x": 7.53851051123877,
+        "y": 7.351614310801993
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,10 +45,10 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "ShootTo_____",
+  "folder": "Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
