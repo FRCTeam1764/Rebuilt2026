@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RBToOutpost"
+                  "pathName": "RTToOutpost"
                 }
               },
               {
@@ -32,7 +32,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 1.5
           }
         },
         {
@@ -42,38 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "OutpostToDepot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HubShootCommand"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "idle"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "DepotIntake"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "DepotToLT"
+                  "pathName": "OutpostToRT"
                 }
               },
               {
@@ -94,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LShootToNeutral"
+            "pathName": " ShootRToNeutral"
           }
         },
         {
@@ -106,7 +75,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NeutralToLT"
+            "pathName": "NeutralToRT"
           }
         },
         {
@@ -116,7 +85,32 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LTToTower"
+                  "pathName": "RTToRB"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HubShootCommand"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idle"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
                 }
               },
               {
@@ -138,6 +132,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Right Bump",
+  "folder": "Right Trench",
   "choreoAuto": false
 }

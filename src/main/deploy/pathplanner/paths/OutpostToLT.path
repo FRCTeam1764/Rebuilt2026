@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.68,
-        "y": 7.42
+        "x": 0.375,
+        "y": 0.68
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.68,
-        "y": 7.42
+        "x": 1.2626529729688492,
+        "y": 1.0004909267941025
       },
       "isLocked": false,
-      "linkedName": "DepotToLShoot"
+      "linkedName": "Outpost"
     },
     {
       "anchor": {
-        "x": 7.76,
-        "y": 6.667134844290243
+        "x": 3.6,
+        "y": 7.42
       },
       "prevControl": {
-        "x": 6.715980525863587,
-        "y": 6.902605825378058
+        "x": 3.426456350479417,
+        "y": 7.133080694283517
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LNuetralHigh"
+      "linkedName": "LT"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "ShootTo_____",
+  "folder": "Outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

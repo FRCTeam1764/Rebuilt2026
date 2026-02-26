@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6500000000000001,
-        "y": 5.96
+        "x": 0.6945809779721439,
+        "y": 5.565172683750763
       },
       "isLocked": false,
       "linkedName": "DepotExit"
@@ -20,8 +20,8 @@
         "y": 4.02
       },
       "prevControl": {
-        "x": 2.4389688888736503,
-        "y": 4.123940705992947
+        "x": 1.6663251364981098,
+        "y": 5.150961124941152
       },
       "nextControl": null,
       "isLocked": false,

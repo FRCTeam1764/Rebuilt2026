@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.68,
+        "x": 3.6,
         "y": 7.42
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.68,
-        "y": 7.42
+        "x": 3.5710925491228376,
+        "y": 5.961893329688964
       },
       "isLocked": false,
-      "linkedName": "DepotToLShoot"
+      "linkedName": "LT"
     },
     {
       "anchor": {
-        "x": 7.76,
-        "y": 6.667134844290243
+        "x": 3.6,
+        "y": 5.73
       },
       "prevControl": {
-        "x": 6.715980525863587,
-        "y": 6.902605825378058
+        "x": 3.6180891901832237,
+        "y": 7.069589131453816
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LNuetralHigh"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "ShootTo_____",
+  "folder": "Left",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
