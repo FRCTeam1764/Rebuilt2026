@@ -110,15 +110,23 @@ public class CommandFactory {
 
     public Command ClimbUpCommand(){
         return new SequentialCommandGroup(
-            new ClimberCommand(0, climber), 
+            new ClimberCommand(0, climber), //TODO -> fix, find value for high
             new RequestStateChange(States.CLIMB_L1, stateManager)
         );
     }
 
-    public Command GroundIntakeCommand(){ 
-        return new RequestStateChange(States.INTAKE, stateManager);
+    public Command ClimbDownCommand(){
+        return new SequentialCommandGroup(
+            new ClimberCommand(0, climber), //TODO -> fix, find value for high
+            new RequestStateChange(States.IDLE, stateManager)
+        );
     }
-    // add ground intake values
+
+    public Command GroundIntakeCommand(){ 
+        return new SequentialCommandGroup(
+            new IntakeWristCommand(intakeWrist, intakeSpeed),
+            new RequestStateChange(States.INTAKE, stateManager));
+    }
 
     public Command interupted(boolean wasInteruppted) {
         if (wasInteruppted) {

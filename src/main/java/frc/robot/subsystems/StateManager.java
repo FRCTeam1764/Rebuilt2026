@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.state.BasicState;
 import frc.robot.state.CLIMB_L1;
+import frc.robot.state.CONDENSED;
 import frc.robot.state.IDLE;
 import frc.robot.state.INTAKE;
 import frc.robot.state.INTAKE_OUT;
@@ -37,7 +38,8 @@ public class StateManager extends SubsystemBase {
     INTAKE_OUT,
     INTAKE_WHILE_SHOOT,
     SHOOT,
-    CLIMB_L1
+    CLIMB_L1,
+    CONDENSED
   }
 
   public List<BasicState> StateHandlers = List.of(
@@ -46,7 +48,8 @@ public class StateManager extends SubsystemBase {
       new INTAKE_OUT(),
       new INTAKE_WHILE_SHOOT(),
       new SHOOT(),
-      new CLIMB_L1()
+      new CLIMB_L1(),
+      new CONDENSED()
   );
 
   public States state;

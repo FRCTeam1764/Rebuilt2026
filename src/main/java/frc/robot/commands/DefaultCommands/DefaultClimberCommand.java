@@ -31,8 +31,8 @@ public class DefaultClimberCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(stateManager.getDesiredData(CommandConstants.INTAKE_KEY) != null) {
-      climberSubsystem.flex((double) stateManager.getDesiredData(CommandConstants.INTAKE_KEY));
+    if(stateManager.getDesiredData(CommandConstants.CLIMBER_KEY) != null) {
+      climberSubsystem.flex((double) stateManager.getDesiredData(CommandConstants.CLIMBER_KEY));
     }
   }
   

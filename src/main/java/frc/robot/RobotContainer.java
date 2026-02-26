@@ -29,6 +29,7 @@ import frc.robot.subsystems.ShooterRollers;
 import frc.robot.subsystems.ShooterWrist;
 import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.ComplexCommands.returnToIdle;
+import frc.robot.commands.DefaultCommands.DefaultClimberCommand;
 import frc.robot.commands.DefaultCommands.DefaultIndexCommand;
 import frc.robot.commands.DefaultCommands.DefaultIntakeCommand;
 import frc.robot.commands.DefaultCommands.DefaultShooterRollersCommand;
@@ -116,7 +117,8 @@ public class RobotContainer {
         indexRollers.setDefaultCommand(new DefaultIndexCommand(indexRollers, stateManager));
         intakeRollers.setDefaultCommand(new DefaultIntakeCommand(intakeRollers, stateManager));
         wrist.setDefaultCommand(new DefaultShooterWristCommand(wrist, stateManager));
-        turret.setDefaultCommand(new DefaultTurretCommand(turret, stateManager));
+        turret.setDefaultCommand(new DefaultTurretCommand(turret, stateManager, copilot));
+        climber.setDefaultCommand(new DefaultClimberCommand(climber, stateManager));
 
         configureMainBindings();
 
@@ -127,8 +129,17 @@ public class RobotContainer {
         // Drive Controls
         pilot.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
-        copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
         pilot.b().whileTrue(new DriveRobotCentric(drivetrain, pilot));
+
+        pilot.x().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
+
+        pilot.b().onTrue(commandFactory.ClimbUpCommand());
+        pilot.a().onTrue(commandFactory.ClimbDownCommand());
+
+        pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
+        pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
 
         // Subsystem Controls
         copilot.rightTrigger(.7).whileTrue(commandFactory.HubShootCommand());

@@ -6,6 +6,7 @@ package frc.robot.commands.DefaultCommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.Turret;
@@ -15,10 +16,13 @@ public class DefaultTurretCommand extends Command {
   /** Creates a new DefaultWristCommand. */
   Turret turret;
   StateManager stateManager;
-  public DefaultTurretCommand(Turret turret, StateManager stateManager) {
+  CommandXboxController controller;
+  
+  public DefaultTurretCommand(Turret turret, StateManager stateManager, CommandXboxController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.turret = turret;
     this.stateManager = stateManager;
+    this.controller = controller;
     addRequirements(turret);
   }
 
@@ -31,7 +35,9 @@ public class DefaultTurretCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(stateManager.getDesiredData(CommandConstants.TURRET_KEY) != null) {
+    if(Math.abs(controller.getLeftX()) > 0.07) {
+      turret.on(controller.getLeftX());
+    } else if(stateManager.getDesiredData(CommandConstants.TURRET_KEY) != null) {
       turret.on((double) stateManager.getDesiredData(CommandConstants.TURRET_KEY));
     }
   }
