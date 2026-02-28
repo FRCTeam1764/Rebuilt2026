@@ -13,8 +13,14 @@ public boolean matches(States state){
 public void execute(StateManager stateManager){
     stateManager.clearDesiredData();
 
-
-    stateManager.addDesiredData(CommandConstants.INTAKE_KEY, 30.0);
+    // if something's messed up as a result of including the other components in this state
+    // tell elliott
+    stateManager.addDesiredData(CommandConstants.TURRET_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.WRIST_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.SHOOTER_ROLLER_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INTAKE_KEY, 0.0); // originally 30.0
+    stateManager.addDesiredData(CommandConstants.INDEX_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.CLIMBER_KEY, 0.0);
 }
    
 }
