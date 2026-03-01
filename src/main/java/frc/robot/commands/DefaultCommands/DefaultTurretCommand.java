@@ -10,19 +10,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.TurretManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefaultTurretCommand extends Command {
   /** Creates a new DefaultWristCommand. */
   Turret turret;
-  StateManager stateManager;
-  CommandXboxController controller;
-  
-  public DefaultTurretCommand(Turret turret, StateManager stateManager, CommandXboxController controller) {
+  TurretManager turretManager;
+
+  public DefaultTurretCommand(Turret turret, TurretManager turretManager) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.turret = turret;
-    this.stateManager = stateManager;
-    this.controller = controller;
+    this.turretManager = turretManager;
     addRequirements(turret);
   }
 
@@ -35,11 +34,7 @@ public class DefaultTurretCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(controller.getLeftX()) > 0.07) {
-      turret.on(controller.getLeftX());
-    } else if(stateManager.getDesiredData(CommandConstants.TURRET_KEY) != null) {
-      turret.on((double) stateManager.getDesiredData(CommandConstants.TURRET_KEY));
-    }
+    turretManager.setTurret();
   }
   
 

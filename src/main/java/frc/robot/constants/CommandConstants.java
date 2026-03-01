@@ -12,14 +12,12 @@ public final class CommandConstants {
     //speed
     public static final double TURRET_SPEED = 0.25;
     public static final double TURRET_BACK_SPEED = 0.5;
-    public static final double WRIST_SPEED = 0.2;
+    public static final double SHOOTER_WRIST_SPEED = 0.2;
     public static final double INTAKE_WRIST_SPEED = 0.3;
 
     public static final double GROUND_INTAKE_ROLLERS_SPEED = 0.2;
 
     //keys
-    public static final String TURRET_KEY = "TurretEncoderPosition";
-    public static final String WRIST_KEY = "WristEncoderPosition";
     public static final String SHOOTER_ROLLER_KEY = "ShooterRollerSpeed";
     public static final String INTAKE_KEY = "IntakeRollerSpeed";
     public static final String INTAKE_WRIST_KEY = "IntakeWristSpeed";

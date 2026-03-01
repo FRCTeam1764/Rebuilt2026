@@ -23,10 +23,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.TurretManager;
+import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterRollers;
 import frc.robot.subsystems.ShooterWrist;
+import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DefaultCommands.DefaultClimberCommand;
@@ -70,14 +73,15 @@ public class RobotContainer {
 
     private final StateManager stateManager = new StateManager();
 
+    
     private final Field2d field = new Field2d();
     
     //subsystems
     private final ShooterRollers shootRollers = new ShooterRollers();
     private final IndexRollers indexRollers = new IndexRollers();
     private final IntakeRollers intakeRollers = new IntakeRollers();
-    private final ShooterWrist wrist = new ShooterWrist(stateManager);
-    private final Turret turret = new Turret();
+    private final ShooterWristRev wrist = new ShooterWristRev();
+    private final TurretRev turret = new TurretRev();
     private final IntakeWrist intakeWrist = new IntakeWrist(stateManager);
     private final ClimberSubsystem climber = new ClimberSubsystem(stateManager);
     
@@ -88,9 +92,14 @@ public class RobotContainer {
     
     private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
     
+    private final TurretManager turretManager = new TurretManager(turret, wrist, localization, copilot);
+
+
     //factories
     private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
     private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
+    
+    
     private final SendableChooser<Command> chooser ;
 
     public RobotContainer() {

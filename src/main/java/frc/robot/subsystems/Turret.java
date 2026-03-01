@@ -9,14 +9,17 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CommandConstants;
 import frc.robot.constants.Constants;
 
 public class Turret extends SubsystemBase {
   /** Creates a new Turret. */
-  TalonFX motor = new TalonFX(Constants.TURRET_MOTOR.id, Constants.TURRET_MOTOR.busName);
-  boolean reset = false;
+  private TalonFX motor = new TalonFX(Constants.TURRET_MOTOR.id, Constants.TURRET_MOTOR.busName);
+  private boolean reset = false;
+  private PIDController controller = new PIDController(0,0,0);
+
   public Turret() {
     
     TalonFXConfiguration turretConfig = new TalonFXConfiguration();
