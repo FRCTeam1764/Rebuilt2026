@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 
 
+import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -19,43 +21,39 @@ import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-public class ShooterWristRev extends SubsystemBase {
+public class IntakeWristRev extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
 
   private final SparkMax wristMotor = new SparkMax(62, SparkLowLevel.MotorType.kBrushless);
   private double wristSpeed = 0.2;
   
-  public ShooterWristRev() {
+  public IntakeWristRev() {
 
     SparkMaxConfig config = new SparkMaxConfig();
     config.inverted(true);
     config.idleMode(SparkBaseConfig.IdleMode.kBrake);
+    //config.smartCurrentLimit(20);
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
-    pidConfig.pid(0, 0, 0, ClosedLoopSlot.kSlot0);
-    pidConfig.pid(0, 0, 0, ClosedLoopSlot.kSlot1);
+    pidConfig.pid(2, 0, 0, ClosedLoopSlot.kSlot0);
+    pidConfig.pid(8, 0, 0, ClosedLoopSlot.kSlot1);
 
     pidConfig.outputRange(-0.3, 0.1);
     pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
     config.apply(pidConfig);
     
 
-    SoftLimitConfig limitConfig = new SoftLimitConfig();
-    limitConfig.forwardSoftLimitEnabled(true);
-    limitConfig.forwardSoftLimit(0.075);
-    limitConfig.reverseSoftLimitEnabled(true);
-    limitConfig.reverseSoftLimit(0.25);
-    config.apply(limitConfig);
+    // SoftLimitConfig limitConfig = new SoftLimitConfig();
+    // limitConfig.forwardSoftLimitEnabled(true);
+    // limitConfig.forwardSoftLimit(0.075); //9.83
+    // limitConfig.reverseSoftLimitEnabled(true);
+    // limitConfig.reverseSoftLimit(0.25);
+    // config.apply(limitConfig);
 
     //config, resets configs to default, configs persist even after motor is power cycled
     wristMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
@@ -98,10 +96,10 @@ public class ShooterWristRev extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("ShooterWristPosition", wristMotor.getAbsoluteEncoder().getPosition());
-    SmartDashboard.putNumber("ShooterWristTemperature", wristMotor.getMotorTemperature());
-    SmartDashboard.putNumber("ShooterWristCurrent", wristMotor.getOutputCurrent());
-    SmartDashboard.putNumber("ShooterWristSetpoint", wristMotor.getClosedLoopController().getSetpoint());
-    SmartDashboard.putNumber("ShooterWristVoltage", wristMotor.getAppliedOutput());
+    SmartDashboard.putNumber("IntakeWristPosition", wristMotor.getAbsoluteEncoder().getPosition());
+    SmartDashboard.putNumber("IntakeWristTemperature", wristMotor.getMotorTemperature());
+    SmartDashboard.putNumber("IntakeWristCurrent", wristMotor.getOutputCurrent());
+    SmartDashboard.putNumber("IntakeWristSetpoint", wristMotor.getClosedLoopController().getSetpoint());
+    SmartDashboard.putNumber("IntakeWristVoltage", wristMotor.getAppliedOutput());
   }
 }

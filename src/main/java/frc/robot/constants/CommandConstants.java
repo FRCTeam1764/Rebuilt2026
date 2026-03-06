@@ -20,6 +20,7 @@ public final class CommandConstants {
     //keys
     public static final String SHOOTER_ROLLER_KEY = "ShooterRollerSpeed";
     public static final String INTAKE_KEY = "IntakeRollerSpeed";
+    public static final String RES_INDEX_KEY = "ResevoirRollerSpeed";
     public static final String INTAKE_WRIST_KEY = "IntakeWristSpeed";
     public static final String INDEX_KEY = "IndexRollerSpeed";
     public static final String CLIMBER_KEY = "ClimberEncoderPosition";

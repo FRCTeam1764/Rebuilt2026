@@ -7,16 +7,16 @@ package frc.robot.commands.DefaultCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.CommandConstants;
-import frc.robot.subsystems.ShooterWrist;
+import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.TurretManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefaultShooterWristCommand extends Command {
   /** Creates a new DefaultWristCommand. */
-  ShooterWrist wrist;
+  ShooterWristRev wrist;
   TurretManager turretManager;
-  public DefaultShooterWristCommand(ShooterWrist wrist, TurretManager turretManager) {
+  public DefaultShooterWristCommand(ShooterWristRev wrist, TurretManager turretManager) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.wrist = wrist;
     this.turretManager = turretManager;

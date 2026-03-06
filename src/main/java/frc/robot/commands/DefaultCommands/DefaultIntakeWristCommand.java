@@ -7,15 +7,15 @@ package frc.robot.commands.DefaultCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.CommandConstants;
-import frc.robot.subsystems.IntakeWrist;
+import frc.robot.subsystems.IntakeWristRev;
 import frc.robot.subsystems.StateManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefaultIntakeWristCommand extends Command {
   /** Creates a new DefaultWristCommand. */
-  IntakeWrist wrist;
+  IntakeWristRev wrist;
   StateManager stateManager;
-  public DefaultIntakeWristCommand(IntakeWrist wrist, StateManager stateManager) {
+  public DefaultIntakeWristCommand(IntakeWristRev wrist, StateManager stateManager) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.wrist = wrist;
     this.stateManager = stateManager;
@@ -32,7 +32,7 @@ public class DefaultIntakeWristCommand extends Command {
   @Override
   public void execute() {
     if(stateManager.getDesiredData(CommandConstants.INTAKE_WRIST_KEY) != null) {
-      wrist.flex((double) stateManager.getDesiredData(CommandConstants.INTAKE_WRIST_KEY));
+      wrist.onPosition((double) stateManager.getDesiredData(CommandConstants.INTAKE_WRIST_KEY));
     }
   }
   

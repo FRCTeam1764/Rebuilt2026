@@ -9,16 +9,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.StateManager;
-import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.TurretManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefaultTurretCommand extends Command {
   /** Creates a new DefaultWristCommand. */
-  Turret turret;
+  TurretRev turret;
   TurretManager turretManager;
 
-  public DefaultTurretCommand(Turret turret, TurretManager turretManager) {
+  public DefaultTurretCommand(TurretRev turret, TurretManager turretManager) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.turret = turret;
     this.turretManager = turretManager;

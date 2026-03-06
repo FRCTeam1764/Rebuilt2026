@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -12,6 +14,9 @@ public class TurretManager extends SubsystemBase {
 
   String turretMode = "IDLE";
   String wristMode = "IDLE";
+
+  boolean hubAimming = false;
+  boolean manualAimming = false;
 
   TurretRev turret;
   ShooterWristRev wrist;
@@ -29,6 +34,26 @@ public class TurretManager extends SubsystemBase {
   public void hubAim() {
     turretMode = "HUB_AIM";
     wristMode = "HUB_AIM";
+  }
+
+  public void hubAimToggle() {
+    if (!hubAimming) {
+      hubAim();
+      hubAimming = true;
+    } else {
+      idleMode();
+      hubAimming = false;
+    }
+  }
+
+  public void manualAimToggle() {
+    if (!manualAimming) {
+      manualAim();
+      manualAimming = true;
+    } else {
+      idleMode();
+      manualAimming = false;
+    }
   }
 
   public void turretHubAim(){
@@ -50,6 +75,11 @@ public class TurretManager extends SubsystemBase {
   public void idleMode () {
     turretMode = "IDLE";
     wristMode = "IDLE";
+  }
+
+  public void manualAim () {
+    turretMode = "MANUAL_AIM";
+    wristMode = "MANUAL_AIM";
   }
 
   public void setTurret() {
@@ -82,6 +112,8 @@ public class TurretManager extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("Hub Aimming", hubAimming);
+    SmartDashboard.putBoolean("Manual Aiming", manualAimming);
     // This method will be called once per scheduler run
   }
 }

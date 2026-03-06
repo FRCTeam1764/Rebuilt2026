@@ -24,6 +24,7 @@ import frc.robot.state.INTAKE;
 import frc.robot.state.INTAKE_OUT;
 import frc.robot.state.INTAKE_WHILE_SHOOT;
 import frc.robot.state.SHOOT;
+import frc.robot.state.SHOOT_WITH_INTAKE;
 
 public class StateManager extends SubsystemBase {
 
@@ -37,6 +38,7 @@ public class StateManager extends SubsystemBase {
     INTAKE,
     INTAKE_OUT,
     INTAKE_WHILE_SHOOT,
+    SHOOT_WITH_INTAKE,
     SHOOT,
     CLIMB_L1,
     CONDENSED
@@ -47,6 +49,7 @@ public class StateManager extends SubsystemBase {
       new INTAKE(),
       new INTAKE_OUT(),
       new INTAKE_WHILE_SHOOT(),
+      new SHOOT_WITH_INTAKE(),
       new SHOOT(),
       new CLIMB_L1(),
       new CONDENSED()
