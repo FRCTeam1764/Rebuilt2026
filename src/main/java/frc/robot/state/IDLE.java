@@ -14,7 +14,11 @@ public void execute(StateManager stateManager){
     stateManager.clearDesiredData();
 
 
-    stateManager.addDesiredData(CommandConstants.INTAKE_KEY, 30.0);
+    stateManager.addDesiredData(CommandConstants.SHOOTER_ROLLER_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INTAKE_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INDEX_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.CLIMBER_KEY,0.0);
 }
    
 }

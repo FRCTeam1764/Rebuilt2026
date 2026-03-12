@@ -30,14 +30,14 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
-import frc.robot.subsystems.IntakeWrist;
+import frc.robot.subsystems.IntakeWristRev;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterRollers;
-import frc.robot.subsystems.ShooterWrist;
+import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
-import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.TurretRev;
 
 
 /** Add your docs here. */
@@ -50,17 +50,17 @@ public class AutonomousCommandFactory extends CommandFactory{
     private IntakeRollers intakeRollers;
     private LimelightSubsystem limelight1;
     private LimelightSubsystem limelight2;
-    private ShooterWrist wrist;
-    private Turret turret;
-    private IntakeWrist intakeWrist;
+    private ShooterWristRev wrist;
+    private TurretRev turret;
+    private IntakeWristRev intakeWrist;
     private ClimberSubsystem climber;
     private LocalizationSubsystem localization;
 
-    public AutonomousCommandFactory(IntakeWrist intakeWrist, Turret turret, ShooterWrist wrist, LimelightSubsystem limelight2, 
-                LimelightSubsystem limelight1, IntakeRollers intakeRollers, IndexRollers indexRollers, 
+    public AutonomousCommandFactory(IntakeWristRev intakeWrist, TurretRev turret, ShooterWristRev wrist, LimelightSubsystem turretLimelight, 
+                LimelightSubsystem localLimelight, IntakeRollers intakeRollers, IndexRollers indexRollers, 
                 ShooterRollers shootRollers, ClimberSubsystem climber, LocalizationSubsystem localization, 
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
-        super(intakeWrist, turret, wrist, limelight2, limelight1, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, swerve, stateManager);
+        super(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, swerve, stateManager);
         configAutonomousCommands();
         this.localization = localization;
     }

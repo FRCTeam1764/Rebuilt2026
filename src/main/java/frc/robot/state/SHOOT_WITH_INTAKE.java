@@ -4,7 +4,7 @@ import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
 
-public class SHOOT implements BasicState {
+public class SHOOT_WITH_INTAKE implements BasicState {
 public boolean matches(States state){
 
     return state.equals(States.INTAKE);

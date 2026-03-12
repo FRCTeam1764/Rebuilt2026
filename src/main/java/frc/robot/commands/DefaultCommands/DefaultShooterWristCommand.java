@@ -7,18 +7,19 @@ package frc.robot.commands.DefaultCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.CommandConstants;
-import frc.robot.subsystems.ShooterWrist;
+import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.subsystems.StateManager;
+import frc.robot.subsystems.TurretManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefaultShooterWristCommand extends Command {
   /** Creates a new DefaultWristCommand. */
-  ShooterWrist wrist;
-  StateManager stateManager;
-  public DefaultShooterWristCommand(ShooterWrist wrist, StateManager stateManager) {
+  ShooterWristRev wrist;
+  TurretManager turretManager;
+  public DefaultShooterWristCommand(ShooterWristRev wrist, TurretManager turretManager) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.wrist = wrist;
-    this.stateManager = stateManager;
+    this.turretManager = turretManager;
     addRequirements(wrist);
   }
 
@@ -31,9 +32,7 @@ public class DefaultShooterWristCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(stateManager.getDesiredData(CommandConstants.WRIST_KEY) != null) {
-      wrist.flex((double) stateManager.getDesiredData(CommandConstants.WRIST_KEY));
-    }
+    turretManager.setWrist();
   }
   
 
