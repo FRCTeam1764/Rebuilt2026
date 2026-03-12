@@ -65,7 +65,6 @@ public class AutonomousCommandFactory extends CommandFactory{
         this.localization = localization;
     }
       
-    
     public Command HubShootCommand(){
         return new SequentialCommandGroup( new RequestStateChange(States.SHOOT, stateManager),
         new ParallelCommandGroup(
@@ -74,6 +73,80 @@ public class AutonomousCommandFactory extends CommandFactory{
         )
         );
     }
+    
+    public Command HubShootCommand_Q1(){
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q1, stateManager),
+        new ParallelCommandGroup(
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
+        )
+        );
+    }
+
+    public Command HubShootCommand_Q2(){
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q2, stateManager),
+        new ParallelCommandGroup(
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
+        )
+        );
+    }
+
+    public Command HubShootCommand_Q3(){
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q3, stateManager),
+        new ParallelCommandGroup(
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
+        )
+        );
+    }
+
+    public Command HubShootCommand_Q4(){
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q4, stateManager),
+        new ParallelCommandGroup(
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
+        )
+        );
+    }
+
+    public Command HubShootCommand_Q5(){
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q5, stateManager),
+        new ParallelCommandGroup(
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
+        )
+        );
+    }
+
+    public Command HubShootCommand_Q6(){
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q6, stateManager),
+        new ParallelCommandGroup(
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
+        )
+        );
+    }
+
+    public Command HubShootCommand_Q7(){
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q7, stateManager),
+        new ParallelCommandGroup(
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
+        )
+        );
+    }
+
+    public Command HubShootCommand_Q8(){
+        return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q8, stateManager),
+        new ParallelCommandGroup(
+            new AimTurretAtHub(swerve, pilot, localization)
+            //new AimWristCommand()
+        )
+        );
+    }
+
+    // arctan(2 + ((-9.8 * x^2)/(2(9.1^2)))
 
     //we need to add ShootTop and ShootBottom for cycling fuel to our zone in autos (just a set angle each)
     
