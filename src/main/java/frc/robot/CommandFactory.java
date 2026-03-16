@@ -36,13 +36,13 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
-import frc.robot.subsystems.IntakeWrist;
+import frc.robot.subsystems.IntakeWristRev;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterRollers;
-import frc.robot.subsystems.ShooterWrist;
+import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.subsystems.StateManager;
-import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.StateManager.States;
 
 //This class will handle all command handling for drivers
@@ -59,16 +59,16 @@ public class CommandFactory {
     private IntakeRollers intakeRollers;
     private LimelightSubsystem localLimelight;
     private LimelightSubsystem turretLimelight;
-    private ShooterWrist wrist;
-    private Turret turret;
-    private IntakeWrist intakeWrist;
+    private ShooterWristRev wrist;
+    private TurretRev turret;
+    private IntakeWristRev intakeWrist;
     private ClimberSubsystem climber;
     private LocalizationSubsystem localization;
 
     private double intakeSpeed = CommandConstants.GROUND_INTAKE_ROLLERS_SPEED;
     private double intakeWristSpeed = CommandConstants.INTAKE_WRIST_SPEED;
 
-    public CommandFactory(IntakeWrist intakeWrist, Turret turret, ShooterWrist wrist, LimelightSubsystem turretLimelight, 
+    public CommandFactory(IntakeWristRev intakeWrist, TurretRev turret, ShooterWristRev wrist, LimelightSubsystem turretLimelight, 
                 LimelightSubsystem localLimelight, IntakeRollers intakeRollers, IndexRollers indexRollers, 
                 ShooterRollers shootRollers, ClimberSubsystem climber, LocalizationSubsystem localization, 
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {

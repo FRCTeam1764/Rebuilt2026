@@ -22,11 +22,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
-import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.TurretManager;
+import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterRollers;
-import frc.robot.subsystems.ShooterWrist;
+import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DefaultCommands.DefaultClimberCommand;
@@ -46,7 +47,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexRollers;
 import frc.robot.subsystems.IntakeRollers;
-import frc.robot.subsystems.IntakeWrist;
+import frc.robot.subsystems.IntakeWristRev;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -70,15 +71,16 @@ public class RobotContainer {
 
     private final StateManager stateManager = new StateManager();
 
+    
     private final Field2d field = new Field2d();
     
     //subsystems
     private final ShooterRollers shootRollers = new ShooterRollers();
     private final IndexRollers indexRollers = new IndexRollers();
     private final IntakeRollers intakeRollers = new IntakeRollers();
-    private final ShooterWrist wrist = new ShooterWrist(stateManager);
-    private final Turret turret = new Turret();
-    private final IntakeWrist intakeWrist = new IntakeWrist(stateManager);
+    private final ShooterWristRev wrist = new ShooterWristRev();
+    private final TurretRev turret = new TurretRev();
+    private final IntakeWristRev intakeWrist = new IntakeWristRev();
     private final ClimberSubsystem climber = new ClimberSubsystem(stateManager);
     
     //limelights
@@ -88,9 +90,14 @@ public class RobotContainer {
     
     private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
     
+    private final TurretManager turretManager = new TurretManager(turret, wrist, localization, copilot);
+
+
     //factories
     private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
     private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
+    
+    
     private final SendableChooser<Command> chooser ;
 
     public RobotContainer() {
@@ -116,8 +123,8 @@ public class RobotContainer {
         shootRollers.setDefaultCommand(new DefaultShooterRollersCommand(shootRollers, stateManager));
         indexRollers.setDefaultCommand(new DefaultIndexCommand(indexRollers, stateManager));
         intakeRollers.setDefaultCommand(new DefaultIntakeCommand(intakeRollers, stateManager));
-        wrist.setDefaultCommand(new DefaultShooterWristCommand(wrist, stateManager));
-        turret.setDefaultCommand(new DefaultTurretCommand(turret, stateManager, copilot));
+        wrist.setDefaultCommand(new DefaultShooterWristCommand(wrist, turretManager));
+        turret.setDefaultCommand(new DefaultTurretCommand(turret, turretManager));
         climber.setDefaultCommand(new DefaultClimberCommand(climber, stateManager));
 
         configureMainBindings();
@@ -143,8 +150,10 @@ public class RobotContainer {
 
         // Subsystem Controls
         copilot.rightTrigger(.7).whileTrue(commandFactory.HubShootCommand());
-        copilot.y().toggleOnTrue(new AimTurretAtHub(drivetrain, pilot, localization));
-        copilot.y().toggleOnFalse(new returnToIdle(stateManager));
+        // copilot.y().toggleOnTrue(new AimTurretAtHub(drivetrain, pilot, localization));
+        // copilot.y().toggleOnFalse(new returnToIdle(stateManager));
+        copilot.y().onTrue(new InstantCommand(() -> turretManager.hubAimToggle()));
+        copilot.back().onTrue(new InstantCommand(() -> turretManager.manualAimToggle()));
 
         // Limelight Controls
         

@@ -13,11 +13,11 @@ public boolean matches(States state){
 public void execute(StateManager stateManager){
     stateManager.clearDesiredData();
 
-    stateManager.addDesiredData(CommandConstants.TURRET_KEY, 0.0);
-    stateManager.addDesiredData(CommandConstants.WRIST_KEY, 0.0);
-    stateManager.addDesiredData(CommandConstants.SHOOTER_ROLLER_KEY, 0.5);
-    stateManager.addDesiredData(CommandConstants.INTAKE_KEY, 0.5);
-    stateManager.addDesiredData(CommandConstants.INDEX_KEY, 0.5);
+    stateManager.addDesiredData(CommandConstants.SHOOTER_ROLLER_KEY, 0.75);
+    stateManager.addDesiredData(CommandConstants.RES_INDEX_KEY, 0.5);
+    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INTAKE_KEY, -0.3);
+    stateManager.addDesiredData(CommandConstants.INDEX_KEY, -0.25);
     stateManager.addDesiredData(CommandConstants.CLIMBER_KEY, 0.0);
 }
    

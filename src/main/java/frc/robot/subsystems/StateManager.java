@@ -32,6 +32,7 @@ import frc.robot.state.SHOOT_Q5;
 import frc.robot.state.SHOOT_Q6;
 import frc.robot.state.SHOOT_Q7;
 import frc.robot.state.SHOOT_Q8;
+import frc.robot.state.SHOOT_WITH_INTAKE;
 
 public class StateManager extends SubsystemBase {
 
@@ -45,15 +46,8 @@ public class StateManager extends SubsystemBase {
     INTAKE,
     INTAKE_OUT,
     INTAKE_WHILE_SHOOT,
+    SHOOT_WITH_INTAKE,
     SHOOT,
-    SHOOT_Q1,
-    SHOOT_Q2,
-    SHOOT_Q3,
-    SHOOT_Q4,
-    SHOOT_Q5,
-    SHOOT_Q6,
-    SHOOT_Q7,
-    SHOOT_Q8,
     CLIMB_L1,
     CONDENSED
   }
@@ -63,6 +57,7 @@ public class StateManager extends SubsystemBase {
       new INTAKE(),
       new INTAKE_OUT(),
       new INTAKE_WHILE_SHOOT(),
+      new SHOOT_WITH_INTAKE(),
       new SHOOT(),
       new CLIMB_L1(),
       new CONDENSED()

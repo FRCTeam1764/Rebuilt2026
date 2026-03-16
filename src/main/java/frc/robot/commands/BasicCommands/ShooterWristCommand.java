@@ -7,15 +7,15 @@ package frc.robot.commands.BasicCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.constants.CommandConstants;
-import frc.robot.subsystems.ShooterWrist;
+import frc.robot.subsystems.ShooterWristRev;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ShooterWristCommand extends Command {
   /** Creates a new ShooterWristCommand. */
   int desired;
-  ShooterWrist shooterWrist;
+  ShooterWristRev shooterWrist;
 
-  public ShooterWristCommand(int desired, ShooterWrist shooterWrist) {
+  public ShooterWristCommand(int desired, ShooterWristRev shooterWrist) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.desired = desired;
     this.shooterWrist = shooterWrist;
@@ -29,19 +29,19 @@ public class ShooterWristCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterWrist.flex(CommandConstants.WRIST_SPEED);
+    shooterWrist.onPosition(desired);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooterWrist.stopFlex();
+    shooterWrist.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.shooterWrist.getEncoderPos() <= this.desired+1 && this.shooterWrist.getEncoderPos() >= this.desired-1;
+    return this.shooterWrist.getPos() <= this.desired+1 && this.shooterWrist.getPos() >= this.desired-1;
 
   } 
 }
