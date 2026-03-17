@@ -16,28 +16,24 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
-import frc.robot.subsystems.TurretManager;
 import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.LocalizationSubsystem;
-import frc.robot.subsystems.ShooterRollers;
+import frc.robot.subsystems.RollersSubsystem;
 import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DefaultCommands.DefaultClimberCommand;
-import frc.robot.commands.DefaultCommands.DefaultIndexCommand;
-import frc.robot.commands.DefaultCommands.DefaultIntakeCommand;
-import frc.robot.commands.DefaultCommands.DefaultShooterRollersCommand;
-import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
+import frc.robot.commands.DefaultCommands.DefaultIntakeWristCommand;
+import frc.robot.commands.DefaultCommands.DefaultRollersCommand;
 import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
 import frc.robot.commands.DriveCommands.DriveRobotCentric;
-import frc.robot.commands.LimelightCommands.AimTurretAtHub;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
 import frc.robot.commands.LimelightCommands.TrackObject;
 import frc.robot.constants.CommandConstants;
@@ -45,8 +41,6 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.state.IDLE;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.IndexRollers;
-import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.IntakeWristRev;
 
 public class RobotContainer {
@@ -75,27 +69,23 @@ public class RobotContainer {
     private final Field2d field = new Field2d();
     
     //subsystems
-    private final ShooterRollers shootRollers = new ShooterRollers();
-    private final IndexRollers indexRollers = new IndexRollers();
-    private final IntakeRollers intakeRollers = new IntakeRollers();
+    private final RollersSubsystem rollers = new RollersSubsystem();
     private final ShooterWristRev wrist = new ShooterWristRev();
     private final TurretRev turret = new TurretRev();
     private final IntakeWristRev intakeWrist = new IntakeWristRev();
-    private final ClimberSubsystem climber = new ClimberSubsystem(stateManager);
+    private final ClimberSubsystem climber = new ClimberSubsystem();
     
     //limelights
     private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight-fourtwo");
     private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight-four");
 
     
-    private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
+    //private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
     
-    private final TurretManager turretManager = new TurretManager(turret, wrist, localization, copilot);
-
 
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, rollers, climber, pilot, drivetrain, stateManager);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, rollers, climber, pilot, drivetrain, stateManager);
     
     
     private final SendableChooser<Command> chooser ;
@@ -120,12 +110,10 @@ public class RobotContainer {
         );
 
         // Default Commands
-        shootRollers.setDefaultCommand(new DefaultShooterRollersCommand(shootRollers, stateManager));
-        indexRollers.setDefaultCommand(new DefaultIndexCommand(indexRollers, stateManager));
-        intakeRollers.setDefaultCommand(new DefaultIntakeCommand(intakeRollers, stateManager));
-        wrist.setDefaultCommand(new DefaultShooterWristCommand(wrist, turretManager));
-        turret.setDefaultCommand(new DefaultTurretCommand(turret, turretManager));
-        climber.setDefaultCommand(new DefaultClimberCommand(climber, stateManager));
+        rollers.setDefaultCommand(new DefaultRollersCommand(rollers, stateManager));
+        intakeWrist.setDefaultCommand(new DefaultIntakeWristCommand(intakeWrist, stateManager));
+        turret.setDefaultCommand(new DefaultTurretCommand(turret, copilot));
+        //climber.setDefaultCommand(new DefaultClimberCommand(climber, stateManager));
 
         configureMainBindings();
 
@@ -135,9 +123,13 @@ public class RobotContainer {
     private void configureMainBindings() {
         // Drive Controls
         pilot.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
         pilot.b().whileTrue(new DriveRobotCentric(drivetrain, pilot));
+        copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
+        
+        pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
 
+
+        // Subsystem Controls
         pilot.x().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
 
         pilot.b().onTrue(commandFactory.ClimbUpCommand());
@@ -146,16 +138,7 @@ public class RobotContainer {
         pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
         pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
-
-        // Subsystem Controls
-        copilot.rightTrigger(.7).whileTrue(commandFactory.HubShootCommand());
-        // copilot.y().toggleOnTrue(new AimTurretAtHub(drivetrain, pilot, localization));
-        // copilot.y().toggleOnFalse(new returnToIdle(stateManager));
-        copilot.y().onTrue(new InstantCommand(() -> turretManager.hubAimToggle()));
-        copilot.back().onTrue(new InstantCommand(() -> turretManager.manualAimToggle()));
-
-        // Limelight Controls
+        // Aiming Controls
         
     }
 

@@ -4,95 +4,82 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkMax;
 
+import com.ctre.phoenix6.SignalLogger;
+import edu.wpi.first.hal.PowerDistributionVersion;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import com.revrobotics.PersistMode;
+import com.revrobotics.REVLibError;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkSoftLimit;
 import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.FeedForwardConfig;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import static edu.wpi.first.units.Units.Volts;
 
 public class ShooterWristRev extends SubsystemBase {
-  /** Creates a new IntakeSubsystem. */
+  /** Creates a new IntakeWrist. */
 
-  private final SparkMax wristMotor = new SparkMax(62, SparkLowLevel.MotorType.kBrushless);
-  private double wristSpeed = 0.2;
-  
+  SparkMax wristMotor = new SparkMax(5, SparkLowLevel.MotorType.kBrushless);
+
   public ShooterWristRev() {
-
     SparkMaxConfig config = new SparkMaxConfig();
-    config.inverted(true);
+    config.inverted(false);
     config.idleMode(SparkBaseConfig.IdleMode.kBrake);
+    config.smartCurrentLimit(40);
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
-    pidConfig.pid(0, 0, 0, ClosedLoopSlot.kSlot0);
-    pidConfig.pid(0, 0, 0, ClosedLoopSlot.kSlot1);
-
-    pidConfig.outputRange(-0.3, 0.1);
     pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
+    pidConfig.outputRange(-0.2, 0.2);
+    pidConfig.pid(2.8, 0 ,0);
+    pidConfig.allowedClosedLoopError(0.001, ClosedLoopSlot.kSlot0);
+
+    SoftLimitConfig softLimitConfig = new SoftLimitConfig();
+    softLimitConfig.reverseSoftLimit(0.3);
+    softLimitConfig.reverseSoftLimitEnabled(true);
+    softLimitConfig.forwardSoftLimit(0.56);
+    softLimitConfig.forwardSoftLimitEnabled(true);
+
     config.apply(pidConfig);
-    
+    config.apply(softLimitConfig);
 
-    SoftLimitConfig limitConfig = new SoftLimitConfig();
-    limitConfig.forwardSoftLimitEnabled(true);
-    limitConfig.forwardSoftLimit(0.075);
-    limitConfig.reverseSoftLimitEnabled(true);
-    limitConfig.reverseSoftLimit(0.25);
-    config.apply(limitConfig);
-
-    //config, resets configs to default, configs persist even after motor is power cycled
     wristMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  public void onPosition(double desiredPos) { 
-    if (desiredPos < wristMotor.getAbsoluteEncoder().getPosition()) {
-      wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-    } else {
-      wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition, ClosedLoopSlot.kSlot1);
-    }
-  }
-
-  public void onAnglePosition(double desiredAngle) { 
-    wristMotor.getClosedLoopController().setSetpoint(desiredAngle/360, ControlType.kPosition);
-  }
-
-  public double getPos() {
-    return wristMotor.getEncoder().getPosition();
-  }
-
-  public void onSpeed(double speed) {
-    if (wristMotor.getAbsoluteEncoder().getPosition() <= 0.075 && speed < 0) {
-      speed = 0;
-    }
-    if (wristMotor.getAbsoluteEncoder().getPosition() >= 0.25 && speed > 0) {
-      speed = 0;
-    }
-    wristMotor.set(speed);
-  }
-
-  public void on(boolean neg) {
-    wristMotor.set(neg ? -wristSpeed : wristSpeed);
+  public double getSpeed() {
+    return wristMotor.getAbsoluteEncoder().getVelocity();
   }
 
   public void stop() {
     wristMotor.set(0);
+  }
+
+  public void setPos(double desiredPos) {
+    wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition);
+    SmartDashboard.putNumber("pid controller", wristMotor.getClosedLoopController().getSetpoint());
+  }
+
+  public void onSpeed(double speed) {
+    wristMotor.set(speed);
+  }
+
+  public double getPos() {
+    return wristMotor.getAbsoluteEncoder().getPosition();
   }
 
   @Override

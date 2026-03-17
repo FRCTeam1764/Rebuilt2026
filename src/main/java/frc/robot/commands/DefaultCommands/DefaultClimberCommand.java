@@ -32,7 +32,7 @@ public class DefaultClimberCommand extends Command {
   @Override
   public void execute() {
     if(stateManager.getDesiredData(CommandConstants.CLIMBER_KEY) != null) {
-      climberSubsystem.flex((double) stateManager.getDesiredData(CommandConstants.CLIMBER_KEY));
+      climberSubsystem.start((double) stateManager.getDesiredData(CommandConstants.CLIMBER_KEY));
     }
   }
   

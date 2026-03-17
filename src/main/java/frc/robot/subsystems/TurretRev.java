@@ -32,7 +32,11 @@ import frc.robot.constants.Constants;
 public class TurretRev extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
 
-  private final SparkMax turretMotor = new SparkMax(Constants.TURRET_MOTOR.id, SparkLowLevel.MotorType.kBrushless);
+  private final SparkMax turretMotor = new SparkMax(23, SparkLowLevel.MotorType.kBrushless);
+  DigitalInput limitSwitch = new DigitalInput(1);
+  boolean left = false;
+  boolean pressed = false;
+  double cheaterEncoder;
 
   // 's' for start, 'e' for end, 'n' for nothing
   private char reset = 'n';
@@ -58,6 +62,8 @@ public class TurretRev extends SubsystemBase {
 
     //config, resets configs to default, configs persist even after motor is power cycled
     turretMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    cheaterEncoder = turretMotor.getAbsoluteEncoder().getPosition();
   }
 
   public void onPosition(double desiredPos) { 
@@ -68,25 +74,34 @@ public class TurretRev extends SubsystemBase {
     turretMotor.getClosedLoopController().setSetpoint(desiredAngle/360, ControlType.kPosition);
   }
 
-  public double getPos() {
+  public double getAbsPos() {
     return turretMotor.getEncoder().getPosition();
   }
 
+  public double getPos() {
+    return cheaterEncoder;
+  }
+
   public boolean noReset() {
+    if (reset == 'n') {
+      return true;
+    }
+    return false;
+  }
+
+  public void resetTurret() {
     if (reset == 's') {
       onPosition(5);
-      return false;
     } else if (reset == 'e') {
       onPosition(355);
-      return false;
-    } else {
-      return true;
     }
   }
 
   public void onSpeed(double speed) {
     if (noReset()) {
       turretMotor.set(speed/3);
+    } else {
+      resetTurret();
     }
   }
 
@@ -111,10 +126,31 @@ public class TurretRev extends SubsystemBase {
       reset = 'n';
     }
 
+    if (limitSwitch.get()) {
+      pressed = true;
+    } else {
+      pressed = false;
+    }
+
+    left = SmartDashboard.getBoolean("Left Side Turret", left);
+
+    if (pressed && !limitSwitch.get()) {
+      left = !left;
+      SmartDashboard.putBoolean("Left Side Turret", left);
+    }
+
+    if (left) {
+      cheaterEncoder = turretMotor.getAbsoluteEncoder().getPosition();
+    } else {
+      cheaterEncoder = turretMotor.getAbsoluteEncoder().getPosition() + 1;
+    }
+
     SmartDashboard.putNumber("TurretPosition", turretMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("TurretTemperature", turretMotor.getMotorTemperature());
     SmartDashboard.putNumber("TurretCurrent", turretMotor.getOutputCurrent());
     SmartDashboard.putString("TurretResetState", String.valueOf(reset));
     SmartDashboard.putNumber("TurretSetpoint", turretMotor.getClosedLoopController().getSetpoint());
+
+    SmartDashboard.putBoolean("Turret Limit Switch", limitSwitch.get());
   }
 }

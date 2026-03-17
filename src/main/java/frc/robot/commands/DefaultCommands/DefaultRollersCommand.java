@@ -4,38 +4,43 @@
 
 package frc.robot.commands.DefaultCommands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.CommandConstants;
-import frc.robot.subsystems.ShooterRollers;
+import frc.robot.subsystems.RollersSubsystem;
 import frc.robot.subsystems.StateManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class DefaultShooterRollersCommand extends Command {
-  /** Creates a new DefaultShooterRollersCommand. */
-  ShooterRollers shooter;
+public class DefaultRollersCommand extends Command {
+  /** Creates a new DefaultRollersCommand. */
+  RollersSubsystem rollers;
   StateManager stateManager;
-  public DefaultShooterRollersCommand(ShooterRollers shooter, StateManager stateManager) {
+  public DefaultRollersCommand(RollersSubsystem rollers, StateManager stateManager) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.shooter = shooter;
+    this.rollers = rollers;
     this.stateManager = stateManager;
-    addRequirements(shooter);
+    addRequirements(rollers);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(stateManager.getDesiredData(CommandConstants.SHOOTER_ROLLER_KEY) != null) {
-      shooter.wheelsShooter((double) stateManager.getDesiredData(CommandConstants.SHOOTER_ROLLER_KEY));
+    if(stateManager.getDesiredData(CommandConstants.INDEX_KEY) != null) {
+      rollers.indexOn((double) stateManager.getDesiredData(CommandConstants.INDEX_KEY));
+    }
+    if(stateManager.getDesiredData(CommandConstants.INTAKE_KEY) != null) {
+      rollers.intakeOn((double) stateManager.getDesiredData(CommandConstants.INTAKE_KEY));
+    }
+    if(stateManager.getDesiredData(CommandConstants.SHOOTER_FLYWHEEL_KEY) != null) {
+      rollers.flywheelsOn((double) stateManager.getDesiredData(CommandConstants.SHOOTER_FLYWHEEL_KEY));
+    }
+    if(stateManager.getDesiredData(CommandConstants.RES_INDEX_KEY) != null) {
+      rollers.resOn((double) stateManager.getDesiredData(CommandConstants.RES_INDEX_KEY));
     }
   }
-  
 
   // Called once the command ends or is interrupted.
   @Override

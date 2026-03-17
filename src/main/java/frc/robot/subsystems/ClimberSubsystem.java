@@ -14,10 +14,12 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.constants.CommandConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
@@ -26,9 +28,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private double calculation;
   private VoltageOut voltageOut;
-  private StateManager stateManager;
   private PIDController controller = new PIDController(0,0,0);
-// PID values, they are NOT right, like VERY WRONG 
+  private DigitalInput limitSwitch = new DigitalInput(0);
 
   private final SysIdRoutine m_sysIdRoutine = 
     new SysIdRoutine(
@@ -46,9 +47,8 @@ public class ClimberSubsystem extends SubsystemBase {
       )
     );
 
-    public ClimberSubsystem(StateManager stateManager) {
+    public ClimberSubsystem() {
 
-      this.stateManager = stateManager;
       TalonFXConfiguration flexConfig = new TalonFXConfiguration();
       flexConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       flexConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -71,22 +71,21 @@ public class ClimberSubsystem extends SubsystemBase {
   }
   
 
-  public void flex(double angle){
-    if (climberMotor.getPosition().getValueAsDouble() > 300 || climberMotor.getPosition().getValueAsDouble() < 10){
+  public void toPosition(double position){
+    if (climberMotor.getPosition().getValueAsDouble() >= CommandConstants.CLIMBER_LIMIT_UP || climberMotor.getPosition().getValueAsDouble() <= 1){
       climberMotor.set(0);
-    }
-    else {
-      calculation = controller.calculate(climberMotor.getPosition().getValueAsDouble(), angle);
-      SmartDashboard.putNumber("SHOOTER_WRIST_PID", angle);
+    } else {
+      calculation = controller.calculate(climberMotor.getPosition().getValueAsDouble(), position);
       climberMotor.set(calculation);
+      SmartDashboard.putNumber("Shooter PID target", position);
     }
   }
 
-  public void startFlex(){
-    climberMotor.set(.1); // this value is just a filler
+  public void start(double speed){
+    climberMotor.set(speed);
   }
 
-  public void stopFlex(){
+  public void stop(){
     climberMotor.set(0); 
   }
 
@@ -96,13 +95,14 @@ public class ClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // This method will be called once per scheduler run
+
     SmartDashboard.putNumber("ClimberSubsystemPosition",climberMotor.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("ClimberSubsystemTemperature", climberMotor.getDeviceTemp().getValueAsDouble());
     SmartDashboard.putNumber("ClimberSubsystemCurrent", climberMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putBoolean("ClimberSubsystemHappy", climberMotor.getStatorCurrent().getValueAsDouble()<30);
-    SmartDashboard.putNumber("UnhappyCount", SmartDashboard.getNumber("UnhappyCount", 0)); // reefscape code also included a check for if the elevator was happy
-    // This method will be called once per scheduler run
 
-    // more code here in reefscape with stagemanager, prob have to add later
+    if (limitSwitch.get()) {
+      climberMotor.setPosition(0);
+    }
   }
 }
