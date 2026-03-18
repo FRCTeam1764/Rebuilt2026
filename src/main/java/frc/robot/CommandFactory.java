@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.waitUntilPosition;
 import frc.robot.commands.waitUntilPositionIndex;
 import frc.robot.commands.BasicCommands.ClimberCommand;
+import frc.robot.commands.BasicCommands.ClimberCommandSpec;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.ComplexCommands.returnToIdle;
@@ -74,19 +75,26 @@ public class CommandFactory {
                     new DriveForward(swerve));
     }
 
-     public Command ShootCommand(){
+    public Command ShootCommand(){
         return new SequentialCommandGroup( 
         new RequestStateChange(States.SHOOT, stateManager)
         );
     }
 
+    // public Command ShootSpitCommand(){
+    //     return new SequentialCommandGroup( 
+    //         new RequestStateChange(States.SHOOT, stateManager),
+    //         new ParallelDeadlineGroup(
+    //             new waitUntilPosition(stateManager, CommandConstants.INTAKE_WRIST_KEY, 0, null, 0)), null)
+    //     );
+    // }
     
     public Command ClimbUpCommand(){
-        return new ClimberCommand(CommandConstants.CLIMBER_LIMIT_UP, climber);
+        return new ClimberCommand(true, climber);
     }
 
     public Command ClimbDownCommand(){
-        return new ClimberCommand(CommandConstants.CLIMBER_LIMIT_DOWN, climber);
+        return new ClimberCommand(false, climber);
     }
 
     public Command GroundIntakeCommand(){ 

@@ -22,6 +22,8 @@ import frc.robot.state.IDLE;
 import frc.robot.state.INTAKE;
 import frc.robot.state.INTAKE_OUT;
 import frc.robot.state.INTAKE_WHILE_SHOOT;
+import frc.robot.state.MID_IDLE;
+import frc.robot.state.MID_SHOOT;
 import frc.robot.state.SHOOT;
 import frc.robot.state.SHOOT_Q1;
 import frc.robot.state.SHOOT_Q2;
@@ -47,7 +49,9 @@ public class StateManager extends SubsystemBase {
     INTAKE_WHILE_SHOOT,
     SHOOT_WITH_INTAKE,
     SHOOT,
-    CONDENSED
+    CONDENSED,
+    MID_IDLE,
+    MID_SHOOT
   }
 
   public List<BasicState> StateHandlers = List.of(
@@ -57,7 +61,9 @@ public class StateManager extends SubsystemBase {
       new INTAKE_WHILE_SHOOT(),
       new SHOOT_WITH_INTAKE(),
       new SHOOT(),
-      new CONDENSED()
+      new CONDENSED(),
+      new MID_IDLE(),
+      new MID_SHOOT()
   );
 
   public States state;

@@ -28,6 +28,11 @@ public final class CommandConstants {
     public final static double SHOOTER_WRIST_DOWN = 0.9;
     public final static double SHOOTER_WRIST_UP = 0.5;
 
+    public final static double SHOOTER_FAR = 0.48;
+    public final static double SHOOTER_MID1 = 0.44;
+    public final static double SHOOTER_MID2 = 0.42;
+    public final static double SHOOTER_CLOSE = 0.57;
+
     //speeds
     public final static double INTAKE_IN_SPEED = -0.325;
     public final static double INTAKE_OUT_SPEED = 0.1;
@@ -35,6 +40,7 @@ public final class CommandConstants {
     public final static double SHOOTER_SPEED = 1.0;
     public final static double RES_SPEED = 0.35;
     public final static double TURRET_SPEED = 0.3;
+    public final static double CLIMBER_SPEED = 0.1;
 
     //keys
     public static final String SHOOTER_FLYWHEEL_KEY = "ShooterRollerSpeed";

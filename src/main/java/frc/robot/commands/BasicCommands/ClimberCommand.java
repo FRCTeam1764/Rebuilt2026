@@ -12,12 +12,12 @@ import frc.robot.constants.CommandConstants;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ClimberCommand extends Command {
   /** Creates a new ClimberCommand. */
-  double desired;
+  boolean up;
   ClimberSubsystem climberSubsystem;
 
-  public ClimberCommand(double desired, ClimberSubsystem climberSubsystem) {
+  public ClimberCommand(boolean up, ClimberSubsystem climberSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.desired = desired;
+    this.up = up;
     this.climberSubsystem = climberSubsystem;
     addRequirements(climberSubsystem);
   }
@@ -29,7 +29,11 @@ public class ClimberCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climberSubsystem.toPosition(desired);
+    if (up) {
+      climberSubsystem.startUp();
+    } else {
+      climberSubsystem.startDown();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -41,8 +45,7 @@ public class ClimberCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.climberSubsystem.getEncoderPos() <= this.desired+1 && this.climberSubsystem.getEncoderPos() >= this.desired-1;
-
+    return false;
   } 
 }
                                                                                                            

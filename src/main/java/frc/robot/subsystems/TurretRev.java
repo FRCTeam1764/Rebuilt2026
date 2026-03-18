@@ -48,19 +48,19 @@ public class TurretRev extends SubsystemBase {
     SparkMaxConfig config = new SparkMaxConfig();
     config.inverted(false);
     config.idleMode(SparkBaseConfig.IdleMode.kBrake);
-    config.smartCurrentLimit(20);
+    config.smartCurrentLimit(50);
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
     pidConfig.pid(0, 0, 0);
     pidConfig.outputRange(-0.5, 0.5);
     config.apply(pidConfig);
 
-    SoftLimitConfig limitConfig = new SoftLimitConfig();
-    limitConfig.forwardSoftLimitEnabled(true);
-    limitConfig.forwardSoftLimit(355);
-    limitConfig.reverseSoftLimitEnabled(true);
-    limitConfig.reverseSoftLimit(5);
-    config.apply(limitConfig);
+    // SoftLimitConfig limitConfig = new SoftLimitConfig();
+    // limitConfig.forwardSoftLimitEnabled(true);
+    // limitConfig.forwardSoftLimit(1.9);
+    // limitConfig.reverseSoftLimitEnabled(true);
+    // limitConfig.reverseSoftLimit(0.1);
+    // config.apply(limitConfig);
 
     //config, resets configs to default, configs persist even after motor is power cycled
     turretMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -105,10 +105,12 @@ public class TurretRev extends SubsystemBase {
     // } else {
     //   resetTurret();
     // }
+    // SmartDashboard.putString("message", "" + cheaterEncoder + ">=0.1 & " + speed + "<0: " + (cheaterEncoder>=0.1) + " + " + (speed<0) + " = " + (cheaterEncoder>=0.1 && speed<0));
+    // SmartDashboard.putString("message2", "" + cheaterEncoder + "<=0.9 & " + speed + ">0: " + (cheaterEncoder<=1.9) + " + " + (speed>0) + " = " + (cheaterEncoder<=1.9 && speed>0));
     if (cheaterEncoder>=0.1 && speed<0) { 
-      turretMotor.set(speed);
-     } else if (cheaterEncoder<=1.9 && speed>0) {
-      turretMotor.set(speed/2);
+      turretMotor.set(speed*0.25);
+    } else if (cheaterEncoder<=1.8 && speed>0) {
+      turretMotor.set(speed*0.25);
     } else {
       turretMotor.set(0);
     }

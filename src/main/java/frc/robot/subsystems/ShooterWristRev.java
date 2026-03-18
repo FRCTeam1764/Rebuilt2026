@@ -45,18 +45,18 @@ public class ShooterWristRev extends SubsystemBase {
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
     pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
-    pidConfig.outputRange(-0.2, 0.2);
+    pidConfig.outputRange(-0.4, 0.4);
     pidConfig.pid(2.8, 0 ,0);
     pidConfig.allowedClosedLoopError(0.001, ClosedLoopSlot.kSlot0);
 
-    SoftLimitConfig softLimitConfig = new SoftLimitConfig();
-    softLimitConfig.reverseSoftLimit(0.3);
-    softLimitConfig.reverseSoftLimitEnabled(true);
-    softLimitConfig.forwardSoftLimit(0.56);
-    softLimitConfig.forwardSoftLimitEnabled(true);
+    // SoftLimitConfig softLimitConfig = new SoftLimitConfig();
+    // softLimitConfig.reverseSoftLimit(0.3);
+    // softLimitConfig.reverseSoftLimitEnabled(true);
+    // softLimitConfig.forwardSoftLimit(0.56);
+    // softLimitConfig.forwardSoftLimitEnabled(true);
 
     config.apply(pidConfig);
-    config.apply(softLimitConfig);
+    //config.apply(softLimitConfig);
 
     wristMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
   }

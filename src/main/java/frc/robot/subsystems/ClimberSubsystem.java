@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,26 +27,26 @@ public class ClimberSubsystem extends SubsystemBase {
 
   TalonFX climberMotor = new TalonFX(61);
 
-  private double calculation;
-  private VoltageOut voltageOut;
-  private PIDController controller = new PIDController(0,0,0);
-  private DigitalInput limitSwitch = new DigitalInput(0);
+  // private double calculation;
+  // private VoltageOut voltageOut;
+  // private PIDController controller = new PIDController(0,0,0);
+  private DigitalOutput limitSwitch = new DigitalOutput(0);
 
-  private final SysIdRoutine m_sysIdRoutine = 
-    new SysIdRoutine(
-      new SysIdRoutine.Config(
-        null,
-        Volts.of(4),
-        null,
+  // private final SysIdRoutine m_sysIdRoutine = 
+  //   new SysIdRoutine(
+  //     new SysIdRoutine.Config(
+  //       null,
+  //       Volts.of(4),
+  //       null,
 
-        (state) -> SignalLogger.writeString("state", state.toString())
-      ),
-      new SysIdRoutine.Mechanism(
-        (volts) -> climberMotor.setControl(voltageOut.withOutput(volts.in(Volts))),
-        null,
-        this
-      )
-    );
+  //       (state) -> SignalLogger.writeString("state", state.toString())
+  //     ),
+  //     new SysIdRoutine.Mechanism(
+  //       (volts) -> climberMotor.setControl(voltageOut.withOutput(volts.in(Volts))),
+  //       null,
+  //       this
+  //     )
+  //   );
 
     public ClimberSubsystem() {
 
@@ -62,31 +63,49 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
 
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction){
-    return m_sysIdRoutine.quasistatic(direction);
-  }
+  // public Command sysIdQuasistatic(SysIdRoutine.Direction direction){
+  //   return m_sysIdRoutine.quasistatic(direction);
+  // }
 
-  public Command sysIdDynamic(SysIdRoutine.Direction direction){
-    return m_sysIdRoutine.dynamic(direction);
-  }
+  // public Command sysIdDynamic(SysIdRoutine.Direction direction){
+  //   return m_sysIdRoutine.dynamic(direction);
+  // }
 
   public boolean getLimit() {
     return !limitSwitch.get();
   }
   
 
-  public void toPosition(double position){
-    if (climberMotor.getPosition().getValueAsDouble() >= CommandConstants.CLIMBER_LIMIT_UP || climberMotor.getPosition().getValueAsDouble() <= 0.3){
-      climberMotor.set(0);
-    } else {
-      calculation = controller.calculate(climberMotor.getPosition().getValueAsDouble(), position);
-      climberMotor.set(calculation);
-      SmartDashboard.putNumber("Shooter PID target", position);
-    }
+  // public void toPosition(double position){
+  //   if (climberMotor.getPosition().getValueAsDouble() >= CommandConstants.CLIMBER_LIMIT_UP || climberMotor.getPosition().getValueAsDouble() <= 0.3){
+  //     climberMotor.set(0);
+  //   } else {
+  //     calculation = controller.calculate(climberMotor.getPosition().getValueAsDouble(), position);
+  //     climberMotor.set(calculation);
+  //     SmartDashboard.putNumber("Shooter PID target", position);
+  //   }
+  // }
+
+  public void startSpec(double speed){
+    climberMotor.set(speed);
   }
 
-  public void start(double speed){
-    climberMotor.set(speed);
+  public void startUp() {
+    climberMotor.set(CommandConstants.CLIMBER_SPEED);
+    // if (getEncoderPos()<195) {
+    //   climberMotor.set(CommandConstants.CLIMBER_SPEED);
+    // } else {
+    //   climberMotor.set(0);
+    // }
+  }
+
+  public void startDown() {
+      climberMotor.set(-CommandConstants.CLIMBER_SPEED);
+    // if (getEncoderPos()>2) {
+    //   climberMotor.set(-CommandConstants.CLIMBER_SPEED);
+    // } else {
+    //   climberMotor.set(0);
+    // }
   }
 
   public void stop(){

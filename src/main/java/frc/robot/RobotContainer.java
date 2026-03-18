@@ -27,6 +27,7 @@ import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.RollersSubsystem;
 import frc.robot.subsystems.ShooterWristRev;
+import frc.robot.commands.BasicCommands.ClimberCommandSpec;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.BasicCommands.ShooterWristCommand;
@@ -46,8 +47,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeWristRev;
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed = 0.8 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = 0.8*RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -72,7 +73,7 @@ public class RobotContainer {
     
     //subsystems
     private final RollersSubsystem rollers = new RollersSubsystem();
-    private final ShooterWristRev wrist = new ShooterWristRev();
+    private final ShooterWristRev shooterWrist = new ShooterWristRev();
     private final TurretRev turret = new TurretRev();
     private final IntakeWristRev intakeWrist = new IntakeWristRev();
     private final ClimberSubsystem climber = new ClimberSubsystem();
@@ -86,8 +87,8 @@ public class RobotContainer {
     
 
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
     
     
     private final SendableChooser<Command> chooser;
@@ -116,8 +117,7 @@ public class RobotContainer {
         rollers.setDefaultCommand(new DefaultRollersCommand(rollers, stateManager));
         intakeWrist.setDefaultCommand(new DefaultIntakeWristCommand(intakeWrist, stateManager));
         turret.setDefaultCommand(new DefaultTurretCommand(turret, copilot));
-        //climber.setDefaultCommand(new DefaultClimberCommand(climber, stateManager));
-
+        
         configureMainBindings();
 
         drivetrain.registerTelemetry(logger::telemeterize);
@@ -126,14 +126,15 @@ public class RobotContainer {
     private void configureMainBindings() {
         // Drive Controls
         pilot.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        pilot.b().whileTrue(new DriveRobotCentric(drivetrain, pilot));
+        
         copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
         
         pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
 
 
         // Subsystem Controls
-        pilot.x().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
+        pilot.b().whileTrue(new RequestStateChange(States.MID_IDLE, stateManager));
+
 
         // pilot.b().onTrue(commandFactory.ClimbUpCommand());
         // pilot.a().onTrue(commandFactory.ClimbDownCommand());
@@ -141,14 +142,36 @@ public class RobotContainer {
         pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
         pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        pilot.a().onTrue(new RequestStateChange(States.SHOOT, stateManager));
-        pilot.a().onFalse(new RequestStateChange(States.IDLE, stateManager));
-
-        pilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
+        pilot.leftBumper().whileTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
         pilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        
+        copilot.rightTrigger().whileTrue(new RequestStateChange(States.SHOOT, stateManager));
+        copilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        pilot.leftTrigger().onTrue(new RequestStateChange(States.SHOOT_WITH_INTAKE, stateManager));
-        pilot.leftTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_FAR, shooterWrist));
+        copilot.a().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        
+        copilot.x().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID1, shooterWrist));
+        copilot.x().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        
+        copilot.b().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID2, shooterWrist));
+        copilot.b().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        
+        copilot.y().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_CLOSE, shooterWrist));
+        copilot.y().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        copilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
+        copilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        copilot.leftTrigger().onTrue(new RequestStateChange(States.SHOOT_WITH_INTAKE, stateManager));
+        copilot.leftTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        // copilot.pov(0).whileTrue(commandFactory.ClimbUpCommand());
+        // copilot.pov(0).onFalse(new ClimberCommandSpec(0, climber));
+        // copilot.pov(180).whileTrue(commandFactory.ClimbDownCommand());
+        // copilot.pov(180).onFalse(new ClimberCommandSpec(0, climber));
+
+    
 
         pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
 

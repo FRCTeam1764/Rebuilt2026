@@ -12,10 +12,10 @@ import frc.robot.subsystems.ShooterWristRev;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ShooterWristCommand extends Command {
   /** Creates a new ShooterWristCommand. */
-  int desired;
+  double desired;
   ShooterWristRev shooterWrist;
 
-  public ShooterWristCommand(int desired, ShooterWristRev shooterWrist) {
+  public ShooterWristCommand(double desired, ShooterWristRev shooterWrist) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.desired = desired;
     this.shooterWrist = shooterWrist;
@@ -41,7 +41,7 @@ public class ShooterWristCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.shooterWrist.getPos() <= this.desired+1 && this.shooterWrist.getPos() >= this.desired-1;
+    return false;
 
   } 
 }
