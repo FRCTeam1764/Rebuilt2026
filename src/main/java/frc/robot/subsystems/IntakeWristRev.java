@@ -4,93 +4,72 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.hal.PowerDistributionVersion;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
-import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.revrobotics.PersistMode;
+import com.revrobotics.REVLibError;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkSoftLimit;
 import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.FeedForwardConfig;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import static edu.wpi.first.units.Units.Volts;
 
 public class IntakeWristRev extends SubsystemBase {
-  /** Creates a new IntakeSubsystem. */
+  /** Creates a new IntakeWrist. */
 
-  private final SparkMax wristMotor = new SparkMax(62, SparkLowLevel.MotorType.kBrushless);
-  private double wristSpeed = 0.2;
-  
+  SparkMax wristMotor = new SparkMax(62, SparkLowLevel.MotorType.kBrushless);
+
   public IntakeWristRev() {
-
     SparkMaxConfig config = new SparkMaxConfig();
     config.inverted(true);
     config.idleMode(SparkBaseConfig.IdleMode.kBrake);
-    //config.smartCurrentLimit(20);
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
-    pidConfig.pid(2, 0, 0, ClosedLoopSlot.kSlot0);
-    pidConfig.pid(8, 0, 0, ClosedLoopSlot.kSlot1);
-
-    pidConfig.outputRange(-0.3, 0.1);
     pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
-    config.apply(pidConfig);
+    pidConfig.pid(1.225, 0, 0.9);
+    pidConfig.allowedClosedLoopError(0.005, ClosedLoopSlot.kSlot0); 
     
+    FeedForwardConfig ffConfig = new FeedForwardConfig();
+    ffConfig.sva(0.74574, 4.4131, 0.53475);
+    ffConfig.kCos(0);
+    ffConfig.kCosRatio(1);
 
-    // SoftLimitConfig limitConfig = new SoftLimitConfig();
-    // limitConfig.forwardSoftLimitEnabled(true);
-    // limitConfig.forwardSoftLimit(0.075); //9.83
-    // limitConfig.reverseSoftLimitEnabled(true);
-    // limitConfig.reverseSoftLimit(0.25);
-    // config.apply(limitConfig);
+    pidConfig.apply(ffConfig);
+    config.apply(pidConfig);
 
-    //config, resets configs to default, configs persist even after motor is power cycled
-    wristMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
-  }
-
-  public void onPosition(double desiredPos) { 
-    if (desiredPos < wristMotor.getAbsoluteEncoder().getPosition()) {
-      wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
-    } else {
-      wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition, ClosedLoopSlot.kSlot1);
-    }
-  }
-
-  public void onAnglePosition(double desiredAngle) { 
-    wristMotor.getClosedLoopController().setSetpoint(desiredAngle/360, ControlType.kPosition);
-  }
-
-  public double getPos() {
-    return wristMotor.getEncoder().getPosition();
-  }
-
-  public void onSpeed(double speed) {
-    if (wristMotor.getAbsoluteEncoder().getPosition() <= 0.075 && speed < 0) {
-      speed = 0;
-    }
-    if (wristMotor.getAbsoluteEncoder().getPosition() >= 0.25 && speed > 0) {
-      speed = 0;
-    }
-    wristMotor.set(speed);
-  }
-
-  public void on(boolean neg) {
-    wristMotor.set(neg ? -wristSpeed : wristSpeed);
+    wristMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void stop() {
     wristMotor.set(0);
+  } 
+
+  public void setPos(double desiredPos) {
+    wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition);
+    SmartDashboard.putNumber("pid controller", wristMotor.getClosedLoopController().getSetpoint());
+  }
+
+  public double getPos() {
+    return wristMotor.getAbsoluteEncoder().getPosition();
+  }
+
+  public boolean atPos() {
+    return wristMotor.getClosedLoopController().isAtSetpoint();
   }
 
   @Override

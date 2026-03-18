@@ -32,7 +32,7 @@ public class DefaultIntakeWristCommand extends Command {
   @Override
   public void execute() {
     if(stateManager.getDesiredData(CommandConstants.INTAKE_WRIST_KEY) != null) {
-      wrist.onPosition((double) stateManager.getDesiredData(CommandConstants.INTAKE_WRIST_KEY));
+      wrist.setPos((double) stateManager.getDesiredData(CommandConstants.INTAKE_WRIST_KEY));
     }
   }
   

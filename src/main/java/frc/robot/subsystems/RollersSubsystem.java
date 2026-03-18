@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -18,6 +19,14 @@ public class RollersSubsystem extends SubsystemBase {
   TalonFX intakeRollers = new TalonFX(6);
 
   public RollersSubsystem() {
+    TalonFXConfiguration config = new TalonFXConfiguration();
+    config.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.CurrentLimits.StatorCurrentLimit = 40;
+
+    indexRollers.getConfigurator().apply(config);
+    shooterFlywheel.getConfigurator().apply(config);
+    resRollers.getConfigurator().apply(config);
+    intakeRollers.getConfigurator().apply(config);
 
   }
 

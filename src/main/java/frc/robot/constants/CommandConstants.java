@@ -17,6 +17,7 @@ public final class CommandConstants {
     public final static double SHOOTER_LIMIT_DOWN = 0.4;
 
     public final static double CLIMBER_LIMIT_UP = 0.0;
+    public final static double CLIMBER_LIMIT_DOWN = 0.0;
 
     //positions
     public final static double INTAKE_WRIST_DOWN = 0.988;

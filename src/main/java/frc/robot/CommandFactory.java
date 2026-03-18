@@ -48,7 +48,6 @@ public class CommandFactory {
     private StateManager stateManager;
     private CommandXboxController pilot;
     private RollersSubsystem rollers;
-    private LimelightSubsystem localLimelight;
     private LimelightSubsystem turretLimelight;
     private ShooterWristRev wrist;
     private TurretRev turret;
@@ -56,13 +55,12 @@ public class CommandFactory {
     private ClimberSubsystem climber;
 
     public CommandFactory(IntakeWristRev intakeWrist, TurretRev turret, ShooterWristRev wrist, LimelightSubsystem turretLimelight, 
-                LimelightSubsystem localLimelight, RollersSubsystem rollers, ClimberSubsystem climber,
+                RollersSubsystem rollers, ClimberSubsystem climber,
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
         this.pilot = pilot;
         this.swerve = swerve;
         this.stateManager = stateManager;
         this.rollers = rollers;
-        this.localLimelight = localLimelight;
         this.turretLimelight = turretLimelight;
         this.wrist = wrist;
         this.turret = turret;
@@ -84,23 +82,11 @@ public class CommandFactory {
 
     
     public Command ClimbUpCommand(){
-        return new SequentialCommandGroup(
-            new ParallelRaceGroup(
-             new ClimberCommand(60, climber),  
-             new WaitCommand(2)
-            ),
-            new RequestStateChange(States.CLIMB_L1, stateManager)
-        );
+        return new ClimberCommand(CommandConstants.CLIMBER_LIMIT_UP, climber);
     }
 
     public Command ClimbDownCommand(){
-        return new SequentialCommandGroup(
-            new ParallelRaceGroup(
-             new ClimberCommand(0, climber),  
-             new WaitCommand(2)
-            ), 
-            new RequestStateChange(States.IDLE, stateManager)
-        );
+        return new ClimberCommand(CommandConstants.CLIMBER_LIMIT_DOWN, climber);
     }
 
     public Command GroundIntakeCommand(){ 

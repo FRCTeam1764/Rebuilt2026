@@ -21,6 +21,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,8 +34,9 @@ public class TurretRev extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
 
   private final SparkMax turretMotor = new SparkMax(23, SparkLowLevel.MotorType.kBrushless);
-  DigitalInput limitSwitch = new DigitalInput(1);
+  DigitalOutput limitSwitch = new DigitalOutput(2);
   boolean left = false;
+  boolean switchSides = false;
   boolean pressed = false;
   double cheaterEncoder;
 
@@ -98,10 +100,17 @@ public class TurretRev extends SubsystemBase {
   }
 
   public void onSpeed(double speed) {
-    if (noReset()) {
-      turretMotor.set(speed/3);
+    // if (noReset()) {
+    //   turretMotor.set(speed/3);
+    // } else {
+    //   resetTurret();
+    // }
+    if (cheaterEncoder>=0.1 && speed<0) { 
+      turretMotor.set(speed);
+     } else if (cheaterEncoder<=1.9 && speed>0) {
+      turretMotor.set(speed/2);
     } else {
-      resetTurret();
+      turretMotor.set(0);
     }
   }
 
@@ -126,18 +135,27 @@ public class TurretRev extends SubsystemBase {
       reset = 'n';
     }
 
+    if (pressed && !limitSwitch.get()) {
+      left = !left;
+    }
+
     if (limitSwitch.get()) {
       pressed = true;
+      turretMotor.getEncoder().setPosition(0);
     } else {
       pressed = false;
     }
+    
+    switchSides = SmartDashboard.getBoolean("Switch Turret Side", false);
+    SmartDashboard.putBoolean("Switch Turret Side", switchSides);
 
-    left = SmartDashboard.getBoolean("Left Side Turret", left);
-
-    if (pressed && !limitSwitch.get()) {
+    if (switchSides) {
       left = !left;
-      SmartDashboard.putBoolean("Left Side Turret", left);
+      switchSides = false;
     }
+
+    SmartDashboard.putBoolean("Left Side Turret", left);
+
 
     if (left) {
       cheaterEncoder = turretMotor.getAbsoluteEncoder().getPosition();
@@ -150,7 +168,11 @@ public class TurretRev extends SubsystemBase {
     SmartDashboard.putNumber("TurretCurrent", turretMotor.getOutputCurrent());
     SmartDashboard.putString("TurretResetState", String.valueOf(reset));
     SmartDashboard.putNumber("TurretSetpoint", turretMotor.getClosedLoopController().getSetpoint());
+    SmartDashboard.putNumber("TurretSpeed", turretMotor.getAbsoluteEncoder().getVelocity());
+
+    SmartDashboard.putNumber("Turret cheater encoder", cheaterEncoder);
 
     SmartDashboard.putBoolean("Turret Limit Switch", limitSwitch.get());
+    SmartDashboard.putBoolean("turret pressed", pressed);
   }
 }

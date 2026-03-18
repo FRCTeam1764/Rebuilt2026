@@ -27,7 +27,9 @@ import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.RollersSubsystem;
 import frc.robot.subsystems.ShooterWristRev;
+import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
+import frc.robot.commands.BasicCommands.ShooterWristCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DefaultCommands.DefaultClimberCommand;
 import frc.robot.commands.DefaultCommands.DefaultIntakeWristCommand;
@@ -77,20 +79,21 @@ public class RobotContainer {
     
     //limelights
     private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight-fourtwo");
-    private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight-four");
+    //private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight-four");
 
     
     //private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
     
 
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, rollers, climber, pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, rollers, climber, pilot, drivetrain, stateManager);
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
     
     
-    private final SendableChooser<Command> chooser ;
+    private final SendableChooser<Command> chooser;
 
     public RobotContainer() {
+        drivetrain.configureAutoBuilder();
         stateManager.requestNewState(States.IDLE);
         chooser = AutoBuilder.buildAutoChooser("Autonomous");
         SmartDashboard.putData("Autos", chooser);
@@ -132,18 +135,30 @@ public class RobotContainer {
         // Subsystem Controls
         pilot.x().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
 
-        pilot.b().onTrue(commandFactory.ClimbUpCommand());
-        pilot.a().onTrue(commandFactory.ClimbDownCommand());
+        // pilot.b().onTrue(commandFactory.ClimbUpCommand());
+        // pilot.a().onTrue(commandFactory.ClimbDownCommand());
 
         pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
         pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        // Aiming Controls
-        
-    }
+        pilot.a().onTrue(new RequestStateChange(States.SHOOT, stateManager));
+        pilot.a().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-    public void changePipeline() {
-        localLimelight.setPipeline(1);
+        pilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
+        pilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        pilot.leftTrigger().onTrue(new RequestStateChange(States.SHOOT_WITH_INTAKE, stateManager));
+        pilot.leftTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
+
+
+        // Aiming Controls
+        // copilot.pov(0).whileTrue(new ShooterWristCommand(10, wrist));
+        // copilot.pov(90).whileTrue(new ShooterWristCommand(15, wrist));
+        // copilot.pov(180).whileTrue(new ShooterWristCommand(20, wrist));
+        // copilot.pov(270).whileTrue(new ShooterWristCommand(30, wrist));
+        
     }
 
     public Command getAutonomousCommand() {

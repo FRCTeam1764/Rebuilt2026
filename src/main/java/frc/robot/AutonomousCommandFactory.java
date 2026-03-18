@@ -47,9 +47,9 @@ public class AutonomousCommandFactory extends CommandFactory{
     private ClimberSubsystem climber;
 
     public AutonomousCommandFactory(IntakeWristRev intakeWrist, TurretRev turret, ShooterWristRev wrist, LimelightSubsystem turretLimelight, 
-                LimelightSubsystem localLimelight, RollersSubsystem rollers, ClimberSubsystem climber, 
+                RollersSubsystem rollers, ClimberSubsystem climber, 
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
-        super(intakeWrist, turret, wrist, turretLimelight, localLimelight, rollers, climber, pilot, swerve, stateManager);
+        super(intakeWrist, turret, wrist, turretLimelight, rollers, climber, pilot, swerve, stateManager);
         configAutonomousCommands();
     }
     
@@ -154,6 +154,7 @@ public class AutonomousCommandFactory extends CommandFactory{
     }
 
     public void configAutonomousCommands() {
+        NamedCommands.registerCommand("Q1turret", null);
         NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
         NamedCommands.registerCommand("ClimbCommand", ClimbUpCommand());
         NamedCommands.registerCommand("DriveForward", new DriveForward(swerve));

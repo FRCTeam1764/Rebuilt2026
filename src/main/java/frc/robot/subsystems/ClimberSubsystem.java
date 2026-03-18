@@ -24,7 +24,7 @@ import frc.robot.constants.CommandConstants;
 public class ClimberSubsystem extends SubsystemBase {
   /** Creates a new ClimberSubsystem. */
 
-  TalonFX climberMotor = new TalonFX(27);
+  TalonFX climberMotor = new TalonFX(61);
 
   private double calculation;
   private VoltageOut voltageOut;
@@ -69,10 +69,14 @@ public class ClimberSubsystem extends SubsystemBase {
   public Command sysIdDynamic(SysIdRoutine.Direction direction){
     return m_sysIdRoutine.dynamic(direction);
   }
+
+  public boolean getLimit() {
+    return !limitSwitch.get();
+  }
   
 
   public void toPosition(double position){
-    if (climberMotor.getPosition().getValueAsDouble() >= CommandConstants.CLIMBER_LIMIT_UP || climberMotor.getPosition().getValueAsDouble() <= 1){
+    if (climberMotor.getPosition().getValueAsDouble() >= CommandConstants.CLIMBER_LIMIT_UP || climberMotor.getPosition().getValueAsDouble() <= 0.3){
       climberMotor.set(0);
     } else {
       calculation = controller.calculate(climberMotor.getPosition().getValueAsDouble(), position);
@@ -100,8 +104,9 @@ public class ClimberSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ClimberSubsystemPosition",climberMotor.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("ClimberSubsystemTemperature", climberMotor.getDeviceTemp().getValueAsDouble());
     SmartDashboard.putNumber("ClimberSubsystemCurrent", climberMotor.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putBoolean("Climber Limit Switch", getLimit());
 
-    if (limitSwitch.get()) {
+    if (getLimit()) {
       climberMotor.setPosition(0);
     }
   }
