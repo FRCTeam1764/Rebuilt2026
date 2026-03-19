@@ -22,7 +22,8 @@ public final class CommandConstants {
     //positions
     public final static double INTAKE_WRIST_DOWN = 0.988;
     public final static double INTAKE_WRIST_MID = 0.85;
-    public final static double INTAKE_WRIST_IN = 0.75;
+    public final static double INTAKE_WRIST_IN = 0.755;
+    public final static double INTAKE_WRIST_IN_IN = 0.755;
 
     public final static double SHOOTER_DEFAULT = 0.5;
     public final static double SHOOTER_WRIST_DOWN = 0.9;
@@ -31,7 +32,7 @@ public final class CommandConstants {
     public final static double SHOOTER_FAR = 0.48;
     public final static double SHOOTER_MID1 = 0.44;
     public final static double SHOOTER_MID2 = 0.42;
-    public final static double SHOOTER_CLOSE = 0.57;
+    public final static double SHOOTER_CLOSE = 0.6;
 
     //speeds
     public final static double INTAKE_IN_SPEED = -0.325;

@@ -49,11 +49,11 @@ public class ShooterWristRev extends SubsystemBase {
     pidConfig.pid(2.8, 0 ,0);
     pidConfig.allowedClosedLoopError(0.001, ClosedLoopSlot.kSlot0);
 
-    // SoftLimitConfig softLimitConfig = new SoftLimitConfig();
-    // softLimitConfig.reverseSoftLimit(0.3);
-    // softLimitConfig.reverseSoftLimitEnabled(true);
-    // softLimitConfig.forwardSoftLimit(0.56);
-    // softLimitConfig.forwardSoftLimitEnabled(true);
+    SoftLimitConfig softLimitConfig = new SoftLimitConfig();
+    softLimitConfig.reverseSoftLimit(0.3);
+    softLimitConfig.reverseSoftLimitEnabled(true);
+    softLimitConfig.forwardSoftLimit(0.59);
+    softLimitConfig.forwardSoftLimitEnabled(true);
 
     config.apply(pidConfig);
     //config.apply(softLimitConfig);
@@ -75,7 +75,7 @@ public class ShooterWristRev extends SubsystemBase {
   }
 
   public void onSpeed(double speed) {
-    wristMotor.set(speed);
+    wristMotor.set(speed*0.2);
   }
 
   public double getPos() {

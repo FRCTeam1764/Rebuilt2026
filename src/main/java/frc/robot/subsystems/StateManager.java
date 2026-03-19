@@ -49,9 +49,7 @@ public class StateManager extends SubsystemBase {
     INTAKE_WHILE_SHOOT,
     SHOOT_WITH_INTAKE,
     SHOOT,
-    CONDENSED,
-    MID_IDLE,
-    MID_SHOOT
+    CONDENSED
   }
 
   public List<BasicState> StateHandlers = List.of(
@@ -61,9 +59,7 @@ public class StateManager extends SubsystemBase {
       new INTAKE_WHILE_SHOOT(),
       new SHOOT_WITH_INTAKE(),
       new SHOOT(),
-      new CONDENSED(),
-      new MID_IDLE(),
-      new MID_SHOOT()
+      new CONDENSED()
   );
 
   public States state;

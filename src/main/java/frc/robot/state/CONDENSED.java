@@ -15,11 +15,11 @@ public void execute(StateManager stateManager){
 
     stateManager.clearDesiredData();
 
-    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, CommandConstants.INTAKE_WRIST_IN);
     stateManager.addDesiredData(CommandConstants.SHOOTER_FLYWHEEL_KEY, 0.0);
-    stateManager.addDesiredData(CommandConstants.INTAKE_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INTAKE_KEY, CommandConstants.INTAKE_OUT_SPEED);
+    stateManager.addDesiredData(CommandConstants.RES_INDEX_KEY, 0.0);
     stateManager.addDesiredData(CommandConstants.INDEX_KEY, 0.0);
-    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, CommandConstants.INTAKE_WRIST_IN);
+    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, CommandConstants.INTAKE_WRIST_IN_IN);
 }
    
 }

@@ -35,6 +35,7 @@ import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DefaultCommands.DefaultClimberCommand;
 import frc.robot.commands.DefaultCommands.DefaultIntakeWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultRollersCommand;
+import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
 import frc.robot.commands.DriveCommands.DriveRobotCentric;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
@@ -91,13 +92,13 @@ public class RobotContainer {
     private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
     
     
-    private final SendableChooser<Command> chooser;
+    //private final SendableChooser<Command> chooser;
 
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
         stateManager.requestNewState(States.IDLE);
-        chooser = AutoBuilder.buildAutoChooser("Autonomous");
-        SmartDashboard.putData("Autos", chooser);
+        // chooser = AutoBuilder.buildAutoChooser("Autonomous");
+        // SmartDashboard.putData("Autos", chooser);
         configureBindings();
     }
 
@@ -107,7 +108,7 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-pilot.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                drive.withVelocityX(-Math.pow(pilot.getLeftY(), 2) * (pilot.getLeftY()<0 ? -1: 1)  * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-pilot.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(-pilot.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
@@ -117,6 +118,7 @@ public class RobotContainer {
         rollers.setDefaultCommand(new DefaultRollersCommand(rollers, stateManager));
         intakeWrist.setDefaultCommand(new DefaultIntakeWristCommand(intakeWrist, stateManager));
         turret.setDefaultCommand(new DefaultTurretCommand(turret, copilot));
+        shooterWrist.setDefaultCommand(new DefaultShooterWristCommand(shooterWrist, copilot));
         
         configureMainBindings();
 
@@ -127,39 +129,38 @@ public class RobotContainer {
         // Drive Controls
         pilot.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         
-        copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
+        //copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
         
-        pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
+        pilot.start().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
 
         // Subsystem Controls
-        pilot.b().whileTrue(new RequestStateChange(States.MID_IDLE, stateManager));
+        //pilot.b().whileTrue(new RequestStateChange(States.MID_IDLE, stateManager));
 
 
         // pilot.b().onTrue(commandFactory.ClimbUpCommand());
         // pilot.a().onTrue(commandFactory.ClimbDownCommand());
 
-        pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
+        pilot.rightTrigger().onTrue(commandFactory.GroundIntakeCommand());
         pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        pilot.leftBumper().whileTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
+        pilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
         pilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        pilot.rightBumper().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
+        pilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
         
-        copilot.rightTrigger().whileTrue(new RequestStateChange(States.SHOOT, stateManager));
+        copilot.rightTrigger().onTrue(commandFactory.ShootRampCommand());
         copilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_FAR, shooterWrist));
-        copilot.a().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_FAR, shooterWrist));
         
-        copilot.x().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID1, shooterWrist));
-        copilot.x().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // copilot.x().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID1, shooterWrist));
         
-        copilot.b().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID2, shooterWrist));
-        copilot.b().onFalse(new RequestStateChange(States.IDLE, stateManager));
-        
-        copilot.y().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_CLOSE, shooterWrist));
-        copilot.y().onFalse(new RequestStateChange(States.IDLE, stateManager));
-
+        // copilot.b().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID2, shooterWrist));
+       
+        // copilot.y().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_CLOSE, shooterWrist));
+       
         copilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
         copilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
@@ -184,7 +185,7 @@ public class RobotContainer {
         
     }
 
-    public Command getAutonomousCommand() {
-        return chooser.getSelected();
-    }
+    // public Command getAutonomousCommand() {
+    //     return chooser.getSelected();
+    // }
 }

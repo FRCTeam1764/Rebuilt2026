@@ -107,13 +107,7 @@ public class TurretRev extends SubsystemBase {
     // }
     // SmartDashboard.putString("message", "" + cheaterEncoder + ">=0.1 & " + speed + "<0: " + (cheaterEncoder>=0.1) + " + " + (speed<0) + " = " + (cheaterEncoder>=0.1 && speed<0));
     // SmartDashboard.putString("message2", "" + cheaterEncoder + "<=0.9 & " + speed + ">0: " + (cheaterEncoder<=1.9) + " + " + (speed>0) + " = " + (cheaterEncoder<=1.9 && speed>0));
-    if (cheaterEncoder>=0.1 && speed<0) { 
-      turretMotor.set(speed*0.25);
-    } else if (cheaterEncoder<=1.8 && speed>0) {
-      turretMotor.set(speed*0.25);
-    } else {
-      turretMotor.set(0);
-    }
+    turretMotor.set(speed*0.25);
   }
 
   public void on(boolean neg) {

@@ -24,6 +24,7 @@ import frc.robot.commands.BasicCommands.ClimberCommand;
 import frc.robot.commands.BasicCommands.ClimberCommandSpec;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
+import frc.robot.commands.BasicCommands.ShooterFlywheelCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveForward;
 import frc.robot.commands.LimelightCommands.DriveToTarget;
@@ -73,6 +74,15 @@ public class CommandFactory {
         return new ParallelDeadlineGroup(
                     new WaitCommand(0.15), 
                     new DriveForward(swerve));
+    }
+
+    public Command ShootRampCommand(){
+        return new SequentialCommandGroup( 
+            new ParallelDeadlineGroup(
+                new WaitCommand(0.5),
+                new ShooterFlywheelCommand(rollers, 0)),
+            new RequestStateChange(States.SHOOT, stateManager)
+        );
     }
 
     public Command ShootCommand(){

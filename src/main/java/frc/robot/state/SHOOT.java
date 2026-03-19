@@ -15,9 +15,9 @@ public void execute(StateManager stateManager){
 
     stateManager.addDesiredData(CommandConstants.SHOOTER_FLYWHEEL_KEY, CommandConstants.SHOOTER_SPEED);
     stateManager.addDesiredData(CommandConstants.RES_INDEX_KEY, CommandConstants.RES_SPEED);
-    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, CommandConstants.INTAKE_WRIST_IN);
     stateManager.addDesiredData(CommandConstants.INTAKE_KEY, 0.0);
     stateManager.addDesiredData(CommandConstants.INDEX_KEY, CommandConstants.INDEX_SPEED);
+    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, CommandConstants.INTAKE_WRIST_IN_IN);
 }
    
 }
