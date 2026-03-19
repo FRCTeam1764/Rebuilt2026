@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import com.fasterxml.jackson.core.json.WriterBasedJsonGenerator;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,10 +19,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.waitUntilPosition;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
+import frc.robot.commands.BasicCommands.ShooterWristCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveBackward;
 import frc.robot.commands.DriveCommands.DriveForward;
 import frc.robot.commands.LimelightCommands.LockOnAprilTagAuto;
+import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeWristRev;
@@ -41,7 +44,7 @@ public class AutonomousCommandFactory extends CommandFactory{
     private RollersSubsystem rollers;
     private LimelightSubsystem limelight1;
     private LimelightSubsystem limelight2;
-    private ShooterWristRev wrist;
+    private ShooterWristRev shooterWrist;
     private TurretRev turret;
     private IntakeWristRev intakeWrist;
     private ClimberSubsystem climber;
@@ -50,80 +53,13 @@ public class AutonomousCommandFactory extends CommandFactory{
                 RollersSubsystem rollers, ClimberSubsystem climber, 
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
         super(intakeWrist, turret, wrist, turretLimelight, rollers, climber, pilot, swerve, stateManager);
+        this.shooterWrist = wrist;
         configAutonomousCommands();
     }
     
-    // public Command HubShootCommand_Q1(){
-    //     return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q1, stateManager),
-    //     new ParallelCommandGroup(
-    //         new AimTurretAtHub(swerve, pilot, localization)
-    //         //new AimWristCommand()
-    //     )
-    //     );
-    // }
-
-    // public Command HubShootCommand_Q2(){
-    //     return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q2, stateManager),
-    //     new ParallelCommandGroup(
-    //         new AimTurretAtHub(swerve, pilot, localization)
-    //         //new AimWristCommand()
-    //     )
-    //     );
-    // }
-
-    // public Command HubShootCommand_Q3(){
-    //     return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q3, stateManager),
-    //     new ParallelCommandGroup(
-    //         new AimTurretAtHub(swerve, pilot, localization)
-    //         //new AimWristCommand()
-    //     )
-    //     );
-    // }
-
-    // public Command HubShootCommand_Q4(){
-    //     return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q4, stateManager),
-    //     new ParallelCommandGroup(
-    //         new AimTurretAtHub(swerve, pilot, localization)
-    //         //new AimWristCommand()
-    //     )
-    //     );
-    // }
-
-    // public Command HubShootCommand_Q5(){
-    //     return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q5, stateManager),
-    //     new ParallelCommandGroup(
-    //         new AimTurretAtHub(swerve, pilot, localization)
-    //         //new AimWristCommand()
-    //     )
-    //     );
-    // }
-
-    // public Command HubShootCommand_Q6(){
-    //     return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q6, stateManager),
-    //     new ParallelCommandGroup(
-    //         new AimTurretAtHub(swerve, pilot, localization)
-    //         //new AimWristCommand()
-    //     )
-    //     );
-    // }
-
-    // public Command HubShootCommand_Q7(){
-    //     return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q7, stateManager),
-    //     new ParallelCommandGroup(
-    //         new AimTurretAtHub(swerve, pilot, localization)
-    //         //new AimWristCommand()
-    //     )
-    //     );
-    // }
-
-    // public Command HubShootCommand_Q8(){
-    //     return new SequentialCommandGroup( new RequestStateChange(States.SHOOT_Q8, stateManager),
-    //     new ParallelCommandGroup(
-    //         new AimTurretAtHub(swerve, pilot, localization)
-    //         //new AimWristCommand()
-    //     )
-    //     );
-    // }
+    public Command shootCommand() {
+        return new RequestStateChange(States.SHOOT, stateManager);
+    }
 
     // arctan(2 + ((-9.8 * x^2)/(2(9.1^2)))
 
@@ -147,16 +83,24 @@ public class AutonomousCommandFactory extends CommandFactory{
         new ParallelDeadlineGroup(
             new WaitCommand(0.4),
             new DriveForward(swerve),
-            GroundIntakeCommand()
+            new RequestStateChange(States.INTAKE, stateManager)
         ),
         new RequestStateChange(States.IDLE, stateManager)
         );
     }
 
     public void configAutonomousCommands() {
-        NamedCommands.registerCommand("Q1turret", null);
+        NamedCommands.registerCommand("R1Wrist", new ShooterWristCommand(CommandConstants.R1_SHOOTER, shooterWrist));
+        NamedCommands.registerCommand("R2Wrist", new ShooterWristCommand(CommandConstants.R2_SHOOTER, shooterWrist));
+        NamedCommands.registerCommand("R3Wrist", new ShooterWristCommand(CommandConstants.R3_SHOOTER, shooterWrist));
+        NamedCommands.registerCommand("R4Wrist", new ShooterWristCommand(CommandConstants.R4_SHOOTER, shooterWrist));
+        NamedCommands.registerCommand("WristDown", new ShooterWristCommand(CommandConstants.SHOOTER_DEFAULT, shooterWrist));
         NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
-        NamedCommands.registerCommand("ClimbCommand", ClimbUpCommand());
+        NamedCommands.registerCommand("HubShootCommand", shootCommand());
+        NamedCommands.registerCommand("NeutralIntake", NeutralIntake());
+        //.registerCommand("null", null);
+
+        //NamedCommands.registerCommand("ClimbCommand", ClimbUpCommand());
         NamedCommands.registerCommand("DriveForward", new DriveForward(swerve));
         NamedCommands.registerCommand("idle", new RequestStateChange(States.IDLE, stateManager));
     }

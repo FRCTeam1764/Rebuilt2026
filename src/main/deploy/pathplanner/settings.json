@@ -3,8 +3,20 @@
   "robotLength": 0.7112,
   "holonomicMode": true,
   "pathFolders": [
+    "Depot",
+    "Left",
+    "Outpost",
+    "Right",
+    "ShootTo_____",
+    "bump",
+    "neutral"
   ],
   "autoFolders": [
+    "Left Bump",
+    "Left Trench",
+    "Heartland",
+    "Right Bump",
+    "Right Trench"
   ],
   "defaultMaxVel": 3.8,
   "defaultMaxAccel": 3.8,

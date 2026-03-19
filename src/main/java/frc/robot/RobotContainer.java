@@ -92,13 +92,13 @@ public class RobotContainer {
     private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
     
     
-    //private final SendableChooser<Command> chooser;
+    private final SendableChooser<Command> chooser;
 
     public RobotContainer() {
         drivetrain.configureAutoBuilder();
         stateManager.requestNewState(States.IDLE);
-        // chooser = AutoBuilder.buildAutoChooser("Autonomous");
-        // SmartDashboard.putData("Autos", chooser);
+        chooser = AutoBuilder.buildAutoChooser("Autonomous");
+        SmartDashboard.putData("Autos", chooser);
         configureBindings();
     }
 

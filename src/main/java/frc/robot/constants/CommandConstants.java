@@ -34,6 +34,11 @@ public final class CommandConstants {
     public final static double SHOOTER_MID2 = 0.42;
     public final static double SHOOTER_CLOSE = 0.6;
 
+    public final static double R1_SHOOTER = 0.42;
+    public final static double R2_SHOOTER = 0.44;
+    public final static double R3_SHOOTER = 0.48;
+    public final static double R4_SHOOTER = 0.54;
+
     //speeds
     public final static double INTAKE_IN_SPEED = -0.325;
     public final static double INTAKE_OUT_SPEED = 0.1;
