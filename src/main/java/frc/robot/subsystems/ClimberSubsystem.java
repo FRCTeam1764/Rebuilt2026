@@ -56,7 +56,7 @@ public class ClimberSubsystem extends SubsystemBase {
       flexConfig.MotorOutput.PeakForwardDutyCycle = 0.5;
       flexConfig.MotorOutput.PeakReverseDutyCycle = -0.5;
       flexConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-      flexConfig.CurrentLimits.StatorCurrentLimit = 60;
+      flexConfig.CurrentLimits.StatorCurrentLimit = 25;
 
       climberMotor.getConfigurator().apply(flexConfig);
 
@@ -91,21 +91,29 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void startUp() {
-    climberMotor.set(CommandConstants.CLIMBER_SPEED);
-    // if (getEncoderPos()<195) {
-    //   climberMotor.set(CommandConstants.CLIMBER_SPEED);
-    // } else {
-    //   climberMotor.set(0);
-    // }
+    //  climberMotor.set(CommandConstants.CLIMBER_SPEED);
+    if (getEncoderPos()<170) {
+      climberMotor.set(CommandConstants.CLIMBER_SPEED_UP);
+    } else {
+      climberMotor.set(0);
+    }
+  }
+
+  public void forceUp() {
+    climberMotor.set(CommandConstants.CLIMBER_SPEED_UP);
   }
 
   public void startDown() {
-      climberMotor.set(-CommandConstants.CLIMBER_SPEED);
-    // if (getEncoderPos()>2) {
-    //   climberMotor.set(-CommandConstants.CLIMBER_SPEED);
-    // } else {
-    //   climberMotor.set(0);
-    // }
+    //  climberMotor.set(-CommandConstants.CLIMBER_SPEED);
+    if (!getLimit()) {
+      climberMotor.set(-CommandConstants.CLIMBER_SPEED_DOWN);
+    } else {
+      climberMotor.set(0);
+    }
+  }
+
+  public void forceDown() {
+    climberMotor.set(-CommandConstants.CLIMBER_SPEED_DOWN);
   }
 
   public void stop(){

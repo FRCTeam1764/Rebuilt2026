@@ -7,7 +7,7 @@ import frc.robot.subsystems.StateManager.States;
 public class MID_SHOOT implements BasicState {
 public boolean matches(States state){
 
-    return state.equals(States.SHOOT);
+    return state.equals(States.MID_SHOOT);
 }
 
 public void execute(StateManager stateManager){

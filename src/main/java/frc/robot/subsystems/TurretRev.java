@@ -8,6 +8,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.sim.TalonFXSimState.MotorType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel;
@@ -42,25 +44,30 @@ public class TurretRev extends SubsystemBase {
 
   // 's' for start, 'e' for end, 'n' for nothing
   private char reset = 'n';
+
+  
   
   public TurretRev() {
-
-    SparkMaxConfig config = new SparkMaxConfig();
+SparkMaxConfig config = new SparkMaxConfig();
     config.inverted(false);
     config.idleMode(SparkBaseConfig.IdleMode.kBrake);
-    config.smartCurrentLimit(50);
+    config.smartCurrentLimit(20);
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
-    pidConfig.pid(0, 0, 0);
-    pidConfig.outputRange(-0.5, 0.5);
-    config.apply(pidConfig);
+    pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
+    pidConfig.outputRange(-0.9, 0.9);
+    pidConfig.pid(1.7, 0, 0, ClosedLoopSlot.kSlot0);
+    pidConfig.pid(2.5, 0, 0, ClosedLoopSlot.kSlot1);
+    pidConfig.allowedClosedLoopError(0.01, ClosedLoopSlot.kSlot0);
+    pidConfig.allowedClosedLoopError(0.01, ClosedLoopSlot.kSlot1);
 
-    // SoftLimitConfig limitConfig = new SoftLimitConfig();
-    // limitConfig.forwardSoftLimitEnabled(true);
-    // limitConfig.forwardSoftLimit(1.9);
-    // limitConfig.reverseSoftLimitEnabled(true);
-    // limitConfig.reverseSoftLimit(0.1);
-    // config.apply(limitConfig);
+    // SoftLimitConfig softLimitConfig = new SoftLimitConfig();
+    // softLimitConfig.reverseSoftLimit(0.98); //0.56
+    // softLimitConfig.reverseSoftLimitEnabled(true); //0.6
+    // softLimitConfig.forwardSoftLimit(0.05); //0.85, 0.78
+    // softLimitConfig.forwardSoftLimitEnabled(true);
+
+    config.apply(pidConfig);
 
     //config, resets configs to default, configs persist even after motor is power cycled
     turretMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

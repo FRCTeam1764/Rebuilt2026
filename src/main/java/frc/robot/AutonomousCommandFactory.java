@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import javax.sql.StatementEvent;
+
 import com.fasterxml.jackson.core.json.WriterBasedJsonGenerator;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -54,6 +56,7 @@ public class AutonomousCommandFactory extends CommandFactory{
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
         super(intakeWrist, turret, wrist, turretLimelight, rollers, climber, pilot, swerve, stateManager);
         this.shooterWrist = wrist;
+        this.stateManager = stateManager;
         configAutonomousCommands();
     }
     
@@ -96,8 +99,11 @@ public class AutonomousCommandFactory extends CommandFactory{
         NamedCommands.registerCommand("R4Wrist", new ShooterWristCommand(CommandConstants.R4_SHOOTER, shooterWrist));
         NamedCommands.registerCommand("WristDown", new ShooterWristCommand(CommandConstants.SHOOTER_DEFAULT, shooterWrist));
         NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
-        NamedCommands.registerCommand("HubShootCommand", shootCommand());
+        NamedCommands.registerCommand("HubShootCommand", ShootRampCommand());
         NamedCommands.registerCommand("NeutralIntake", NeutralIntake());
+        NamedCommands.registerCommand("WaitUntilIdle", new SequentialCommandGroup(
+            new RequestStateChange(States.IDLE, stateManager),
+            new waitUntilPosition(stateManager, CommandConstants.INTAKE_WRIST_KEY, 0.5)));
         //.registerCommand("null", null);
 
         //NamedCommands.registerCommand("ClimbCommand", ClimbUpCommand());

@@ -34,19 +34,21 @@ public final class CommandConstants {
     public final static double SHOOTER_MID2 = 0.42;
     public final static double SHOOTER_CLOSE = 0.6;
 
-    public final static double R1_SHOOTER = 0.42;
-    public final static double R2_SHOOTER = 0.44;
-    public final static double R3_SHOOTER = 0.48;
-    public final static double R4_SHOOTER = 0.54;
+    public final static double R1_SHOOTER = 0.24;
+    public final static double R2_SHOOTER = 0.27;
+    public final static double R3_SHOOTER = 0.30;
+    public final static double R4_SHOOTER = 0.38;
+    public final static double RDOWN_SHOOTER = 0.39;
 
     //speeds
-    public final static double INTAKE_IN_SPEED = -0.325;
+    public final static double INTAKE_IN_SPEED = -0.5;
     public final static double INTAKE_OUT_SPEED = 0.1;
-    public final static double INDEX_SPEED = -0.25;
+    public final static double INDEX_SPEED = -0.35;
     public final static double SHOOTER_SPEED = 1.0;
     public final static double RES_SPEED = 0.35;
     public final static double TURRET_SPEED = 0.3;
-    public final static double CLIMBER_SPEED = 0.1;
+    public final static double CLIMBER_SPEED_UP = 0.7;
+    public final static double CLIMBER_SPEED_DOWN = 0.3;
 
     //keys
     public static final String SHOOTER_FLYWHEEL_KEY = "ShooterRollerSpeed";

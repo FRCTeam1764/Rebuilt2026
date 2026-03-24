@@ -21,7 +21,7 @@ public class RollersSubsystem extends SubsystemBase {
   public RollersSubsystem() {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.CurrentLimits.StatorCurrentLimitEnable = true;
-    config.CurrentLimits.StatorCurrentLimit = 40;
+    config.CurrentLimits.StatorCurrentLimit = 30;
 
     indexRollers.getConfigurator().apply(config);
     shooterFlywheel.getConfigurator().apply(config);

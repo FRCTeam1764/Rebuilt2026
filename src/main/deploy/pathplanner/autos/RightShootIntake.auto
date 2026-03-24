@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "dont move"
+          }
+        },
+        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -27,12 +33,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "idle"
           }
         },
         {

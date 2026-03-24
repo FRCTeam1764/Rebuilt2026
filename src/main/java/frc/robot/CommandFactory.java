@@ -79,7 +79,7 @@ public class CommandFactory {
     public Command ShootRampCommand(){
         return new SequentialCommandGroup( 
             new ParallelDeadlineGroup(
-                new WaitCommand(0.5),
+                new WaitCommand(1),
                 new ShooterFlywheelCommand(rollers, 0)),
             new RequestStateChange(States.SHOOT, stateManager)
         );

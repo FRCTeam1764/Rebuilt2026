@@ -2,26 +2,24 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.BasicCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.constants.CommandConstants;
-import frc.robot.subsystems.StateManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class waitUntilPosition extends Command {
-  /** Creates a new waitUntilCondition. */
-    //TODO: MAKE
+public class ForceClimberCommand extends Command {
+  /** Creates a new ClimberCommand. */
+  boolean up;
+  ClimberSubsystem climberSubsystem;
 
-StateManager stateManager;
-String key;
-double error;
-
-  public waitUntilPosition(StateManager manager, String key1, double error1) {
+  public ForceClimberCommand(boolean up, ClimberSubsystem climberSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    stateManager = manager;
-    this.key = key1;
-    this.error = error1;
+    this.up = up;
+    this.climberSubsystem = climberSubsystem;
+    addRequirements(climberSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -30,18 +28,24 @@ double error;
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (up) {
+      climberSubsystem.forceUp();
+    } else {
+      climberSubsystem.forceDown();
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    climberSubsystem.stop();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return ( (double) stateManager.getCurrentData(key) <=  (double) stateManager.getDesiredData(key) +error
-     ||
-    (double) stateManager.getCurrentData(key) <= (double) stateManager.getDesiredData(key) -error
-     );
-  }
+    return false;
+  } 
 }
+                                                                                                           

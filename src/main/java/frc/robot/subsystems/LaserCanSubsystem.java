@@ -4,14 +4,17 @@
 
 package frc.robot.subsystems;
 
+import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LaserCanSubsystem extends SubsystemBase {
   /** Creates a new LaserCanSubsystem. */
 
-  //LaserCan laser1;
+  LaserCan laser1;
   
-  public LaserCanSubsystem() {}
+  public LaserCanSubsystem() {
+    laser1 = new LaserCan(0);
+  }
 
   @Override
   public void periodic() {
