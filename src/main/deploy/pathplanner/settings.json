@@ -12,10 +12,11 @@
     "neutral"
   ],
   "autoFolders": [
-    "Right Trench",
-    "Right Bump",
+    "Left Bump",
     "Left Trench",
-    "Left Bump"
+    "Heartland",
+    "Right Bump",
+    "Right Trench"
   ],
   "defaultMaxVel": 3.8,
   "defaultMaxAccel": 3.8,

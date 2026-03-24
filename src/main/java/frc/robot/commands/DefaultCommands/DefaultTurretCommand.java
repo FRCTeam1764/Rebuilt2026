@@ -4,24 +4,24 @@
 
 package frc.robot.commands.DefaultCommands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.TurretRev;
-import frc.robot.subsystems.TurretManager;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefaultTurretCommand extends Command {
   /** Creates a new DefaultWristCommand. */
   TurretRev turret;
-  TurretManager turretManager;
+  CommandXboxController xbox;
 
-  public DefaultTurretCommand(TurretRev turret, TurretManager turretManager) {
+  public DefaultTurretCommand(TurretRev turret, CommandXboxController xbox) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.turret = turret;
-    this.turretManager = turretManager;
+    this.xbox = xbox;
     addRequirements(turret);
   }
 
@@ -34,7 +34,7 @@ public class DefaultTurretCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turretManager.setTurret();
+    turret.onSpeed(xbox.getLeftX());
   }
   
 

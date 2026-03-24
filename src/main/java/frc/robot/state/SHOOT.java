@@ -7,18 +7,17 @@ import frc.robot.subsystems.StateManager.States;
 public class SHOOT implements BasicState {
 public boolean matches(States state){
 
-    return state.equals(States.INTAKE);
+    return state.equals(States.SHOOT);
 }
 
 public void execute(StateManager stateManager){
     stateManager.clearDesiredData();
 
-    stateManager.addDesiredData(CommandConstants.SHOOTER_ROLLER_KEY, 0.75);
-    stateManager.addDesiredData(CommandConstants.RES_INDEX_KEY, 0.5);
-    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.SHOOTER_FLYWHEEL_KEY, CommandConstants.SHOOTER_SPEED);
+    stateManager.addDesiredData(CommandConstants.RES_INDEX_KEY, CommandConstants.RES_SPEED);
     stateManager.addDesiredData(CommandConstants.INTAKE_KEY, 0.0);
-    stateManager.addDesiredData(CommandConstants.INDEX_KEY, -0.25);
-    stateManager.addDesiredData(CommandConstants.CLIMBER_KEY, 0.0);
+    stateManager.addDesiredData(CommandConstants.INDEX_KEY, CommandConstants.INDEX_SPEED);
+    stateManager.addDesiredData(CommandConstants.INTAKE_WRIST_KEY, CommandConstants.INTAKE_WRIST_IN_IN);
 }
    
 }

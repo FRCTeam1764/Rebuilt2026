@@ -42,11 +42,11 @@ public class DriveRobotCentric extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.setControl(
-            robotCentric.withVelocityX(-pilot.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                .withVelocityY(-pilot.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                .withRotationalRate(-pilot.getRightX() * MaxAngularRate)) // Drive counterclockwise with negative X (left)
-        ;
+    // drivetrain.setControl(
+    //         robotCentric.withVelocityX(-pilot.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+    //             .withVelocityY(-pilot.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    //             .withRotationalRate(-pilot.getRightX() * MaxAngularRate)) // Drive counterclockwise with negative X (left)
+    //     ;
   }
 
   // Called once the command ends or is interrupted.

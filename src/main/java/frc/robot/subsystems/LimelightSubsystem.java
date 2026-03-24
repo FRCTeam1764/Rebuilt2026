@@ -46,6 +46,7 @@ public class LimelightSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber(Limelight + "-A", getTa());
     SmartDashboard.putNumber(Limelight + "-S", getTs());
+    SmartDashboard.putNumber("Hot Dogs away from Target", getDistanceToTarget());
   }
 
   public double getHorizontalAngleOfErrorDegrees(){

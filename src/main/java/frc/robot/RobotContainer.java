@@ -16,28 +16,29 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.StateManager.States;
-import frc.robot.subsystems.TurretManager;
 import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.LocalizationSubsystem;
-import frc.robot.subsystems.ShooterRollers;
+import frc.robot.subsystems.RollersSubsystem;
 import frc.robot.subsystems.ShooterWristRev;
+import frc.robot.commands.BasicCommands.ClimberCommandSpec;
+import frc.robot.commands.BasicCommands.ForceClimberCommand;
+import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RequestStateChange;
+import frc.robot.commands.BasicCommands.ShooterWristCommand;
 import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DefaultCommands.DefaultClimberCommand;
-import frc.robot.commands.DefaultCommands.DefaultIndexCommand;
-import frc.robot.commands.DefaultCommands.DefaultIntakeCommand;
-import frc.robot.commands.DefaultCommands.DefaultShooterRollersCommand;
+import frc.robot.commands.DefaultCommands.DefaultIntakeWristCommand;
+import frc.robot.commands.DefaultCommands.DefaultRollersCommand;
 import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
 import frc.robot.commands.DriveCommands.DriveRobotCentric;
-import frc.robot.commands.LimelightCommands.AimTurretAtHub;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
 import frc.robot.commands.LimelightCommands.TrackObject;
 import frc.robot.constants.CommandConstants;
@@ -45,13 +46,11 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.state.IDLE;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.IndexRollers;
-import frc.robot.subsystems.IntakeRollers;
 import frc.robot.subsystems.IntakeWristRev;
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed = 0.7 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = 0.6*RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -75,36 +74,33 @@ public class RobotContainer {
     private final Field2d field = new Field2d();
     
     //subsystems
-    private final ShooterRollers shootRollers = new ShooterRollers();
-    private final IndexRollers indexRollers = new IndexRollers();
-    private final IntakeRollers intakeRollers = new IntakeRollers();
-    private final ShooterWristRev wrist = new ShooterWristRev();
+    private final RollersSubsystem rollers = new RollersSubsystem();
+    private final ShooterWristRev shooterWrist = new ShooterWristRev();
     private final TurretRev turret = new TurretRev();
     private final IntakeWristRev intakeWrist = new IntakeWristRev();
-    private final ClimberSubsystem climber = new ClimberSubsystem(stateManager);
+    private final ClimberSubsystem climber = new ClimberSubsystem();
     
     //limelights
     private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight-fourtwo");
-    private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight-four");
+    //private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight-four");
 
     
-    private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
+    //private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
     
-    private final TurretManager turretManager = new TurretManager(turret, wrist, localization, copilot);
-
 
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, wrist, turretLimelight, localLimelight, intakeRollers, indexRollers, shootRollers, climber, localization, pilot, drivetrain, stateManager);
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
     
     
-    private final SendableChooser<Command> chooser ;
+    private final SendableChooser<Command> chooser;
 
     public RobotContainer() {
-        stateManager.requestNewState(States.IDLE);
+        configureBindings();
+        drivetrain.configureAutoBuilder();
+        stateManager.requestNewState(States.CONDENSED);
         chooser = AutoBuilder.buildAutoChooser("Autonomous");
         SmartDashboard.putData("Autos", chooser);
-        configureBindings();
     }
 
     private void configureBindings() {
@@ -113,20 +109,18 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-pilot.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                drive.withVelocityX(-Math.pow(pilot.getLeftY(), 2) * (pilot.getLeftY()<0 ? -1: 1)  * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-pilot.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(-pilot.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
         // Default Commands
-        shootRollers.setDefaultCommand(new DefaultShooterRollersCommand(shootRollers, stateManager));
-        indexRollers.setDefaultCommand(new DefaultIndexCommand(indexRollers, stateManager));
-        intakeRollers.setDefaultCommand(new DefaultIntakeCommand(intakeRollers, stateManager));
-        wrist.setDefaultCommand(new DefaultShooterWristCommand(wrist, turretManager));
-        turret.setDefaultCommand(new DefaultTurretCommand(turret, turretManager));
-        climber.setDefaultCommand(new DefaultClimberCommand(climber, stateManager));
-
+        rollers.setDefaultCommand(new DefaultRollersCommand(rollers, stateManager));
+        intakeWrist.setDefaultCommand(new DefaultIntakeWristCommand(intakeWrist, stateManager));
+        turret.setDefaultCommand(new DefaultTurretCommand(turret, copilot));
+        shooterWrist.setDefaultCommand(new DefaultShooterWristCommand(shooterWrist, copilot));
+        
         configureMainBindings();
 
         drivetrain.registerTelemetry(logger::telemeterize);
@@ -135,32 +129,70 @@ public class RobotContainer {
     private void configureMainBindings() {
         // Drive Controls
         pilot.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        
+        //copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
+        
         pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
-        pilot.b().whileTrue(new DriveRobotCentric(drivetrain, pilot));
-
-        pilot.x().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
-
-        pilot.b().onTrue(commandFactory.ClimbUpCommand());
-        pilot.a().onTrue(commandFactory.ClimbDownCommand());
-
-        pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
-        pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
-
-        copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
+        copilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
 
         // Subsystem Controls
-        copilot.rightTrigger(.7).whileTrue(commandFactory.HubShootCommand());
-        // copilot.y().toggleOnTrue(new AimTurretAtHub(drivetrain, pilot, localization));
-        // copilot.y().toggleOnFalse(new returnToIdle(stateManager));
-        copilot.y().onTrue(new InstantCommand(() -> turretManager.hubAimToggle()));
-        copilot.back().onTrue(new InstantCommand(() -> turretManager.manualAimToggle()));
+        //pilot.b().whileTrue(new RequestStateChange(States.MID_IDLE, stateManager));
 
-        // Limelight Controls
+
+        //pilot.b().onTrue(commandFactory.ClimbUpCommand());
+        //pilot.a().onTrue(commandFactory.ClimbDownCommand());
+
+        pilot.rightTrigger().onTrue(commandFactory.GroundIntakeCommand());
+        pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        pilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
+        pilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        pilot.rightBumper().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
+        pilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
         
-    }
+        copilot.rightTrigger().onTrue(commandFactory.ShootRampCommand());
+        //copilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-    public void changePipeline() {
-        localLimelight.setPipeline(1);
+        copilot.rightBumper().onTrue(new RequestStateChange(States.SHOOT_MID, stateManager));
+        //copilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_FAR, shooterWrist));
+        
+        // copilot.x().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID1, shooterWrist));
+        
+        // copilot.b().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID2, shooterWrist));
+       
+        // copilot.y().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_CLOSE, shooterWrist));
+       
+        copilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
+        copilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        copilot.leftTrigger().onTrue(new RequestStateChange(States.SHOOT_WITH_INTAKE, stateManager));
+        copilot.leftTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+
+        pilot.x().onTrue(new RequestStateChange(States.SPIT_OUT, stateManager));
+
+        copilot.pov(0).whileTrue(commandFactory.ClimbUpCommand());
+        copilot.pov(0).onFalse(new ClimberCommandSpec(0, climber));
+        copilot.pov(180).whileTrue(commandFactory.ClimbDownCommand());
+        copilot.pov(180).onFalse(new ClimberCommandSpec(0, climber));
+
+        // copilot.pov(90).whileTrue(new ForceClimberCommand(true, climber));
+        // copilot.pov(90).onFalse(new ClimberCommandSpec(0, climber));
+        // copilot.pov(270).whileTrue(new ForceClimberCommand(false, climber));
+        // copilot.pov(270).onFalse(new ClimberCommandSpec(0, climber));
+
+    
+
+        pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
+
+
+        // Aiming Controls
+        // copilot.pov(0).whileTrue(new ShooterWristCommand(10, wrist));
+        // copilot.pov(90).whileTrue(new ShooterWristCommand(15, wrist));
+        // copilot.pov(180).whileTrue(new ShooterWristCommand(20, wrist));
+        // copilot.pov(270).whileTrue(new ShooterWristCommand(30, wrist));
+        
     }
 
     public Command getAutonomousCommand() {

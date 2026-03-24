@@ -16,16 +16,12 @@ public class waitUntilPosition extends Command {
 StateManager stateManager;
 String key;
 double error;
-String key2;
-double error2;
 
-  public waitUntilPosition(StateManager manager, String key1, double error1, String key2, double error2) {
+  public waitUntilPosition(StateManager manager, String key1, double error1) {
     // Use addRequirements() here to declare subsystem dependencies.
     stateManager = manager;
     this.key = key1;
     this.error = error1;
-    this.key2 = key2;
-    this.error2 = error2;
   }
 
   // Called when the command is initially scheduled.
@@ -46,9 +42,6 @@ double error2;
     return ( (double) stateManager.getCurrentData(key) <=  (double) stateManager.getDesiredData(key) +error
      ||
     (double) stateManager.getCurrentData(key) <= (double) stateManager.getDesiredData(key) -error
-     ) && ( (double) stateManager.getCurrentData(key2) <=  (double) stateManager.getDesiredData(key2) +error2
-     ||
-    (double) stateManager.getCurrentData(key2) <= (double) stateManager.getDesiredData(key2) -error2
      );
   }
 }
