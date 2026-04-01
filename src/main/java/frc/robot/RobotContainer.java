@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-import frc.robot.subsystems.StateManager;
-import frc.robot.subsystems.StateManager.States;
 import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.RollersSubsystem;
@@ -30,12 +28,7 @@ import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.commands.BasicCommands.ClimberCommandSpec;
 import frc.robot.commands.BasicCommands.ForceClimberCommand;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
-import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.BasicCommands.ShooterWristCommand;
-import frc.robot.commands.ComplexCommands.returnToIdle;
-import frc.robot.commands.DefaultCommands.DefaultClimberCommand;
-import frc.robot.commands.DefaultCommands.DefaultIntakeWristCommand;
-import frc.robot.commands.DefaultCommands.DefaultRollersCommand;
 import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
 import frc.robot.commands.DriveCommands.DriveRobotCentric;
@@ -43,7 +36,6 @@ import frc.robot.commands.LimelightCommands.LockOnAprilTag;
 import frc.robot.commands.LimelightCommands.TrackObject;
 import frc.robot.constants.CommandConstants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.state.IDLE;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeWristRev;
@@ -68,7 +60,6 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private final StateManager stateManager = new StateManager();
 
     
     private final Field2d field = new Field2d();
@@ -89,8 +80,8 @@ public class RobotContainer {
     
 
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain, stateManager);
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain);
     
     
     private final SendableChooser<Command> chooser;
@@ -98,7 +89,6 @@ public class RobotContainer {
     public RobotContainer() {
         configureBindings();
         drivetrain.configureAutoBuilder();
-        stateManager.requestNewState(States.CONDENSED);
         chooser = AutoBuilder.buildAutoChooser("Autonomous");
         SmartDashboard.putData("Autos", chooser);
     }
@@ -116,8 +106,6 @@ public class RobotContainer {
         );
 
         // Default Commands
-        rollers.setDefaultCommand(new DefaultRollersCommand(rollers, stateManager));
-        intakeWrist.setDefaultCommand(new DefaultIntakeWristCommand(intakeWrist, stateManager));
         turret.setDefaultCommand(new DefaultTurretCommand(turret, copilot));
         shooterWrist.setDefaultCommand(new DefaultShooterWristCommand(shooterWrist, copilot));
         
@@ -132,8 +120,8 @@ public class RobotContainer {
         
         //copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
         
-        pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
-        copilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
+        // pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
+        // copilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
 
         // Subsystem Controls
         //pilot.b().whileTrue(new RequestStateChange(States.MID_IDLE, stateManager));
@@ -142,19 +130,19 @@ public class RobotContainer {
         //pilot.b().onTrue(commandFactory.ClimbUpCommand());
         //pilot.a().onTrue(commandFactory.ClimbDownCommand());
 
-        pilot.rightTrigger().onTrue(commandFactory.GroundIntakeCommand());
-        pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // pilot.rightTrigger().onTrue(commandFactory.GroundIntakeCommand());
+        // pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        pilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
-        pilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // pilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
+        // pilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        pilot.rightBumper().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
-        pilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // pilot.rightBumper().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
+        // pilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
         
         copilot.rightTrigger().onTrue(commandFactory.ShootRampCommand());
         //copilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        copilot.rightBumper().onTrue(new RequestStateChange(States.SHOOT_MID, stateManager));
+        //copilot.rightBumper().onTrue(new RequestStateChange(States.SHOOT_MID, stateManager));
         //copilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
         // copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_FAR, shooterWrist));
         
@@ -164,13 +152,13 @@ public class RobotContainer {
        
         // copilot.y().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_CLOSE, shooterWrist));
        
-        copilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
-        copilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // copilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
+        // copilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        copilot.leftTrigger().onTrue(new RequestStateChange(States.SHOOT_WITH_INTAKE, stateManager));
-        copilot.leftTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // copilot.leftTrigger().onTrue(new RequestStateChange(States.SHOOT_WITH_INTAKE, stateManager));
+        // copilot.leftTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        pilot.x().onTrue(new RequestStateChange(States.SPIT_OUT, stateManager));
+        // pilot.x().onTrue(new RequestStateChange(States.SPIT_OUT, stateManager));
 
         copilot.pov(0).whileTrue(commandFactory.ClimbUpCommand());
         copilot.pov(0).onFalse(new ClimberCommandSpec(0, climber));
@@ -184,7 +172,7 @@ public class RobotContainer {
 
     
 
-        pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
+       // pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
 
 
         // Aiming Controls

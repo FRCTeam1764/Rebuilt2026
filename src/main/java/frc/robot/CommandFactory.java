@@ -18,14 +18,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.waitUntilPosition;
-import frc.robot.commands.waitUntilPositionIndex;
 import frc.robot.commands.BasicCommands.ClimberCommand;
 import frc.robot.commands.BasicCommands.ClimberCommandSpec;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
-import frc.robot.commands.BasicCommands.RequestStateChange;
 import frc.robot.commands.BasicCommands.ShooterFlywheelCommand;
-import frc.robot.commands.ComplexCommands.returnToIdle;
 import frc.robot.commands.DriveCommands.DriveForward;
 import frc.robot.commands.LimelightCommands.DriveToTarget;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
@@ -36,9 +32,7 @@ import frc.robot.subsystems.IntakeWristRev;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.RollersSubsystem;
 import frc.robot.subsystems.ShooterWristRev;
-import frc.robot.subsystems.StateManager;
 import frc.robot.subsystems.TurretRev;
-import frc.robot.subsystems.StateManager.States;
 
 //This class will handle all command handling for drivers
 
@@ -47,7 +41,6 @@ import frc.robot.subsystems.StateManager.States;
 public class CommandFactory {
 
     private CommandSwerveDrivetrain swerve;
-    private StateManager stateManager;
     private CommandXboxController pilot;
     private RollersSubsystem rollers;
     private LimelightSubsystem turretLimelight;
@@ -58,10 +51,9 @@ public class CommandFactory {
 
     public CommandFactory(IntakeWristRev intakeWrist, TurretRev turret, ShooterWristRev wrist, LimelightSubsystem turretLimelight, 
                 RollersSubsystem rollers, ClimberSubsystem climber,
-                CommandXboxController pilot, CommandSwerveDrivetrain swerve, StateManager stateManager) {
+                CommandXboxController pilot, CommandSwerveDrivetrain swerve) {
         this.pilot = pilot;
         this.swerve = swerve;
-        this.stateManager = stateManager;
         this.rollers = rollers;
         this.turretLimelight = turretLimelight;
         this.wrist = wrist;
@@ -81,15 +73,15 @@ public class CommandFactory {
             new ParallelDeadlineGroup(
                 new WaitCommand(1),
                 new ShooterFlywheelCommand(rollers, 0)),
-            new RequestStateChange(States.SHOOT, stateManager)
+            new ParallelDeadlineGroup(null, null)
         );
     }
 
-    public Command ShootCommand(){
-        return new SequentialCommandGroup( 
-        new RequestStateChange(States.SHOOT, stateManager)
-        );
-    }
+    // public Command ShootCommand(){
+    //     return new SequentialCommandGroup( 
+    //     new RequestStateChange(States.SHOOT, stateManager)
+    //     );
+    // }
 
     // public Command ShootSpitCommand(){
     //     return new SequentialCommandGroup( 
@@ -107,17 +99,17 @@ public class CommandFactory {
         return new ClimberCommand(false, climber);
     }
 
-    public Command GroundIntakeCommand(){ 
-        return new SequentialCommandGroup(
-            new RequestStateChange(States.INTAKE, stateManager));
-    }
+    // public Command GroundIntakeCommand(){ 
+    //     return new SequentialCommandGroup(
+    //         new RequestStateChange(States.INTAKE, stateManager));
+    // }
 
-    public Command interupted(boolean wasInteruppted) {
-        if (wasInteruppted) {
-            return new InstantCommand();
-        }
-        return new returnToIdle(stateManager);
-    }
+    // public Command interupted(boolean wasInteruppted) {
+    //     if (wasInteruppted) {
+    //         return new InstantCommand();
+    //     }
+    //     return new returnToIdle(stateManager);
+    // }
 
     //desiredAction might not be used
     public enum desiredAction {
