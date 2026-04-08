@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -32,6 +34,7 @@ import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RollersCommand;
 import frc.robot.commands.BasicCommands.ShooterTurretCommand;
 import frc.robot.commands.BasicCommands.ShooterWristCommand;
+import frc.robot.commands.BasicCommands.SpindexerCommand;
 import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
 import frc.robot.commands.DriveCommands.DriveRobotCentric;
@@ -148,6 +151,10 @@ public class RobotContainer {
         // pilot.x().onTrue(new RequestStateChange(States.SPIT_OUT, stateManager));
 
         // pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
+
+        pilot.a().whileTrue(new SpindexerCommand(rollers, 0.2)); // Note: speed is ignored by command class as of writing this
+        // SpindexerCommand spindexerCommand = new SpindexerCommand(rollers, 0.2);
+        // pilot.a().whileTrue(spindexerCommand);
 
         pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, 0.13));
         

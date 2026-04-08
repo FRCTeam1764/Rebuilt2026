@@ -4,7 +4,7 @@
 
 package frc.robot.commands.DefaultCommands;
 
-import edu.wpi.first.wpilibj.XboxController;
+// import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,6 +34,7 @@ public class DefaultTurretCommand extends Command {
   @Override
   public void execute() {
     turret.onSpeed(xbox.getLeftX());
+    // turret.setVoltage(12*xbox.getLeftX());
   }
   
 
