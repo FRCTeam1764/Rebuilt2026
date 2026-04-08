@@ -63,8 +63,8 @@ public class TurretRev extends SubsystemBase {
   double cheaterEncoder;
   boolean enforceLimits = true;
 
-  double turretLeftMax =   0.20; //-1.55 // FIXME actual encoder val - not ratio adjusted yet
-  double turretRightMax = -0.20; //0.75  // FIXME actual encoder val - not ratio adjusted yet
+  double turretLeftMax =  0.40;// 0.46; //-1.55 // FIXME actual encoder val - not ratio adjusted yet
+  double turretRightMax = -0.26;//-0.32; //0.75  // FIXME actual encoder val - not ratio adjusted yet
 
   PIDController pid1 = new PIDController(3.7, 0, 0); // kp was: 1.7
   PIDController pid2 = new PIDController(4.5, 0, 0); // kp was: 2.5
@@ -143,7 +143,6 @@ public class TurretRev extends SubsystemBase {
   }
 
   public void onSpeed(double speed) {
-    enforceLimits = SmartDashboard.getBoolean("Turret Limits Enabled", true);
     if(enforceLimits) {
       if ((speed < 0 && getPos() < turretLeftMax) || (speed > 0 && getPos() > turretRightMax)) {
         turretMotor.set(speed > 0.2 ? 0.2 : speed < -0.2 ? -0.2 : speed*.3); // was: *.25
@@ -179,6 +178,8 @@ public class TurretRev extends SubsystemBase {
     SmartDashboard.putNumber("TurretSetpoint", turretMotor.getClosedLoopController().getSetpoint());
     // SmartDashboard.putNumber("TurretSpeed", turretEncoder.getVelocity().getValueAsDouble());
     SmartDashboard.putString("TurretSpeed", String.format("%.2f", turretEncoder.getVelocity().getValueAsDouble()));
+    enforceLimits = SmartDashboard.getBoolean("Turret Limits Enabled", true);
+    SmartDashboard.putBoolean("Turret Limits Enabled system", enforceLimits);
 
     // SmartDashboard.putBoolean("Turret Limit Switch", limitSwitch.get());
     // SmartDashboard.putBoolean("turret pressed", pressed);

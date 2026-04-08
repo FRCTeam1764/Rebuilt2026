@@ -101,18 +101,18 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        // drivetrain.setDefaultCommand(
-        //     // Drivetrain will execute this command periodically
-        //     drivetrain.applyRequest(() ->
-        //         drive.withVelocityX(-Math.pow(pilot.getLeftY(), 2) * (pilot.getLeftY()<0 ? -1: 1)  * MaxSpeed) // Drive forward with negative Y (forward)
-        //             .withVelocityY(-pilot.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-        //             .withRotationalRate(-pilot.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-        //     )
-        // );
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-Math.pow(pilot.getLeftY(), 2) * (pilot.getLeftY()<0 ? -1: 1)  * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-pilot.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-pilot.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
 
         // Default Commands
-        turret.setDefaultCommand(new DefaultTurretCommand(turret, pilot));
-        //shooterWrist.setDefaultCommand(new DefaultShooterWristCommand(shooterWrist, copilot));
+        turret.setDefaultCommand(new DefaultTurretCommand(turret, copilot));
+        shooterWrist.setDefaultCommand(new DefaultShooterWristCommand(shooterWrist, copilot));
         
         configureMainBindings();
 
@@ -125,40 +125,27 @@ public class RobotContainer {
         
         //copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
         
-        pilot.start().whileTrue(new RollersCommand(rollers, 0,0,0,0));
-        copilot.start().whileTrue(new RollersCommand(rollers, 0,0,0,0));
+        pilot.start().whileTrue(commandFactory.resetSpeed());
+        copilot.start().whileTrue(commandFactory.resetSpeed());
         
         pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
-        pilot.rightTrigger().onFalse(commandFactory.resetPos());
+        pilot.rightTrigger().onFalse(commandFactory.resetMidPos());
 
-        // pilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
-        // pilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        pilot.leftBumper().whileTrue(commandFactory.ShootRampWhileIntakeCommand());
+        pilot.leftBumper().onFalse(commandFactory.resetMidPos());
 
-        // pilot.rightBumper().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
-        // pilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        pilot.x().whileTrue(commandFactory.unJamSpin());
+        pilot.x().onFalse(commandFactory.resetSpeed());
         
-        // copilot.rightTrigger().onTrue(commandFactory.ShootRampCommand());
-        // //copilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        copilot.rightTrigger().whileTrue(commandFactory.ShootRampCommand());
+        copilot.rightTrigger().onFalse(commandFactory.resetMidPos());
 
-        // copilot.rightBumper().onTrue(new RequestStateChange(States.SHOOT_MID, stateManager));
-        
-        // copilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
-        // copilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        copilot.leftTrigger().whileTrue(commandFactory.ShootRampWithSpitOutCommand());
+        copilot.leftTrigger().onFalse(commandFactory.resetMidPos());
 
-        // copilot.leftTrigger().onTrue(new RequestStateChange(States.SHOOT_WITH_INTAKE, stateManager));
-        // copilot.leftTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
-
-        // pilot.x().onTrue(new RequestStateChange(States.SPIT_OUT, stateManager));
-
-        // pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
-
-        pilot.a().whileTrue(new SpindexerCommand(rollers, 0.2)); // Note: speed is ignored by command class as of writing this
-        // SpindexerCommand spindexerCommand = new SpindexerCommand(rollers, 0.2);
-        // pilot.a().whileTrue(spindexerCommand);
-
-        pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, 0.13));
-        
-        pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, 0.8));
+        pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
+        pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID));
+        pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
         
     }
 

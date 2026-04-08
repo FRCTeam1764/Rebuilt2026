@@ -20,9 +20,12 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.BasicCommands.ClimberCommand;
 import frc.robot.commands.BasicCommands.ClimberCommandSpec;
+import frc.robot.commands.BasicCommands.IndexRollersCommand;
+import frc.robot.commands.BasicCommands.IntakeRollersCommand;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
 import frc.robot.commands.BasicCommands.RollersCommand;
 import frc.robot.commands.BasicCommands.ShooterFlywheelCommand;
+import frc.robot.commands.BasicCommands.SpindexerCommand;
 import frc.robot.commands.DriveCommands.DriveForward;
 import frc.robot.commands.LimelightCommands.DriveToTarget;
 import frc.robot.commands.LimelightCommands.LockOnAprilTag;
@@ -76,6 +79,28 @@ public class CommandFactory {
         );
     }
 
+    public Command ShootRampWithSpitOutCommand() {
+        return new SequentialCommandGroup( 
+            new ParallelDeadlineGroup(
+                new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED),
+                new WaitCommand(2)),
+            new RollersCommand(rollers, true, CommandConstants.INTAKE_OUT_SPEED)
+        );
+    }
+
+    public Command ShootRampWhileIntakeCommand() {
+        return new ParallelCommandGroup(
+            new SequentialCommandGroup(
+                new ParallelDeadlineGroup(
+                    new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED),
+                    new WaitCommand(2)),
+                new RollersCommand(rollers, false, CommandConstants.INTAKE_IN_SPEED)
+            ),
+            new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN),
+            new IntakeRollersCommand(rollers, CommandConstants.INTAKE_IN_SPEED)
+        );
+    }
+
     public Command ShootCommand() {
         return new RollersCommand(rollers, true, CommandConstants.INTAKE_IN_SPEED);
     }
@@ -84,6 +109,12 @@ public class CommandFactory {
         return new ParallelCommandGroup(
             new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN), 
             new RollersCommand(rollers, true, CommandConstants.INTAKE_IN_SPEED));
+    }
+
+    public Command unJamSpin() {
+        return new ParallelCommandGroup(
+            new SpindexerCommand(rollers, -0.2),
+            new IndexRollersCommand(rollers, -0.2));
     }
     
     // public Command ClimbUpCommand(){
@@ -94,11 +125,22 @@ public class CommandFactory {
     //     return new ClimberCommand(false, climber);
     // }
 
+    public Command resetMidPos() {
+        return new ParallelCommandGroup(
+            new RollersCommand(rollers, 0,0,0, 0),
+            new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID)
+        );
+    }
+
     public Command resetPos() {
         return new ParallelCommandGroup(
             new RollersCommand(rollers, 0,0,0, 0),
             new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN)
         );
+    }
+
+    public Command resetSpeed() {
+        return new RollersCommand(rollers, 0,0,0, 0);
     }
 
 } 

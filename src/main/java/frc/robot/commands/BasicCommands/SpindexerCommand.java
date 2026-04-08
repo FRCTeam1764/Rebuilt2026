@@ -26,7 +26,7 @@ public class SpindexerCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rollersSubsystem.spindexOn(CommandConstants.SPINDEXER_SPEED);
+    rollersSubsystem.spindexOn(desired);
   }
 
   // Called once the command ends or is interrupted.

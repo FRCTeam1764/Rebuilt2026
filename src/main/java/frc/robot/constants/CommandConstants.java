@@ -20,14 +20,13 @@ public final class CommandConstants {
     public final static double CLIMBER_LIMIT_DOWN = 0.0;
 
     //positions
-    public final static double INTAKE_WRIST_DOWN = 0.988;
-    public final static double INTAKE_WRIST_MID = 0.85;
-    public final static double INTAKE_WRIST_IN = 0.755;
-    public final static double INTAKE_WRIST_IN_IN = 0.755;
+    public final static double INTAKE_WRIST_DOWN = 0.8;
+    public final static double INTAKE_WRIST_MID = 0.5;
+    public final static double INTAKE_WRIST_IN = 0.13;
+    public final static double INTAKE_WRIST_IN_IN = 0.13;
 
-    public final static double SHOOTER_DEFAULT = 0.5;
     public final static double SHOOTER_WRIST_DOWN = 0.9;
-    public final static double SHOOTER_WRIST_UP = 0.5;
+    public final static double SHOOTER_WRIST_UP = 0.6;
 
     public final static double SHOOTER_FAR = 0.48;
     public final static double SHOOTER_MID1 = 0.44;

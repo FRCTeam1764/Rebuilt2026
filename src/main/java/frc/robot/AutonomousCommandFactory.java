@@ -68,7 +68,7 @@ public class AutonomousCommandFactory extends CommandFactory{
         NamedCommands.registerCommand("R2Wrist", new ShooterWristCommand(CommandConstants.R2_SHOOTER, shooterWrist));
         NamedCommands.registerCommand("R3Wrist", new ShooterWristCommand(CommandConstants.R3_SHOOTER, shooterWrist));
         NamedCommands.registerCommand("R4Wrist", new ShooterWristCommand(CommandConstants.R4_SHOOTER, shooterWrist));
-        NamedCommands.registerCommand("WristDown", new ShooterWristCommand(CommandConstants.SHOOTER_DEFAULT, shooterWrist));
+        NamedCommands.registerCommand("WristDown", new ShooterWristCommand(CommandConstants.SHOOTER_WRIST_DOWN, shooterWrist));
         //NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
         NamedCommands.registerCommand("HubShootCommand", ShootRampCommand());
         // NamedCommands.registerCommand("NeutralIntake", NeutralIntake());
