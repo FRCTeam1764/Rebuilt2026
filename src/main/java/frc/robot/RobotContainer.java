@@ -98,18 +98,18 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(-Math.pow(pilot.getLeftY(), 2) * (pilot.getLeftY()<0 ? -1: 1)  * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-pilot.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-pilot.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
+        // drivetrain.setDefaultCommand(
+        //     // Drivetrain will execute this command periodically
+        //     drivetrain.applyRequest(() ->
+        //         drive.withVelocityX(-Math.pow(pilot.getLeftY(), 2) * (pilot.getLeftY()<0 ? -1: 1)  * MaxSpeed) // Drive forward with negative Y (forward)
+        //             .withVelocityY(-pilot.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+        //             .withRotationalRate(-pilot.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        //     )
+        // );
 
         // Default Commands
-        turret.setDefaultCommand(new DefaultTurretCommand(turret, copilot));
-        shooterWrist.setDefaultCommand(new DefaultShooterWristCommand(shooterWrist, copilot));
+        turret.setDefaultCommand(new DefaultTurretCommand(turret, pilot));
+        //shooterWrist.setDefaultCommand(new DefaultShooterWristCommand(shooterWrist, copilot));
         
         configureMainBindings();
 
@@ -148,6 +148,10 @@ public class RobotContainer {
         // pilot.x().onTrue(new RequestStateChange(States.SPIT_OUT, stateManager));
 
         // pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
+
+        pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, 0.13));
+        
+        pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, 0.8));
         
     }
 

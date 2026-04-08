@@ -41,13 +41,14 @@ public class IntakeWristRev extends SubsystemBase {
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
     pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
-    pidConfig.pid(1.5, 0, 0.9); //1,225
+    pidConfig.pid(1.5, 0, 0.9, ClosedLoopSlot.kSlot0); //1,225
+    pidConfig.pid(0.5, 0, 0.9, ClosedLoopSlot.kSlot1);
+    pidConfig.outputRange(-0.3, 0.4);
     pidConfig.allowedClosedLoopError(0.005, ClosedLoopSlot.kSlot0); 
+    pidConfig.allowedClosedLoopError(0.005, ClosedLoopSlot.kSlot1); 
     
     FeedForwardConfig ffConfig = new FeedForwardConfig();
-    ffConfig.sva(0.74574, 4.4131, 0.53475);
-    ffConfig.kCos(0);
-    ffConfig.kCosRatio(1);
+    ffConfig.svag(0, 0.2, 0, 1.1);
 
     pidConfig.apply(ffConfig);
     config.apply(pidConfig);
@@ -70,6 +71,10 @@ public class IntakeWristRev extends SubsystemBase {
 
   public boolean atPos() {
     return wristMotor.getClosedLoopController().isAtSetpoint();
+  }
+
+  public double getSpeed() {
+    return wristMotor.getAbsoluteEncoder().getVelocity();
   }
 
   @Override
