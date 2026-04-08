@@ -15,7 +15,7 @@ public class RollersSubsystem extends SubsystemBase {
   /** Creates a new rollerSubsystem. */
   TalonFX indexRollers = new TalonFX(8);
   TalonFX shooterFlywheel = new TalonFX(9);
-  TalonFX resRollers = new TalonFX(7);
+  TalonFX spindexer = new TalonFX(7);
   TalonFX intakeRollers = new TalonFX(6);
 
   public RollersSubsystem() {
@@ -25,7 +25,7 @@ public class RollersSubsystem extends SubsystemBase {
 
     indexRollers.getConfigurator().apply(config);
     shooterFlywheel.getConfigurator().apply(config);
-    resRollers.getConfigurator().apply(config);
+    spindexer.getConfigurator().apply(config);
     intakeRollers.getConfigurator().apply(config);
 
   }
@@ -33,7 +33,7 @@ public class RollersSubsystem extends SubsystemBase {
   public void rollersOn(double speedIndex, double speedShooter, double speedRes, double speedIntake) {
     indexRollers.set(speedIndex);
     shooterFlywheel.set(speedShooter);
-    resRollers.set(speedRes);
+    spindexer.set(speedRes);
     intakeRollers.set(speedIntake);
     
   }
@@ -42,8 +42,8 @@ public class RollersSubsystem extends SubsystemBase {
     intakeRollers.set(speed);
   }
 
-  public void resOn(double speed) {
-    resRollers.set(speed);
+  public void spindexOn(double speed) {
+    spindexer.set(speed);
   }
 
   public void flywheelsOn(double speed) {
@@ -69,8 +69,8 @@ public class RollersSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("shooter flywheel current", shooterFlywheel.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("shooter flywheel temp", shooterFlywheel.getDeviceTemp().getValueAsDouble());
 
-    SmartDashboard.putNumber("res roller voltage", resRollers.getMotorVoltage().getValueAsDouble());
-    SmartDashboard.putNumber("res roller current", resRollers.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("res roller temp", resRollers.getDeviceTemp().getValueAsDouble());
+    SmartDashboard.putNumber("res roller voltage", spindexer.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("res roller current", spindexer.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("res roller temp", spindexer.getDeviceTemp().getValueAsDouble());
   }
 }

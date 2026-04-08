@@ -12,8 +12,8 @@ import frc.robot.subsystems.TurretRev;
 public class ShooterTurretCommand extends Command {
   /** Creates a new TurretCommand. */
   TurretRev turret;
-  int desired;
-  public ShooterTurretCommand(TurretRev turret, int desired) {
+  double desired;
+  public ShooterTurretCommand(TurretRev turret, double desired) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.turret = turret;
     this.desired = desired;
@@ -26,16 +26,18 @@ public class ShooterTurretCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turret.onPosition(desired);
+    turret.onAngleEx(desired);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    turret.onSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return turret.getPos() < desired+5 && turret.getPos() > desired-5;
+    return turret.getPos() < desired+0.1 && turret.getPos() > desired-0.1;
   }
 }

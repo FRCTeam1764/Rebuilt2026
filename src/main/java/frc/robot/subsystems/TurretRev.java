@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.sim.TalonFXSimState.MotorType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
@@ -37,90 +40,62 @@ public class TurretRev extends SubsystemBase {
 
   private final SparkMax turretMotor = new SparkMax(23, SparkLowLevel.MotorType.kBrushless);
   DigitalOutput limitSwitch = new DigitalOutput(2);
+  CANcoder turretEncoder = new CANcoder(4);
   boolean left = false;
   boolean switchSides = false;
   boolean pressed = false;
   double cheaterEncoder;
 
-  // 's' for start, 'e' for end, 'n' for nothing
-  private char reset = 'n';
+  PIDController pid1 = new PIDController(1.7, 0, 0);
+  PIDController pid2 = new PIDController(2.5, 0, 0);
 
-  
+  double calculation;
   
   public TurretRev() {
-SparkMaxConfig config = new SparkMaxConfig();
-    config.inverted(false);
-    config.idleMode(SparkBaseConfig.IdleMode.kBrake);
-    config.smartCurrentLimit(20);
-
-    ClosedLoopConfig pidConfig = new ClosedLoopConfig();
-    pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
-    pidConfig.outputRange(-0.9, 0.9);
-    pidConfig.pid(1.7, 0, 0, ClosedLoopSlot.kSlot0);
-    pidConfig.pid(2.5, 0, 0, ClosedLoopSlot.kSlot1);
-    pidConfig.allowedClosedLoopError(0.01, ClosedLoopSlot.kSlot0);
-    pidConfig.allowedClosedLoopError(0.01, ClosedLoopSlot.kSlot1);
-
-    // SoftLimitConfig softLimitConfig = new SoftLimitConfig();
-    // softLimitConfig.reverseSoftLimit(0.98); //0.56
-    // softLimitConfig.reverseSoftLimitEnabled(true); //0.6
-    // softLimitConfig.forwardSoftLimit(0.05); //0.85, 0.78
-    // softLimitConfig.forwardSoftLimitEnabled(true);
-
-    config.apply(pidConfig);
-
-    //config, resets configs to default, configs persist even after motor is power cycled
-    turretMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    cheaterEncoder = turretMotor.getAbsoluteEncoder().getPosition();
   }
 
   public void onPosition(double desiredPos) { 
     turretMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition);
   }
 
+  public void onPositionEx(double desiredPos) {
+    if ((getPos() > 300 && calculation>0) || (getPos() < 10 && calculation<0)) {
+      turretMotor.set(0);
+    } else {
+      calculation = pid1.calculate(getPos(), desiredPos);
+      SmartDashboard.putNumber("INTAKE_WRIST_PID", calculation);
+      turretMotor.set(calculation);
+    }
+  }
+
+  public void onAngleEx(double desiredPos) {
+    if ((getAngle() > 300 && calculation>0) || (getAngle() < 10 && calculation<0)) {
+      turretMotor.set(0);
+    } else {
+      calculation = pid1.calculate(getAngle(), desiredPos);
+      SmartDashboard.putNumber("INTAKE_WRIST_PID", calculation);
+      turretMotor.set(calculation);
+    }
+  }
+
   public void onAnglePosition(double desiredAngle) { 
     turretMotor.getClosedLoopController().setSetpoint(desiredAngle/360, ControlType.kPosition);
   }
 
-  public double getAbsPos() {
-    return turretMotor.getEncoder().getPosition();
-  }
-
   public double getPos() {
-    return cheaterEncoder;
+    return turretEncoder.getPosition().getValueAsDouble();
   }
 
-  public boolean noReset() {
-    if (reset == 'n') {
-      return true;
-    }
-    return false;
-  }
-
-  public void resetTurret() {
-    if (reset == 's') {
-      onPosition(5);
-    } else if (reset == 'e') {
-      onPosition(355);
-    }
+  public double getAngle() {
+    return turretEncoder.getPosition().getValueAsDouble()*360;
   }
 
   public void onSpeed(double speed) {
-    // if (noReset()) {
-    //   turretMotor.set(speed/3);
-    // } else {
-    //   resetTurret();
-    // }
-    // SmartDashboard.putString("message", "" + cheaterEncoder + ">=0.1 & " + speed + "<0: " + (cheaterEncoder>=0.1) + " + " + (speed<0) + " = " + (cheaterEncoder>=0.1 && speed<0));
-    // SmartDashboard.putString("message2", "" + cheaterEncoder + "<=0.9 & " + speed + ">0: " + (cheaterEncoder<=1.9) + " + " + (speed>0) + " = " + (cheaterEncoder<=1.9 && speed>0));
     turretMotor.set(speed*0.25);
   }
 
   public void on(boolean neg) {
-    if (noReset()) {
-      turretMotor.set(neg ? -CommandConstants.TURRET_SPEED : CommandConstants.TURRET_SPEED);
-    }
+    turretMotor.set(neg ? -CommandConstants.TURRET_SPEED : CommandConstants.TURRET_SPEED);
   }
 
   public void stop() {
@@ -130,50 +105,12 @@ SparkMaxConfig config = new SparkMaxConfig();
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (getPos()>=355) {
-      reset = 's';
-    } else if (getPos()<=5 && reset == 'n') {
-      reset = 'e';
-    } else if ((reset == 's' && getPos()<=5) || (reset == 'e' && getPos()>=355)) {
-      reset = 'n';
-    }
 
-    if (pressed && !limitSwitch.get()) {
-      left = !left;
-    }
-
-    if (limitSwitch.get()) {
-      pressed = true;
-      turretMotor.getEncoder().setPosition(0);
-    } else {
-      pressed = false;
-    }
-    
-    switchSides = SmartDashboard.getBoolean("Switch Turret Side", false);
-    SmartDashboard.putBoolean("Switch Turret Side", switchSides);
-
-    if (switchSides) {
-      left = !left;
-      switchSides = false;
-    }
-
-    SmartDashboard.putBoolean("Left Side Turret", left);
-
-
-    if (left) {
-      cheaterEncoder = turretMotor.getAbsoluteEncoder().getPosition();
-    } else {
-      cheaterEncoder = turretMotor.getAbsoluteEncoder().getPosition() + 1;
-    }
-
-    SmartDashboard.putNumber("TurretPosition", turretMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("TurretPosition", turretEncoder.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("TurretTemperature", turretMotor.getMotorTemperature());
     SmartDashboard.putNumber("TurretCurrent", turretMotor.getOutputCurrent());
-    SmartDashboard.putString("TurretResetState", String.valueOf(reset));
     SmartDashboard.putNumber("TurretSetpoint", turretMotor.getClosedLoopController().getSetpoint());
-    SmartDashboard.putNumber("TurretSpeed", turretMotor.getAbsoluteEncoder().getVelocity());
-
-    SmartDashboard.putNumber("Turret cheater encoder", cheaterEncoder);
+    SmartDashboard.putNumber("TurretSpeed", turretEncoder.getVelocity().getValueAsDouble());
 
     SmartDashboard.putBoolean("Turret Limit Switch", limitSwitch.get());
     SmartDashboard.putBoolean("turret pressed", pressed);

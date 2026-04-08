@@ -23,11 +23,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.TurretRev;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.RollersSubsystem;
 import frc.robot.subsystems.ShooterWristRev;
 import frc.robot.commands.BasicCommands.ClimberCommandSpec;
 import frc.robot.commands.BasicCommands.ForceClimberCommand;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
+import frc.robot.commands.BasicCommands.RollersCommand;
+import frc.robot.commands.BasicCommands.ShooterTurretCommand;
 import frc.robot.commands.BasicCommands.ShooterWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultShooterWristCommand;
 import frc.robot.commands.DefaultCommands.DefaultTurretCommand;
@@ -69,19 +72,18 @@ public class RobotContainer {
     private final ShooterWristRev shooterWrist = new ShooterWristRev();
     private final TurretRev turret = new TurretRev();
     private final IntakeWristRev intakeWrist = new IntakeWristRev();
-    private final ClimberSubsystem climber = new ClimberSubsystem();
+    //private final ClimberSubsystem climber = new ClimberSubsystem();
     
     //limelights
-    private final LimelightSubsystem turretLimelight = new LimelightSubsystem("limelight-fourtwo");
-    //private final LimelightSubsystem localLimelight = new LimelightSubsystem("limelight-four");
+    private final LimelightSubsystem localLimelight1 = new LimelightSubsystem("limelight-fourtwo");
+    private final LimelightSubsystem localLimelight2 = new LimelightSubsystem("limelight-four");
 
     
-    //private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight, turretLimelight);
+    private final LocalizationSubsystem localization = new LocalizationSubsystem(drivetrain, field, localLimelight1, localLimelight2);
     
-
     //factories
-    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain);
-    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, shooterWrist, turretLimelight, rollers, climber, pilot, drivetrain);
+    private final CommandFactory commandFactory = new CommandFactory(intakeWrist, turret, shooterWrist, localLimelight1, rollers, pilot, drivetrain);
+    private final AutonomousCommandFactory autoFactory = new AutonomousCommandFactory(intakeWrist, turret, shooterWrist, localLimelight1, rollers, pilot, drivetrain);
     
     
     private final SendableChooser<Command> chooser;
@@ -120,18 +122,11 @@ public class RobotContainer {
         
         //copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
         
-        // pilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
-        // copilot.start().onTrue(new RequestStateChange(States.IDLE, stateManager));
-
-        // Subsystem Controls
-        //pilot.b().whileTrue(new RequestStateChange(States.MID_IDLE, stateManager));
-
-
-        //pilot.b().onTrue(commandFactory.ClimbUpCommand());
-        //pilot.a().onTrue(commandFactory.ClimbDownCommand());
-
-        // pilot.rightTrigger().onTrue(commandFactory.GroundIntakeCommand());
-        // pilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        pilot.start().whileTrue(new RollersCommand(rollers, 0,0,0,0));
+        copilot.start().whileTrue(new RollersCommand(rollers, 0,0,0,0));
+        
+        pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
+        pilot.rightTrigger().onFalse(commandFactory.resetPos());
 
         // pilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
         // pilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
@@ -139,19 +134,11 @@ public class RobotContainer {
         // pilot.rightBumper().onTrue(new RequestStateChange(States.CONDENSED, stateManager));
         // pilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
         
-        copilot.rightTrigger().onTrue(commandFactory.ShootRampCommand());
-        //copilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
+        // copilot.rightTrigger().onTrue(commandFactory.ShootRampCommand());
+        // //copilot.rightTrigger().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
-        //copilot.rightBumper().onTrue(new RequestStateChange(States.SHOOT_MID, stateManager));
-        //copilot.rightBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
-        // copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_FAR, shooterWrist));
+        // copilot.rightBumper().onTrue(new RequestStateChange(States.SHOOT_MID, stateManager));
         
-        // copilot.x().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID1, shooterWrist));
-        
-        // copilot.b().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_MID2, shooterWrist));
-       
-        // copilot.y().whileTrue(new ShooterWristCommand(CommandConstants.SHOOTER_CLOSE, shooterWrist));
-       
         // copilot.leftBumper().onTrue(new RequestStateChange(States.INTAKE_WHILE_SHOOT, stateManager));
         // copilot.leftBumper().onFalse(new RequestStateChange(States.IDLE, stateManager));
 
@@ -160,26 +147,7 @@ public class RobotContainer {
 
         // pilot.x().onTrue(new RequestStateChange(States.SPIT_OUT, stateManager));
 
-        copilot.pov(0).whileTrue(commandFactory.ClimbUpCommand());
-        copilot.pov(0).onFalse(new ClimberCommandSpec(0, climber));
-        copilot.pov(180).whileTrue(commandFactory.ClimbDownCommand());
-        copilot.pov(180).onFalse(new ClimberCommandSpec(0, climber));
-
-        // copilot.pov(90).whileTrue(new ForceClimberCommand(true, climber));
-        // copilot.pov(90).onFalse(new ClimberCommandSpec(0, climber));
-        // copilot.pov(270).whileTrue(new ForceClimberCommand(false, climber));
-        // copilot.pov(270).onFalse(new ClimberCommandSpec(0, climber));
-
-    
-
-       // pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
-
-
-        // Aiming Controls
-        // copilot.pov(0).whileTrue(new ShooterWristCommand(10, wrist));
-        // copilot.pov(90).whileTrue(new ShooterWristCommand(15, wrist));
-        // copilot.pov(180).whileTrue(new ShooterWristCommand(20, wrist));
-        // copilot.pov(270).whileTrue(new ShooterWristCommand(30, wrist));
+        // pilot.pov(90).whileTrue(new RequestStateChange(States.INTAKE_OUT, stateManager));
         
     }
 

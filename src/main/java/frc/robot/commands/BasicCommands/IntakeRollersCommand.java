@@ -10,7 +10,7 @@ import frc.robot.subsystems.RollersSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeRollersCommand extends Command {
-  /** Creates a new ShooterFlywheelCommand. */
+  /** Creates a new IntakeRollersCommand. */
   double desired;
   RollersSubsystem rollersSubsystem;
   public IntakeRollersCommand(RollersSubsystem rollers, double desired) {
@@ -26,12 +26,13 @@ public class IntakeRollersCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rollersSubsystem.flywheelsOn(CommandConstants.SHOOTER_SPEED);
+    rollersSubsystem.intakeOn(CommandConstants.INTAKE_IN_SPEED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    rollersSubsystem.intakeOn(0);
   }
 
   // Returns true when the command should end.

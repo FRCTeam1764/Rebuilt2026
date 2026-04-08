@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.BasicCommands.ClimberCommand;
 import frc.robot.commands.BasicCommands.ClimberCommandSpec;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
+import frc.robot.commands.BasicCommands.RollersCommand;
 import frc.robot.commands.BasicCommands.ShooterFlywheelCommand;
 import frc.robot.commands.DriveCommands.DriveForward;
 import frc.robot.commands.LimelightCommands.DriveToTarget;
@@ -47,10 +48,9 @@ public class CommandFactory {
     private ShooterWristRev wrist;
     private TurretRev turret;
     private IntakeWristRev intakeWrist;
-    private ClimberSubsystem climber;
 
     public CommandFactory(IntakeWristRev intakeWrist, TurretRev turret, ShooterWristRev wrist, LimelightSubsystem turretLimelight, 
-                RollersSubsystem rollers, ClimberSubsystem climber,
+                RollersSubsystem rollers,
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve) {
         this.pilot = pilot;
         this.swerve = swerve;
@@ -59,7 +59,6 @@ public class CommandFactory {
         this.wrist = wrist;
         this.turret = turret;
         this.intakeWrist = intakeWrist;
-        this.climber = climber;
     }
 
     public Command driveForward() {
@@ -68,53 +67,38 @@ public class CommandFactory {
                     new DriveForward(swerve));
     }
 
-    public Command ShootRampCommand(){
+    public Command ShootRampCommand() {
         return new SequentialCommandGroup( 
             new ParallelDeadlineGroup(
-                new WaitCommand(1),
-                new ShooterFlywheelCommand(rollers, 0)),
-            new ParallelDeadlineGroup(null, null)
+                new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED),
+                new WaitCommand(2)),
+            new RollersCommand(rollers, true, CommandConstants.INTAKE_IN_SPEED)
         );
     }
 
-    // public Command ShootCommand(){
-    //     return new SequentialCommandGroup( 
-    //     new RequestStateChange(States.SHOOT, stateManager)
-    //     );
-    // }
+    public Command ShootCommand() {
+        return new RollersCommand(rollers, true, CommandConstants.INTAKE_IN_SPEED);
+    }
 
-    // public Command ShootSpitCommand(){
-    //     return new SequentialCommandGroup( 
-    //         new RequestStateChange(States.SHOOT, stateManager),
-    //         new ParallelDeadlineGroup(
-    //             new waitUntilPosition(stateManager, CommandConstants.INTAKE_WRIST_KEY, 0, null, 0)), null)
-    //     );
-    // }
+    public Command GroundIntakeCommand() {
+        return new ParallelCommandGroup(
+            new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN), 
+            new RollersCommand(rollers, true, CommandConstants.INTAKE_IN_SPEED));
+    }
     
-    public Command ClimbUpCommand(){
-        return new ClimberCommand(true, climber);
-    }
-
-    public Command ClimbDownCommand(){
-        return new ClimberCommand(false, climber);
-    }
-
-    // public Command GroundIntakeCommand(){ 
-    //     return new SequentialCommandGroup(
-    //         new RequestStateChange(States.INTAKE, stateManager));
+    // public Command ClimbUpCommand(){
+    //     return new ClimberCommand(true, climber);
     // }
 
-    // public Command interupted(boolean wasInteruppted) {
-    //     if (wasInteruppted) {
-    //         return new InstantCommand();
-    //     }
-    //     return new returnToIdle(stateManager);
+    // public Command ClimbDownCommand(){
+    //     return new ClimberCommand(false, climber);
     // }
 
-    //desiredAction might not be used
-    public enum desiredAction {
-        IDLE
+    public Command resetPos() {
+        return new ParallelCommandGroup(
+            new RollersCommand(rollers, 0,0,0, 0),
+            new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN)
+        );
     }
-    public desiredAction currentAction = desiredAction.IDLE;
 
 } 

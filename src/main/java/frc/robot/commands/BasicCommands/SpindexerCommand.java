@@ -9,11 +9,11 @@ import frc.robot.constants.CommandConstants;
 import frc.robot.subsystems.RollersSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ShooterFlywheelCommand extends Command {
-  /** Creates a new ShooterFlywheelCommand. */
+public class SpindexerCommand extends Command {
+  /** Creates a new SpindexerCommand. */
   double desired;
   RollersSubsystem rollersSubsystem;
-  public ShooterFlywheelCommand(RollersSubsystem rollers, double desired) {
+  public SpindexerCommand(RollersSubsystem rollers, double desired) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.desired = desired;
     rollersSubsystem = rollers;
@@ -26,13 +26,13 @@ public class ShooterFlywheelCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rollersSubsystem.flywheelsOn(CommandConstants.SHOOTER_SPEED);
+    rollersSubsystem.spindexOn(CommandConstants.SPINDEXER_SPEED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    rollersSubsystem.flywheelsOn(0);
+    rollersSubsystem.spindexOn(0);
   }
 
   // Returns true when the command should end.

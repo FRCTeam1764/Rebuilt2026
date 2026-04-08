@@ -45,18 +45,10 @@ public final class CommandConstants {
     public final static double INTAKE_OUT_SPEED = 0.1;
     public final static double INDEX_SPEED = -0.35;
     public final static double SHOOTER_SPEED = 1.0;
-    public final static double RES_SPEED = 0.35;
+    public final static double SPINDEXER_SPEED = 0.35;
     public final static double TURRET_SPEED = 0.3;
     public final static double CLIMBER_SPEED_UP = 0.7;
     public final static double CLIMBER_SPEED_DOWN = 0.3;
-
-    //keys
-    public static final String SHOOTER_FLYWHEEL_KEY = "ShooterRollerSpeed";
-    public static final String INTAKE_KEY = "IntakeRollerSpeed";
-    public static final String RES_INDEX_KEY = "ResevoirRollerSpeed";
-    public static final String INTAKE_WRIST_KEY = "IntakeWristSpeed";
-    public static final String INDEX_KEY = "IndexRollerSpeed";
-    public static final String CLIMBER_KEY = "ClimberPosition";
 
     //swerve speed
     public static final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed

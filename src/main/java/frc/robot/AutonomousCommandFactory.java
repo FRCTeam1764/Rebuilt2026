@@ -43,12 +43,11 @@ public class AutonomousCommandFactory extends CommandFactory{
     private ShooterWristRev shooterWrist;
     private TurretRev turret;
     private IntakeWristRev intakeWrist;
-    private ClimberSubsystem climber;
 
     public AutonomousCommandFactory(IntakeWristRev intakeWrist, TurretRev turret, ShooterWristRev wrist, LimelightSubsystem turretLimelight, 
-                RollersSubsystem rollers, ClimberSubsystem climber, 
+                RollersSubsystem rollers,
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve) {
-        super(intakeWrist, turret, wrist, turretLimelight, rollers, climber, pilot, swerve);
+        super(intakeWrist, turret, wrist, turretLimelight, rollers, pilot, swerve);
         this.shooterWrist = wrist;
         configAutonomousCommands();
     }
