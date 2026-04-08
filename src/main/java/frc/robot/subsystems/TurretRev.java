@@ -46,6 +46,9 @@ public class TurretRev extends SubsystemBase {
   boolean pressed = false;
   double cheaterEncoder;
 
+  double turretLeftMax = -1.00; //-1.55
+  double turretRightMax = 0.00; //0.75
+
   PIDController pid1 = new PIDController(1.7, 0, 0);
   PIDController pid2 = new PIDController(2.5, 0, 0);
 
@@ -83,15 +86,19 @@ public class TurretRev extends SubsystemBase {
   }
 
   public double getPos() {
-    return turretEncoder.getPosition().getValueAsDouble();
+    return turretEncoder.getAbsolutePosition().getValueAsDouble();
   }
 
   public double getAngle() {
-    return turretEncoder.getPosition().getValueAsDouble()*360;
+    return turretEncoder.getAbsolutePosition().getValueAsDouble()*360;
   }
 
   public void onSpeed(double speed) {
-    turretMotor.set(speed*0.25);
+    if ((speed > 0 && getPos() > turretLeftMax) || (speed < 0 && getPos() < turretRightMax)) {
+      turretMotor.set(speed*0.25);
+    } else {
+      turretMotor.set(0);
+    }
   }
 
   public void on(boolean neg) {
@@ -106,7 +113,7 @@ public class TurretRev extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    SmartDashboard.putNumber("TurretPosition", turretEncoder.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("TurretPosition", turretEncoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("TurretTemperature", turretMotor.getMotorTemperature());
     SmartDashboard.putNumber("TurretCurrent", turretMotor.getOutputCurrent());
     SmartDashboard.putNumber("TurretSetpoint", turretMotor.getClosedLoopController().getSetpoint());
@@ -114,5 +121,12 @@ public class TurretRev extends SubsystemBase {
 
     SmartDashboard.putBoolean("Turret Limit Switch", limitSwitch.get());
     SmartDashboard.putBoolean("turret pressed", pressed);
+
+    if (limitSwitch.get() && !pressed) {
+      turretEncoder.setPosition(0);
+      pressed = true;
+    } else if (!limitSwitch.get() && pressed) {
+      pressed = false;
+    }
   }
 }
