@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.constants.CommandConstants;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import com.revrobotics.PersistMode;
@@ -52,10 +53,10 @@ public class ShooterWristRev extends SubsystemBase {
     
 
     SoftLimitConfig softLimitConfig = new SoftLimitConfig();
-    softLimitConfig.reverseSoftLimit(0.12);
-    softLimitConfig.reverseSoftLimitEnabled(true);
-    softLimitConfig.forwardSoftLimit(0.38);
-    softLimitConfig.forwardSoftLimitEnabled(true);
+    softLimitConfig.reverseSoftLimit(CommandConstants.SHOOTER_LIMIT_UP+0.05);
+    softLimitConfig.reverseSoftLimitEnabled(false);
+    softLimitConfig.forwardSoftLimit(CommandConstants.SHOOTER_LIMIT_DOWN-0.05);
+    softLimitConfig.forwardSoftLimitEnabled(false);
 
     config.apply(pidConfig);
     config.apply(softLimitConfig);
@@ -77,7 +78,11 @@ public class ShooterWristRev extends SubsystemBase {
   }
 
   public void onSpeed(double speed) {
-    wristMotor.set(speed*0.2);
+    if ((speed > 0 && getPos() < 0.85) || (speed < 0 && getPos() > 0.65)) {
+        wristMotor.set(speed * 0.2); // was: > 0.2 ? 0.2 : speed < -0.2 ? -0.2 : speed*.3
+      } else {
+        wristMotor.set(0);
+      }
   }
 
   public double getPos() {
@@ -92,5 +97,6 @@ public class ShooterWristRev extends SubsystemBase {
     SmartDashboard.putNumber("ShooterWristCurrent", wristMotor.getOutputCurrent());
     SmartDashboard.putNumber("ShooterWristSetpoint", wristMotor.getClosedLoopController().getSetpoint());
     SmartDashboard.putNumber("ShooterWristVoltage", wristMotor.getAppliedOutput());
+    SmartDashboard.putNumber("ShooterWristSpeed", wristMotor.getAbsoluteEncoder().getVelocity());
   }
 }

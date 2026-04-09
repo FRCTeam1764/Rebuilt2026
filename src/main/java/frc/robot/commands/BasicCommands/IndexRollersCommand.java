@@ -26,7 +26,7 @@ public class IndexRollersCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rollersSubsystem.indexOn(CommandConstants.INDEX_SPEED);
+    rollersSubsystem.indexOn(desired);
   }
 
   // Called once the command ends or is interrupted.

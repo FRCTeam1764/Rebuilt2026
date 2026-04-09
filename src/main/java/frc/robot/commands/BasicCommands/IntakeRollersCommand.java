@@ -26,7 +26,7 @@ public class IntakeRollersCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rollersSubsystem.intakeOn(CommandConstants.INTAKE_IN_SPEED);
+    rollersSubsystem.intakeOn(desired);
   }
 
   // Called once the command ends or is interrupted.

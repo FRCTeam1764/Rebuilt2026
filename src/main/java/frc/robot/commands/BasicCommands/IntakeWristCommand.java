@@ -40,7 +40,7 @@ public class IntakeWristCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.intakeWrist.getPos() <= this.desired+1 && this.intakeWrist.getPos() >= this.desired-1;
+    return this.intakeWrist.getPos() <= this.desired+0.01 && this.intakeWrist.getPos() >= this.desired-0.01;
 
   } 
 }

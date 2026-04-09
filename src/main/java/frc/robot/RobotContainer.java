@@ -143,6 +143,12 @@ public class RobotContainer {
         copilot.leftTrigger().whileTrue(commandFactory.ShootRampWithSpitOutCommand());
         copilot.leftTrigger().onFalse(commandFactory.resetMidPos());
 
+        copilot.leftBumper().whileTrue(commandFactory.ShootCommand());
+        copilot.leftBumper().onFalse(commandFactory.resetMidPos());
+
+        copilot.back().whileTrue(new RollersCommand(rollers, true, CommandConstants.INTAKE_OUT_SPEED));
+        copilot.back().onFalse(commandFactory.resetSpeed());
+
         pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
         pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID));
         pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));

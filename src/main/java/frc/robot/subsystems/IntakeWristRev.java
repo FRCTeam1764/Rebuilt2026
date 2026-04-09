@@ -42,7 +42,7 @@ public class IntakeWristRev extends SubsystemBase {
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
     pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
     pidConfig.pid(1.5, 0, 0.9, ClosedLoopSlot.kSlot0); //1,225
-    pidConfig.pid(0.5, 0, 0.9, ClosedLoopSlot.kSlot1);
+    pidConfig.pid(1.5, 0, 0.9, ClosedLoopSlot.kSlot1);
     pidConfig.outputRange(-0.3, 0.4);
     pidConfig.allowedClosedLoopError(0.005, ClosedLoopSlot.kSlot0); 
     pidConfig.allowedClosedLoopError(0.005, ClosedLoopSlot.kSlot1); 
@@ -61,7 +61,11 @@ public class IntakeWristRev extends SubsystemBase {
   } 
 
   public void setPos(double desiredPos) {
-    wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition);
+    if (getSpeed() > 0) {
+      wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    } else {
+      wristMotor.getClosedLoopController().setSetpoint(desiredPos, ControlType.kPosition, ClosedLoopSlot.kSlot1);
+    }
     SmartDashboard.putNumber("intake pid controller", wristMotor.getClosedLoopController().getSetpoint());
   }
 
@@ -85,5 +89,6 @@ public class IntakeWristRev extends SubsystemBase {
     SmartDashboard.putNumber("IntakeWristCurrent", wristMotor.getOutputCurrent());
     SmartDashboard.putNumber("IntakeWristSetpoint", wristMotor.getClosedLoopController().getSetpoint());
     SmartDashboard.putNumber("IntakeWristVoltage", wristMotor.getAppliedOutput());
+    SmartDashboard.putNumber("IntakeWristSpeed", wristMotor.getAbsoluteEncoder().getVelocity());
   }
 }

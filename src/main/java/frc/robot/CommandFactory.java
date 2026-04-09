@@ -73,9 +73,9 @@ public class CommandFactory {
     public Command ShootRampCommand() {
         return new SequentialCommandGroup( 
             new ParallelDeadlineGroup(
-                new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED),
-                new WaitCommand(2)),
-            new RollersCommand(rollers, true, CommandConstants.INTAKE_IN_SPEED)
+                new WaitCommand(2),
+                new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED)),
+            new RollersCommand(rollers, true, 0)
         );
     }
 
@@ -102,13 +102,13 @@ public class CommandFactory {
     }
 
     public Command ShootCommand() {
-        return new RollersCommand(rollers, true, CommandConstants.INTAKE_IN_SPEED);
+        return new RollersCommand(rollers, true, 0);
     }
 
     public Command GroundIntakeCommand() {
         return new ParallelCommandGroup(
             new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN), 
-            new RollersCommand(rollers, true, CommandConstants.INTAKE_IN_SPEED));
+            new IntakeRollersCommand(rollers, CommandConstants.INTAKE_IN_SPEED));
     }
 
     public Command unJamSpin() {

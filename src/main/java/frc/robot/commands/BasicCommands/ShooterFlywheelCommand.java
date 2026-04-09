@@ -26,7 +26,7 @@ public class ShooterFlywheelCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rollersSubsystem.flywheelsOn(CommandConstants.SHOOTER_SPEED);
+    rollersSubsystem.flywheelsOn(desired);
   }
 
   // Called once the command ends or is interrupted.

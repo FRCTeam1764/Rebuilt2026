@@ -20,8 +20,8 @@ public final class CommandConstants {
     public final static double CLIMBER_LIMIT_DOWN = 0.0;
 
     //positions
-    public final static double INTAKE_WRIST_DOWN = 0.8;
-    public final static double INTAKE_WRIST_MID = 0.5;
+    public final static double INTAKE_WRIST_DOWN = 0.82;
+    public final static double INTAKE_WRIST_MID = 0.4;
     public final static double INTAKE_WRIST_IN = 0.13;
     public final static double INTAKE_WRIST_IN_IN = 0.13;
 
@@ -33,18 +33,18 @@ public final class CommandConstants {
     public final static double SHOOTER_MID2 = 0.42;
     public final static double SHOOTER_CLOSE = 0.6;
 
-    public final static double R1_SHOOTER = 0.24;
-    public final static double R2_SHOOTER = 0.27;
-    public final static double R3_SHOOTER = 0.30;
-    public final static double R4_SHOOTER = 0.38;
-    public final static double RDOWN_SHOOTER = 0.39;
+    public final static double R1_SHOOTER = 0.74; //0.24;
+    public final static double R2_SHOOTER = 0.77; //0.27;
+    public final static double R3_SHOOTER = 0.80; //0.30;
+    public final static double R4_SHOOTER = 0.88; //0.38;
+    public final static double RDOWN_SHOOTER = 0.89; //0.39;
 
     //speeds
-    public final static double INTAKE_IN_SPEED = -0.5;
+    public final static double INTAKE_IN_SPEED = -0.7;
     public final static double INTAKE_OUT_SPEED = 0.1;
-    public final static double INDEX_SPEED = -0.35;
+    public final static double INDEX_SPEED = 0.5;
     public final static double SHOOTER_SPEED = 1.0;
-    public final static double SPINDEXER_SPEED = 0.35;
+    public final static double SPINDEXER_SPEED = 0.90;
     public final static double TURRET_SPEED = 0.3;
     public final static double CLIMBER_SPEED_UP = 0.7;
     public final static double CLIMBER_SPEED_DOWN = 0.3;

@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "dont move"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -55,6 +49,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "LTToNeutral"
+          }
+        },
+        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -67,22 +67,41 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "WristDown"
+                  "name": "GroundIntake"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "LTToNeutral"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveForward"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "GroundIntake"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "NeutralIntake"
+            "name": "idle"
           }
         },
         {

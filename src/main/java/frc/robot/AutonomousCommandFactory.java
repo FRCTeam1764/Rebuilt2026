@@ -68,10 +68,10 @@ public class AutonomousCommandFactory extends CommandFactory{
         NamedCommands.registerCommand("R2Wrist", new ShooterWristCommand(CommandConstants.R2_SHOOTER, shooterWrist));
         NamedCommands.registerCommand("R3Wrist", new ShooterWristCommand(CommandConstants.R3_SHOOTER, shooterWrist));
         NamedCommands.registerCommand("R4Wrist", new ShooterWristCommand(CommandConstants.R4_SHOOTER, shooterWrist));
-        NamedCommands.registerCommand("WristDown", new ShooterWristCommand(CommandConstants.SHOOTER_WRIST_DOWN, shooterWrist));
+        NamedCommands.registerCommand("WristDown", new ShooterWristCommand(CommandConstants.RDOWN_SHOOTER, shooterWrist));
         //NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
         NamedCommands.registerCommand("HubShootCommand", ShootRampCommand());
-        // NamedCommands.registerCommand("NeutralIntake", NeutralIntake());
+        NamedCommands.registerCommand("GroundIntake", GroundIntakeCommand());
         // NamedCommands.registerCommand("WaitUntilIdle", new SequentialCommandGroup(
         //     new RequestStateChange(States.IDLE, stateManager),
         //     new waitUntilPosition(stateManager, CommandConstants.INTAKE_WRIST_KEY, 0.5)));
@@ -79,7 +79,7 @@ public class AutonomousCommandFactory extends CommandFactory{
 
         //NamedCommands.registerCommand("ClimbCommand", ClimbUpCommand());
         NamedCommands.registerCommand("DriveForward", new DriveForward(swerve));
-        //NamedCommands.registerCommand("idle", new RequestStateChange(States.IDLE, stateManager));
+        NamedCommands.registerCommand("idle", resetPos());
     }
 
 }
