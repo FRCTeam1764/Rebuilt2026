@@ -130,12 +130,19 @@ public class RobotContainer {
         
         pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
         pilot.rightTrigger().onFalse(commandFactory.resetMidPos());
+        
+        pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
+        pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID));
+        pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
 
         pilot.leftBumper().whileTrue(commandFactory.ShootRampWhileIntakeCommand());
         pilot.leftBumper().onFalse(commandFactory.resetMidPos());
 
         pilot.x().whileTrue(commandFactory.unJamSpin());
         pilot.x().onFalse(commandFactory.resetSpeed());
+
+        pilot.a().whileTrue(new ShooterTurretCommand(turret, 0));
+        pilot.a().onFalse(new InstantCommand(() -> turret.onSpeed(0)));
         
         copilot.rightTrigger().whileTrue(commandFactory.ShootRampCommand());
         copilot.rightTrigger().onFalse(commandFactory.resetMidPos());
@@ -148,10 +155,6 @@ public class RobotContainer {
 
         copilot.back().whileTrue(new RollersCommand(rollers, true, CommandConstants.INTAKE_OUT_SPEED));
         copilot.back().onFalse(commandFactory.resetSpeed());
-
-        pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
-        pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID));
-        pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
         
     }
 

@@ -66,8 +66,8 @@ public class TurretRev extends SubsystemBase {
   double turretLeftMax =  0.40;// 0.46; //-1.55 // FIXME actual encoder val - not ratio adjusted yet
   double turretRightMax = -0.26;//-0.32; //0.75  // FIXME actual encoder val - not ratio adjusted yet
 
-  PIDController pid1 = new PIDController(3.7, 0, 0); // kp was: 1.7
-  PIDController pid2 = new PIDController(4.5, 0, 0); // kp was: 2.5
+  PIDController pid1 = new PIDController(1.7, 0, 0); //adjusted 3.7 -> speed>0
+  PIDController pid2 = new PIDController(2.5, 0, 0); //ajusted 4.5 -> speed<0
 
   double calculation;
 
@@ -100,46 +100,49 @@ public class TurretRev extends SubsystemBase {
   }
 
   public void onPositionEx(double desiredPos) {
-    if ((getPos() > 300 && calculation>0) || (getPos() < 10 && calculation<0)) {
+    if ((getPos() > turretLeftMax && calculation>0) || (getPos() < turretRightMax && calculation<0)) {
       turretMotor.set(0);
-    } else {
+    } else if (calculation>0) {
       calculation = pid1.calculate(getPos(), desiredPos);
+      SmartDashboard.putNumber("Turret onPositionEx calc speed", calculation);
+      turretMotor.set(calculation);
+    } else if (calculation<0) {
+      calculation = pid2.calculate(getPos(), desiredPos);
       SmartDashboard.putNumber("Turret onPositionEx calc speed", calculation);
       turretMotor.set(calculation);
     }
   }
 
-  public void onAngleEx(double desiredPos) {
-    if ((getAngle() > 300 && calculation>0) || (getAngle() < 10 && calculation<0)) {
-      turretMotor.set(0);
-    } else {
-      calculation = pid1.calculate(getAngle(), desiredPos);
-      SmartDashboard.putNumber("Turret onAngleEx calc speed", calculation);
-      turretMotor.set(calculation);
-    }
-  }
+  // public void onAngleEx(double desiredPos) {
+  //   if ((getAngle() > 300 && calculation>0) || (getAngle() < 10 && calculation<0)) {
+  //     turretMotor.set(0);
+  //   } else {
+  //     calculation = pid1.calculate(getAngle(), desiredPos);
+  //     SmartDashboard.putNumber("Turret onAngleEx calc speed", calculation);
+  //     turretMotor.set(calculation);
+  //   }
+  // }
 
-  public void onAnglePosition(double desiredAngle) { 
-    turretMotor.getClosedLoopController().setSetpoint(desiredAngle/360, ControlType.kPosition);
-  }
+  // public void onAnglePosition(double desiredAngle) { 
+  //   turretMotor.getClosedLoopController().setSetpoint(desiredAngle/360, ControlType.kPosition);
+  // }
   
   // 0.3658 is straight forward as of 2026-04-08
   // public void aimStraight() {
   //   turretMotor.set(0.3658);
   // }
 
+  public double getPos() {
+    return turretEncoder.getAbsolutePosition().getValueAsDouble();
+  }
 
   // gear ratio between motor and turret was: 2.41:1
   // will be - theoretically: 2.5 -> 2.41/2.5 = 1:0.964 = 1/0.964:1 = 1.037:1
   static final double encoderRotationRatio = 1.037;
   // TODO find offset (in encoder clicks) from turret forward to encoder forward
   static final double turretOffset = 0.0;
-  public double getPos() {
-    return turretEncoder.getAbsolutePosition().getValueAsDouble() * encoderRotationRatio + turretOffset;
-  }
-
   public double getAngle() {
-    return getPos() * 360;
+    return getPos() * 360 * encoderRotationRatio + turretOffset;
   }
 
   public void onSpeed(double speed) {
@@ -152,6 +155,10 @@ public class TurretRev extends SubsystemBase {
     } else {
       turretMotor.set(speed*.05);
     }
+  }
+
+  public double getSpeed() {
+    return turretEncoder.getVelocity().getValueAsDouble();
   }
 
   public void setVoltage(double volts) {
@@ -176,8 +183,7 @@ public class TurretRev extends SubsystemBase {
     SmartDashboard.putNumber("TurretCurrent", turretMotor.getOutputCurrent());
     SmartDashboard.putNumber("TurretVoltage", turretMotor.getAppliedOutput());
     SmartDashboard.putNumber("TurretSetpoint", turretMotor.getClosedLoopController().getSetpoint());
-    // SmartDashboard.putNumber("TurretSpeed", turretEncoder.getVelocity().getValueAsDouble());
-    SmartDashboard.putString("TurretSpeed", String.format("%.2f", turretEncoder.getVelocity().getValueAsDouble()));
+    SmartDashboard.putString("TurretSpeed", String.format("%.2f", getSpeed()));
     enforceLimits = SmartDashboard.getBoolean("Turret Limits Enabled", true);
     SmartDashboard.putBoolean("Turret Limits Enabled system", enforceLimits);
 

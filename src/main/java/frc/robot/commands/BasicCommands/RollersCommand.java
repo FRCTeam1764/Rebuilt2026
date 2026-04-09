@@ -19,6 +19,7 @@ public class RollersCommand extends Command {
   RollersSubsystem rollersSubsystem;
   public RollersCommand(RollersSubsystem rollers, double intakeRollerSpeed, double indexRollerSpeed, double spindexerSpeed, double flywheelSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(rollersSubsystem);
     this.intakeRollerSpeed = intakeRollerSpeed;
     this.indexRollerSpeed = indexRollerSpeed;
     this.spindexerSpeed = spindexerSpeed;

@@ -15,6 +15,7 @@ public class ShooterTurretCommand extends Command {
   double desired;
   public ShooterTurretCommand(TurretRev turret, double desired) {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(turret);
     this.turret = turret;
     this.desired = desired;
   }
@@ -26,7 +27,7 @@ public class ShooterTurretCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turret.onAngleEx(desired);
+    turret.onPositionEx(desired);
   }
 
   // Called once the command ends or is interrupted.
