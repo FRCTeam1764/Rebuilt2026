@@ -15,16 +15,16 @@ public class RollersCommand extends Command {
   double indexRollerSpeed;
   double spindexerSpeed;
   double flywheelSpeed;
-  boolean useIntake;
+  boolean useIntake = true;
   RollersSubsystem rollersSubsystem;
   public RollersCommand(RollersSubsystem rollers, double intakeRollerSpeed, double indexRollerSpeed, double spindexerSpeed, double flywheelSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(rollersSubsystem);
     this.intakeRollerSpeed = intakeRollerSpeed;
     this.indexRollerSpeed = indexRollerSpeed;
     this.spindexerSpeed = spindexerSpeed;
     this.flywheelSpeed = flywheelSpeed;
     rollersSubsystem = rollers;
+    addRequirements(rollersSubsystem);
   }
 
   public RollersCommand(RollersSubsystem rollers, boolean withIntake, double intakeSpeed) {

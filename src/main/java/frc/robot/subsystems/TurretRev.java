@@ -64,10 +64,10 @@ public class TurretRev extends SubsystemBase {
   boolean enforceLimits = true;
 
   double turretLeftMax =  0.40;// 0.46; //-1.55 // FIXME actual encoder val - not ratio adjusted yet
-  double turretRightMax = -0.26;//-0.32; //0.75  // FIXME actual encoder val - not ratio adjusted yet
+  double turretRightMax = -0.28;//-0.32; //0.75  // FIXME actual encoder val - not ratio adjusted yet
 
-  PIDController pid1 = new PIDController(1.7, 0, 0); //adjusted 3.7 -> speed>0
-  PIDController pid2 = new PIDController(2.5, 0, 0); //ajusted 4.5 -> speed<0
+  PIDController pid1 = new PIDController(1.2, 0, 0); //adjusted 3.7 -> speed>0 //1.7
+  PIDController pid2 = new PIDController( 2, 0, 0.2); //ajusted 4.5 -> speed<0 //2.5
 
   double calculation;
 
@@ -77,22 +77,25 @@ public class TurretRev extends SubsystemBase {
     SmartDashboard.putBoolean("Turret Limits Enabled", enforceLimits);
     SmartDashboard.putNumber("Turret Voltage Set", 0);
 
-    SmartDashboard.putNumber("Turret P", turretP);
-    turretConfig.closedLoop.p(turretP);
-    turretConfig.idleMode(IdleMode.kBrake);
-    turretMotor.configure(turretConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+    turretConfig.smartCurrentLimit(30);
+    turretMotor.configure(turretConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
-    NetworkTableInstance nt = NetworkTableInstance.getDefault();
-    NetworkTable sd = nt.getTable("SmartDashboard");
-    DoubleSubscriber turretPSub = sd.getDoubleTopic("Turret P").subscribe(turretP);
+    // SmartDashboard.putNumber("Turret P", turretP);
+    // turretConfig.closedLoop.p(turretP);
+    // turretConfig.idleMode(IdleMode.kBrake);
+    // turretMotor.configure(turretConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
 
-    NetworkTableListener.createListener(turretPSub, EnumSet.of(NetworkTableEvent.Kind.kValueAll),
-      event -> {
-        turretP = event.valueData.value.getDouble();
-        turretConfig.closedLoop.p(turretP);
-        turretMotor.configure(turretConfig,ResetMode.kResetSafeParameters,PersistMode.kNoPersistParameters);
-      }
-    );
+    // NetworkTableInstance nt = NetworkTableInstance.getDefault();
+    // NetworkTable sd = nt.getTable("SmartDashboard");
+    // DoubleSubscriber turretPSub = sd.getDoubleTopic("Turret P").subscribe(turretP);
+
+    // NetworkTableListener.createListener(turretPSub, EnumSet.of(NetworkTableEvent.Kind.kValueAll),
+    //   event -> {
+    //     turretP = event.valueData.value.getDouble();
+    //     turretConfig.closedLoop.p(turretP);
+    //     turretMotor.configure(turretConfig,ResetMode.kResetSafeParameters,PersistMode.kNoPersistParameters);
+    //   }
+    // );
   }
 
   public void onPosition(double desiredPos) { 
@@ -102,13 +105,17 @@ public class TurretRev extends SubsystemBase {
   public void onPositionEx(double desiredPos) {
     if ((getPos() > turretLeftMax && calculation>0) || (getPos() < turretRightMax && calculation<0)) {
       turretMotor.set(0);
-    } else if (calculation>0) {
-      calculation = pid1.calculate(getPos(), desiredPos);
-      SmartDashboard.putNumber("Turret onPositionEx calc speed", calculation);
+      SmartDashboard.putNumber("Turret s onPositionEx calc speed", 0);
+      SmartDashboard.putNumber("Turret e onPositionEx calc error", pid1.getError());
+    } else if (calculation>=0) {
+      calculation = -pid1.calculate(getPos(), desiredPos);
+      SmartDashboard.putNumber("Turret s onPositionEx calc speed", calculation);
+      SmartDashboard.putNumber("Turret e onPositionEx calc error", pid1.getError());
       turretMotor.set(calculation);
-    } else if (calculation<0) {
-      calculation = pid2.calculate(getPos(), desiredPos);
-      SmartDashboard.putNumber("Turret onPositionEx calc speed", calculation);
+    } else if (calculation<=0) {
+      calculation = -pid2.calculate(getPos(), desiredPos);
+      SmartDashboard.putNumber("Turret s onPositionEx calc speed", calculation);
+      SmartDashboard.putNumber("Turret e onPositionEx calc error", pid2.getError());
       turretMotor.set(calculation);
     }
   }

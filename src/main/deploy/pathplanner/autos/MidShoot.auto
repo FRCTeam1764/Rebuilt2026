@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "MidToBack"
+          }
+        },
+        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -12,12 +18,6 @@
                 "type": "wait",
                 "data": {
                   "waitTime": 2.0
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "MidToBack"
                 }
               },
               {
@@ -57,7 +57,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": "Heartland",
   "choreoAuto": false
 }

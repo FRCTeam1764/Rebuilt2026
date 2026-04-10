@@ -10,8 +10,8 @@ public final class CommandConstants {
     //for talon fx, 0.916 inches per rotation\\
 
     //limits
-    public final static double INTAKE_LIMIT_DOWN = 0.993;
-    public final static double INTAKE_LIMIT_UP = 0.745;
+    public final static double INTAKE_LIMIT_DOWN = 0.9;
+    public final static double INTAKE_LIMIT_UP = 0.2;
 
     public final static double SHOOTER_LIMIT_UP = 0.6;
     public final static double SHOOTER_LIMIT_DOWN = 0.4;
@@ -20,10 +20,11 @@ public final class CommandConstants {
     public final static double CLIMBER_LIMIT_DOWN = 0.0;
 
     //positions
-    public final static double INTAKE_WRIST_DOWN = 0.82;
+    public final static double INTAKE_WRIST_OVEREXTEND = 0.905;
+    public final static double INTAKE_WRIST_DOWN = 0.72;
     public final static double INTAKE_WRIST_MID = 0.4;
-    public final static double INTAKE_WRIST_IN = 0.13;
-    public final static double INTAKE_WRIST_IN_IN = 0.13;
+    public final static double INTAKE_WRIST_IN = 0.04;
+    public final static double INTAKE_WRIST_IN_IN = 0.04;
 
     public final static double SHOOTER_WRIST_DOWN = 0.9;
     public final static double SHOOTER_WRIST_UP = 0.6;
@@ -42,9 +43,9 @@ public final class CommandConstants {
     //speeds
     public final static double INTAKE_IN_SPEED = -0.7;
     public final static double INTAKE_OUT_SPEED = 0.1;
-    public final static double INDEX_SPEED = 0.5;
+    public final static double INDEX_SPEED = 0.6;
     public final static double SHOOTER_SPEED = 1.0;
-    public final static double SPINDEXER_SPEED = 0.90;
+    public final static double SPINDEXER_SPEED = 0.60;
     public final static double TURRET_SPEED = 0.3;
     public final static double CLIMBER_SPEED_UP = 0.7;
     public final static double CLIMBER_SPEED_DOWN = 0.3;

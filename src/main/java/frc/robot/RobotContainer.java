@@ -130,10 +130,11 @@ public class RobotContainer {
         
         pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
         pilot.rightTrigger().onFalse(commandFactory.resetMidPos());
-        
+
         pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
         pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID));
         pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
+        pilot.pov(270).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_OVEREXTEND));
 
         pilot.leftBumper().whileTrue(commandFactory.ShootRampWhileIntakeCommand());
         pilot.leftBumper().onFalse(commandFactory.resetMidPos());
@@ -141,8 +142,8 @@ public class RobotContainer {
         pilot.x().whileTrue(commandFactory.unJamSpin());
         pilot.x().onFalse(commandFactory.resetSpeed());
 
-        pilot.a().whileTrue(new ShooterTurretCommand(turret, 0));
-        pilot.a().onFalse(new InstantCommand(() -> turret.onSpeed(0)));
+        copilot.x().whileTrue(commandFactory.unJamSpin());
+        copilot.x().onFalse(commandFactory.resetSpeed());
         
         copilot.rightTrigger().whileTrue(commandFactory.ShootRampCommand());
         copilot.rightTrigger().onFalse(commandFactory.resetMidPos());
@@ -153,6 +154,15 @@ public class RobotContainer {
         copilot.leftBumper().whileTrue(commandFactory.ShootCommand());
         copilot.leftBumper().onFalse(commandFactory.resetMidPos());
 
+        //copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.R4_SHOOTER, shooterWrist));
+
+        copilot.a().whileTrue(new ShooterTurretCommand(turret, 0.1));
+        copilot.a().onFalse(new InstantCommand(() -> turret.stop()));
+
+        copilot.b().whileTrue(new ShooterTurretCommand(turret, -0.2));
+        copilot.b().onFalse(new InstantCommand(() -> turret.stop()));
+
+        //shoot with intake spitting out, no intake wrist
         copilot.back().whileTrue(new RollersCommand(rollers, true, CommandConstants.INTAKE_OUT_SPEED));
         copilot.back().onFalse(commandFactory.resetSpeed());
         

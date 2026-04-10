@@ -113,7 +113,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": "Heartland",
   "choreoAuto": false
 }

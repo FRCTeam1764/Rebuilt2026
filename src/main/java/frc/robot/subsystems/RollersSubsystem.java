@@ -60,17 +60,22 @@ public class RollersSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("index roller voltage", indexRollers.getMotorVoltage().getValueAsDouble());
     SmartDashboard.putNumber("index roller current", indexRollers.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("index roller temp", indexRollers.getDeviceTemp().getValueAsDouble());
+    SmartDashboard.putNumber("index roller speed", indexRollers.getVelocity().getValueAsDouble());
 
     SmartDashboard.putNumber("intake roller voltage", intakeRollers.getMotorVoltage().getValueAsDouble());
     SmartDashboard.putNumber("intake roller current", intakeRollers.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("intake roller temp", intakeRollers.getDeviceTemp().getValueAsDouble());
+    SmartDashboard.putNumber("intake roller speed", intakeRollers.getVelocity().getValueAsDouble());
 
     SmartDashboard.putNumber("shooter flywheel voltage", shooterFlywheel.getMotorVoltage().getValueAsDouble());
     SmartDashboard.putNumber("shooter flywheel current", shooterFlywheel.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("shooter flywheel temp", shooterFlywheel.getDeviceTemp().getValueAsDouble());
+    SmartDashboard.putNumber("shooter flywheel speed", shooterFlywheel.getVelocity().getValueAsDouble());
 
-    SmartDashboard.putNumber("res roller voltage", spindexer.getMotorVoltage().getValueAsDouble());
-    SmartDashboard.putNumber("res roller current", spindexer.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("res roller temp", spindexer.getDeviceTemp().getValueAsDouble());
+    SmartDashboard.putNumber("spindexer voltage", spindexer.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("spindexer current", spindexer.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("spindexer temp", spindexer.getDeviceTemp().getValueAsDouble());
+    SmartDashboard.putNumber("spindexer speed", spindexer.getVelocity().getValueAsDouble());
+
   }
 }

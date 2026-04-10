@@ -49,6 +49,12 @@ public class AutonomousCommandFactory extends CommandFactory{
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve) {
         super(intakeWrist, turret, wrist, turretLimelight, rollers, pilot, swerve);
         this.shooterWrist = wrist;
+        this.swerve = swerve;
+        this.intakeWrist = intakeWrist;
+        this.turret = turret;
+        this.rollers = rollers;
+        this.limelight1 = turretLimelight;
+        this.pilot = pilot;
         configAutonomousCommands();
     }
     
@@ -72,6 +78,7 @@ public class AutonomousCommandFactory extends CommandFactory{
         //NamedCommands.registerCommand("GroundIntakeCommand", GroundIntakeCommand());
         NamedCommands.registerCommand("HubShootCommand", ShootRampCommand());
         NamedCommands.registerCommand("GroundIntake", GroundIntakeCommand());
+        NamedCommands.registerCommand("Unjam", unJamSpin());
         // NamedCommands.registerCommand("WaitUntilIdle", new SequentialCommandGroup(
         //     new RequestStateChange(States.IDLE, stateManager),
         //     new waitUntilPosition(stateManager, CommandConstants.INTAKE_WRIST_KEY, 0.5)));

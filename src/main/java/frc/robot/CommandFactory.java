@@ -52,6 +52,8 @@ public class CommandFactory {
     private TurretRev turret;
     private IntakeWristRev intakeWrist;
 
+    private double rampTime = 1.5;
+
     public CommandFactory(IntakeWristRev intakeWrist, TurretRev turret, ShooterWristRev wrist, LimelightSubsystem turretLimelight, 
                 RollersSubsystem rollers,
                 CommandXboxController pilot, CommandSwerveDrivetrain swerve) {
@@ -73,7 +75,7 @@ public class CommandFactory {
     public Command ShootRampCommand() {
         return new SequentialCommandGroup( 
             new ParallelDeadlineGroup(
-                new WaitCommand(2),
+                new WaitCommand(rampTime),
                 new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED)),
             new RollersCommand(rollers, true, 0)
         );
@@ -82,8 +84,8 @@ public class CommandFactory {
     public Command ShootRampWithSpitOutCommand() {
         return new SequentialCommandGroup( 
             new ParallelDeadlineGroup(
-                new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED),
-                new WaitCommand(2)),
+                new WaitCommand(rampTime),
+                new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED)),
             new RollersCommand(rollers, true, CommandConstants.INTAKE_OUT_SPEED)
         );
     }
@@ -92,8 +94,8 @@ public class CommandFactory {
         return new ParallelCommandGroup(
             new SequentialCommandGroup(
                 new ParallelDeadlineGroup(
-                    new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED),
-                    new WaitCommand(2)),
+                    new WaitCommand(rampTime),
+                    new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SPEED)),
                 new RollersCommand(rollers, false, CommandConstants.INTAKE_IN_SPEED)
             ),
             new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN),

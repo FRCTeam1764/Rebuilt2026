@@ -39,6 +39,6 @@ public class ShooterTurretCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return turret.getPos() < desired+0.1 && turret.getPos() > desired-0.1;
+    return false;//turret.getPos() < desired+0.1 && turret.getPos() > desired-0.1;
   }
 }
