@@ -41,7 +41,7 @@ public class IntakeWristRev extends SubsystemBase {
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
     pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
-    pidConfig.pid(1.5, 0, 1.9, ClosedLoopSlot.kSlot0); //1,225 //down
+    pidConfig.pid(1, 0, 2, ClosedLoopSlot.kSlot0); //1,225 //down
     pidConfig.pid(1.5, 0, 1.2, ClosedLoopSlot.kSlot1);
     pidConfig.outputRange(-0.3, 0.4);
     pidConfig.allowedClosedLoopError(0.005, ClosedLoopSlot.kSlot0); 

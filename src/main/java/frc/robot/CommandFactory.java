@@ -81,6 +81,15 @@ public class CommandFactory {
         );
     }
 
+    public Command ShootRampCommandSlow() {
+        return new SequentialCommandGroup( 
+            new ParallelDeadlineGroup(
+                new WaitCommand(rampTime),
+                new ShooterFlywheelCommand(rollers, CommandConstants.SHOOTER_SLOW_SPEED)),
+            new RollersCommand(rollers, 0, CommandConstants.INDEX_SPEED, CommandConstants.SPINDEXER_SPEED, CommandConstants.SHOOTER_SLOW_SPEED)
+        );
+    }
+
     public Command ShootRampWithSpitOutCommand() {
         return new SequentialCommandGroup( 
             new ParallelDeadlineGroup(

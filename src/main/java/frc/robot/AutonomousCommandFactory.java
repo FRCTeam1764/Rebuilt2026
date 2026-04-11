@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.BasicCommands.IntakeWristCommand;
+import frc.robot.commands.BasicCommands.ShooterTurretCommand;
 import frc.robot.commands.BasicCommands.ShooterWristCommand;
 import frc.robot.commands.DriveCommands.DriveBackward;
 import frc.robot.commands.DriveCommands.DriveForward;
@@ -79,6 +80,8 @@ public class AutonomousCommandFactory extends CommandFactory{
         NamedCommands.registerCommand("HubShootCommand", ShootRampCommand());
         NamedCommands.registerCommand("GroundIntake", GroundIntakeCommand());
         NamedCommands.registerCommand("Unjam", unJamSpin());
+        NamedCommands.registerCommand("TurretStay", new ShooterTurretCommand(turret, turret.getPos()));
+        NamedCommands.registerCommand("LowShoot", ShootRampCommandSlow());
         // NamedCommands.registerCommand("WaitUntilIdle", new SequentialCommandGroup(
         //     new RequestStateChange(States.IDLE, stateManager),
         //     new waitUntilPosition(stateManager, CommandConstants.INTAKE_WRIST_KEY, 0.5)));

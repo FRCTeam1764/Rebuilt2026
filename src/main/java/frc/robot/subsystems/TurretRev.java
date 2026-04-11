@@ -66,8 +66,8 @@ public class TurretRev extends SubsystemBase {
   double turretLeftMax =  0.40;// 0.46; //-1.55 // FIXME actual encoder val - not ratio adjusted yet
   double turretRightMax = -0.28;//-0.32; //0.75  // FIXME actual encoder val - not ratio adjusted yet
 
-  PIDController pid1 = new PIDController(1.2, 0, 0); //adjusted 3.7 -> speed>0 //1.7
-  PIDController pid2 = new PIDController( 2, 0, 0.2); //ajusted 4.5 -> speed<0 //2.5
+  PIDController pid1 = new PIDController(1, 0, 0); //adjusted 3.7 -> speed>0 //1.7
+  PIDController pid2 = new PIDController( 2.9, 0, 0.3); //ajusted 4.5 -> speed<0 //2.5
 
   double calculation;
 
@@ -118,6 +118,7 @@ public class TurretRev extends SubsystemBase {
       SmartDashboard.putNumber("Turret e onPositionEx calc error", pid2.getError());
       turretMotor.set(calculation);
     }
+    SmartDashboard.putNumber("Turret d onPositionEx calc desired", desiredPos);
   }
 
   // public void onAngleEx(double desiredPos) {

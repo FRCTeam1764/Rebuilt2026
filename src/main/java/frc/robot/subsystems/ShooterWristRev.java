@@ -46,7 +46,7 @@ public class ShooterWristRev extends SubsystemBase {
     config.openLoopRampRate(0.25);
 
     ClosedLoopConfig pidConfig = new ClosedLoopConfig();
-    pidConfig.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
+    pidConfig.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     pidConfig.outputRange(-0.4, 0.4);
     pidConfig.pid(2.8, 0 ,0);
     pidConfig.allowedClosedLoopError(0.001, ClosedLoopSlot.kSlot0);
@@ -78,25 +78,22 @@ public class ShooterWristRev extends SubsystemBase {
   }
 
   public void onSpeed(double speed) {
-    if ((speed > 0 && getPos() < 0.85) || (speed < 0 && getPos() > 0.65)) {
-        wristMotor.set(speed * 0.2); // was: > 0.2 ? 0.2 : speed < -0.2 ? -0.2 : speed*.3
-      } else {
-        wristMotor.set(0);
-      }
+    wristMotor.set(speed * 0.2); // was: > 0.2 ? 0.2 : speed < -0.2 ? -0.2 : speed*.3
   }
+  
 
   public double getPos() {
-    return wristMotor.getAbsoluteEncoder().getPosition();
+    return wristMotor.getEncoder().getPosition();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("ShooterWristPosition", wristMotor.getAbsoluteEncoder().getPosition());
+    SmartDashboard.putNumber("ShooterWristPosition", wristMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("ShooterWristTemperature", wristMotor.getMotorTemperature());
     SmartDashboard.putNumber("ShooterWristCurrent", wristMotor.getOutputCurrent());
     SmartDashboard.putNumber("ShooterWristSetpoint", wristMotor.getClosedLoopController().getSetpoint());
     SmartDashboard.putNumber("ShooterWristVoltage", wristMotor.getAppliedOutput());
-    SmartDashboard.putNumber("ShooterWristSpeed", wristMotor.getAbsoluteEncoder().getVelocity());
+    SmartDashboard.putNumber("ShooterWristSpeed", wristMotor.getEncoder().getVelocity());
   }
 }

@@ -16,11 +16,13 @@ public class DefaultTurretCommand extends Command {
   /** Creates a new DefaultWristCommand. */
   TurretRev turret;
   CommandXboxController xbox;
+  double staticSpot;
 
   public DefaultTurretCommand(TurretRev turret, CommandXboxController xbox) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.turret = turret;
     this.xbox = xbox;
+    staticSpot = turret.getPos();
     addRequirements(turret);
   }
 
@@ -33,8 +35,12 @@ public class DefaultTurretCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turret.onSpeed(xbox.getLeftX());
-    // turret.setVoltage(12*xbox.getLeftX());
+    if (Math.abs(xbox.getLeftX())<0.07) {
+      turret.onPositionEx(staticSpot);
+    } else {
+      staticSpot = turret.getPos();
+      turret.onSpeed(xbox.getLeftX());
+    }
   }
   
 

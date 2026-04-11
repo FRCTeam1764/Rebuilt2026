@@ -132,9 +132,17 @@ public class RobotContainer {
         pilot.rightTrigger().onFalse(commandFactory.resetMidPos());
 
         pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
-        pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID));
+        pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID_MANUAL));
         pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
         pilot.pov(270).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_OVEREXTEND));
+
+        copilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
+        copilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID_MANUAL));
+        copilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
+        copilot.pov(270).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_OVEREXTEND));
+
+        // pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, 0.5));
+        // pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, 0.7));
 
         pilot.leftBumper().whileTrue(commandFactory.ShootRampWhileIntakeCommand());
         pilot.leftBumper().onFalse(commandFactory.resetMidPos());
@@ -156,11 +164,11 @@ public class RobotContainer {
 
         //copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.R4_SHOOTER, shooterWrist));
 
-        copilot.a().whileTrue(new ShooterTurretCommand(turret, 0.1));
-        copilot.a().onFalse(new InstantCommand(() -> turret.stop()));
+        // copilot.a().whileTrue(new ShooterTurretCommand(turret, 0.1)); //+
+        // copilot.a().onFalse(new InstantCommand(() -> turret.stop()));
 
-        copilot.b().whileTrue(new ShooterTurretCommand(turret, -0.2));
-        copilot.b().onFalse(new InstantCommand(() -> turret.stop()));
+        // copilot.b().whileTrue(new ShooterTurretCommand(turret, -0.2)); //-
+        // copilot.b().onFalse(new InstantCommand(() -> turret.stop()));
 
         //shoot with intake spitting out, no intake wrist
         copilot.back().whileTrue(new RollersCommand(rollers, true, CommandConstants.INTAKE_OUT_SPEED));

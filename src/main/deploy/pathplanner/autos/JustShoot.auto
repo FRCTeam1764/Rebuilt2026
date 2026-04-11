@@ -19,6 +19,12 @@
                 "data": {
                   "name": "HubShootCommand"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TurretStay"
+                }
               }
             ]
           }
@@ -37,6 +43,12 @@
                 "type": "named",
                 "data": {
                   "name": "Unjam"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TurretStay"
                 }
               }
             ]
@@ -57,6 +69,12 @@
                 "data": {
                   "name": "HubShootCommand"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TurretStay"
+                }
               }
             ]
           }
@@ -76,7 +94,7 @@
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": "Heartland",
   "choreoAuto": false
 }
