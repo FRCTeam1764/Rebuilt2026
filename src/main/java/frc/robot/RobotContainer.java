@@ -118,11 +118,6 @@ public class RobotContainer {
         // resets shooter to forward
         pilot.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        //intake wrist positions
-        pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
-        pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID_MANUAL));
-        pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
-        pilot.pov(270).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_OVEREXTEND));
         
         //ground intake command
         pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
