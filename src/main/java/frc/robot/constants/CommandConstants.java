@@ -41,7 +41,7 @@ public final class CommandConstants {
     public final static double R4_SHOOTER = 0.88; //0.38;
     public final static double RDOWN_SHOOTER = 0.89; //0.39;
 
-    //speeds
+    //speeds//
 
     //intaking in intake roller
     public final static double INTAKE_IN_SPEED = -0.4; //used to -0.7
