@@ -47,8 +47,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeWristRev;
 
 public class RobotContainer {
-    private double MaxSpeed = 0.7 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = 0.6*RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed = 0.35 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = 0.3*RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -62,7 +62,6 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController pilot = new CommandXboxController(0);
-    private final CommandXboxController copilot = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -110,69 +109,51 @@ public class RobotContainer {
             )
         );
 
-        // Default Commands
-        turret.setDefaultCommand(new DefaultTurretCommand(turret, copilot));
-        shooterWrist.setDefaultCommand(new DefaultShooterWristCommand(shooterWrist, copilot));
-        
         configureMainBindings();
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     private void configureMainBindings() {
-        // Drive Controls
+        // resets shooter to forward
         pilot.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        
-        //copilot.leftTrigger(.7).whileTrue(drivetrain.applyRequest(()->brake));
-        
-        pilot.start().whileTrue(commandFactory.resetSpeed());
-        copilot.start().whileTrue(commandFactory.resetSpeed());
-        
-        pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
-        pilot.rightTrigger().onFalse(commandFactory.resetMidPos());
 
+        //intake wrist positions
         pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
         pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID_MANUAL));
         pilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
         pilot.pov(270).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_OVEREXTEND));
+        
+        //ground intake command
+        pilot.rightTrigger().whileTrue(commandFactory.GroundIntakeCommand());
+        pilot.rightTrigger().onFalse(commandFactory.resetMidPos());
 
-        copilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_IN));
-        copilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_MID_MANUAL));
-        copilot.pov(180).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_DOWN));
-        copilot.pov(270).whileTrue(new IntakeWristCommand(intakeWrist, CommandConstants.INTAKE_WRIST_OVEREXTEND));
-
-        // pilot.pov(0).whileTrue(new IntakeWristCommand(intakeWrist, 0.5));
-        // pilot.pov(90).whileTrue(new IntakeWristCommand(intakeWrist, 0.7));
-
-        pilot.leftBumper().whileTrue(commandFactory.ShootRampWhileIntakeCommand());
-        pilot.leftBumper().onFalse(commandFactory.resetMidPos());
-
+        //unjam the indexer and spindexer
         pilot.x().whileTrue(commandFactory.unJamSpin());
         pilot.x().onFalse(commandFactory.resetSpeed());
 
-        copilot.x().whileTrue(commandFactory.unJamSpin());
-        copilot.x().onFalse(commandFactory.resetSpeed());
-        
-        copilot.rightTrigger().whileTrue(commandFactory.ShootRampCommand());
-        copilot.rightTrigger().onFalse(commandFactory.resetMidPos());
+        //sets all the roller speeds to zero
+        pilot.start().whileTrue(commandFactory.resetSpeed());
 
-        copilot.leftTrigger().whileTrue(commandFactory.ShootRampWithSpitOutCommand());
-        copilot.leftTrigger().onFalse(commandFactory.resetMidPos());
-
-        copilot.leftBumper().whileTrue(commandFactory.ShootCommand());
-        copilot.leftBumper().onFalse(commandFactory.resetMidPos());
-
-        //copilot.a().whileTrue(new ShooterWristCommand(CommandConstants.R4_SHOOTER, shooterWrist));
-
-        // copilot.a().whileTrue(new ShooterTurretCommand(turret, 0.1)); //+
-        // copilot.a().onFalse(new InstantCommand(() -> turret.stop()));
-
-        // copilot.b().whileTrue(new ShooterTurretCommand(turret, -0.2)); //-
-        // copilot.b().onFalse(new InstantCommand(() -> turret.stop()));
+        //shoot
+        pilot.a().whileTrue(commandFactory.ShootCommand());
+        pilot.a().onFalse(commandFactory.resetMidPos());
 
         //shoot with intake spitting out, no intake wrist
-        copilot.back().whileTrue(new RollersCommand(rollers, true, CommandConstants.INTAKE_OUT_SPEED));
-        copilot.back().onFalse(commandFactory.resetSpeed());
+        pilot.back().whileTrue(new RollersCommand(rollers, true, CommandConstants.INTAKE_OUT_SPEED));
+        pilot.back().onFalse(commandFactory.resetSpeed());
+        
+        //ramp up flywheels and then shoot
+        pilot.rightBumper().whileTrue(commandFactory.ShootRampCommand());
+        pilot.rightBumper().onFalse(commandFactory.resetMidPos());
+
+        //ramp up flywheels and then shoot with intake rollers spitting out
+        pilot.leftTrigger().whileTrue(commandFactory.ShootRampWithSpitOutCommand());
+        pilot.leftTrigger().onFalse(commandFactory.resetMidPos());
+        
+        //ramp up flywheels and then shoot while intaking
+        pilot.leftBumper().whileTrue(commandFactory.ShootRampWhileIntakeCommand());
+        pilot.leftBumper().onFalse(commandFactory.resetMidPos());
         
     }
 

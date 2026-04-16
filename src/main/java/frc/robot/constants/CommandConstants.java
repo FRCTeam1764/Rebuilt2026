@@ -42,12 +42,25 @@ public final class CommandConstants {
     public final static double RDOWN_SHOOTER = 0.89; //0.39;
 
     //speeds
-    public final static double INTAKE_IN_SPEED = -0.7;
-    public final static double INTAKE_OUT_SPEED = 0.1;
-    public final static double INDEX_SPEED = 0.6;
-    public final static double SHOOTER_SPEED = 1.0;
-    public final static double SHOOTER_SLOW_SPEED = 0.7;
-    public final static double SPINDEXER_SPEED = 0.60;
+
+    //intaking in intake roller
+    public final static double INTAKE_IN_SPEED = -0.4; //used to -0.7
+
+    //shoot with intake out speed
+    public final static double INTAKE_OUT_SPEED = 0.1; //used to 0.1
+
+    //indexer speed
+    public final static double INDEX_SPEED = 0.3; //used to 0.6
+
+    //shooter flywheel speed
+    public final static double SHOOTER_SPEED = 0.7; //used to 1.0
+
+    //spindexer speed
+    public final static double SPINDEXER_SPEED = 0.6; // used to 0.6
+
+
+    //dont use
+    public final static double SHOOTER_SLOW_SPEED = 0.35;
     public final static double TURRET_SPEED = 0.3;
     public final static double CLIMBER_SPEED_UP = 0.7;
     public final static double CLIMBER_SPEED_DOWN = 0.3;
